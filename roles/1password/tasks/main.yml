@@ -1,0 +1,8 @@
+---
+- debug:
+    var: vars
+- meta: end_play
+- name: Install 1password on Manjaro
+  include_role: 1password/arch
+
+
