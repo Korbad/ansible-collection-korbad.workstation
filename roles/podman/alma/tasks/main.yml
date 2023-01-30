@@ -1,0 +1,12 @@
+---
+- name: Enable EPEL Repository
+  ansible.builtin.dnf:
+    name: epel-release
+    state: latest
+    update_cache: yes
+  become: true
+
+- name: Install podman via dnf
+  ansible.builtin.dnf:
+    name: podman
+  become: true
