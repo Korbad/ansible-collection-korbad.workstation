@@ -1,0 +1,7 @@
+---
+
+
+- name: Route to sub-role by OS/distro
+  include_role:
+    name: arch
+  when: ansible_vars

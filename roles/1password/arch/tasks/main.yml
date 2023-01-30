@@ -1,4 +1,0 @@
----
-- name: Ensure 1password is installed
-  kewlfft.aur.aur:
-    name: 1password
