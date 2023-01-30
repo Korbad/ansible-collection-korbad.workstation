@@ -1,7 +1,10 @@
 ---
-
-
-- name: Route to sub-role by OS/distro
+- name: Podman for Archlinux
   include_role:
-    name: arch
-  when: ansible_vars
+    name: podman/arch
+  when: ansible_distribution == 'Archlinux'
+
+- name: Podman for AlmaLinux
+  include_role:
+    name: podman/alma
+  when: ansible_distribution == 'AlmaLinux'
