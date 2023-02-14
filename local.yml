@@ -1,0 +1,20 @@
+---
+- name: Installs pip and creates base virtual environment for Ansible
+  hosts: localhost
+  vars:
+    korbad_workstation_dir: "{{ (playbook_dir, 'korbad.workstation') | path_join }}"
+  tasks:
+  - name: Create tmp dir for korbad.workstation collection
+    file:
+      state: directory
+      path: "{{ korbad_workstation_dir }}"
+
+  - name: Clone the korbad.workstation ansible collection repo
+    git:
+      repo: git@github.com:Korbad/ansible-collection_korbad.workstation.git
+      dest: "{{ korbad_workstation_dir }}"
+
+  - name: Use the virtual environment setup playbook
+    command:
+      cmd: ansible-playbook virtual_env_localhost_current_user.yml
+      chdir: "{{ korbad_workstation_dir }}"

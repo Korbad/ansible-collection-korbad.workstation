@@ -1,0 +1,5 @@
+---
+- name: Installs podman
+  hosts: localhost
+  roles:
+  - name: podman
