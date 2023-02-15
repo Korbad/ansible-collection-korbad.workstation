@@ -8,10 +8,3 @@
   include_role:
     name: podman/alma
   when: ansible_distribution == 'AlmaLinux'
-
-- name: Enable podman.socket
-  systemd:
-    name: podman.socket
-    enabled: true
-    scope: user
-    state: started

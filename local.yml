@@ -1,5 +1,5 @@
 ---
-- name: Installs pip and creates base virtual environment for Ansible
+- name: Base workstation packages
   hosts: localhost
   vars:
     korbad_workstation_dir: "{{ (playbook_dir, 'korbad.workstation') | path_join }}"
@@ -16,5 +16,5 @@
 
   - name: Use the virtual environment setup playbook
     command:
-      cmd: ansible-playbook virtual_env_localhost_current_user.yml
+      cmd: ansible-playbook localhost_current_user.yml
       chdir: "{{ korbad_workstation_dir }}"

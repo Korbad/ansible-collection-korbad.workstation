@@ -1,0 +1,8 @@
+---
+namespace: korbad
+name: workstation
+version: 0.0.1
+readme: README.md
+authors:
+- Josh Perry (@korbad, korbad.com)
+license: MIT
