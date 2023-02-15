@@ -1,0 +1,17 @@
+---
+- name: Ensure user account exists that matches GitHub username
+  user:
+    name: "{{ github_username }}"
+    shell: /bin/bash
+    createhome: true
+    groups: "sudo"
+    home: /home/{{ github_username }}
+    state: present
+  become: true
+
+- name: Ensure authorized_keys for GitHub user accounts are present.
+  authorized_key:
+    user: "{{ github_username }}"
+    key: "https://github.com/{{ github_username }}.keys"
+    manage_dir: true
+  become: true
