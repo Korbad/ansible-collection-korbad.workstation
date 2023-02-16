@@ -1,0 +1,13 @@
+---
+- name: Install ppa repo
+  ansible.builtin.apt_repository:
+    repo: ppa:git-core/ppa
+    filename: ppa
+    state: present
+  become: true
+
+- name: Install git
+  package:
+    name: git
+    update_cache: true
+  become: true
