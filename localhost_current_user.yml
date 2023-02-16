@@ -1,5 +1,5 @@
 ---
-- name: Installs podman
+- name: Install and configures workstation
   hosts: localhost
   roles:
-  - name: podman
+  - name: vscode
