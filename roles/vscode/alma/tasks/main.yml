@@ -1,5 +1,22 @@
 ---
+- name: Add vscode key for yum repo
+  rpm_key:
+    state: present
+    key: https://packages.microsoft.com/keys/microsoft.asc
+  become: yes
+
+- name: Register microsoft yum repo (which is used by dnf)
+  ansible.builtin.yum_repository:
+    name: code
+    description: Visual Studio Code repo
+    file: vscode
+    baseurl: https://packages.microsoft.com/yumrepos/vscode
+    gpgkey: https://packages.microsoft.com/keys/microsoft.asc
+    gpgcheck: true
+  become: yes
+
 - name: Install VSCode
   package:
     name: code
+    update_cache: yes
   become: true
