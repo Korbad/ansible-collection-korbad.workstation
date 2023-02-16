@@ -1,0 +1,4 @@
+---
+- name: Ensure chrome is installed
+  kewlfft.aur.aur:
+    name: google-chrome

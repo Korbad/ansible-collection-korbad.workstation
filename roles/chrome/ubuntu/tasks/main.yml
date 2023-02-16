@@ -1,0 +1,19 @@
+---
+- name: Add signing key
+  apt_key:
+    key: https://dl.google.com/linux/linux_signing_key.pub
+  become: true
+
+- name: Add google repo
+  ansible.builtin.apt_repository:
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    filename: chrome
+    state: present
+  become: true
+
+- name: Install google-chrome-stable
+  package:
+    name: chrome
+    state: latest 
+    update_cache: true
+  become: yes
