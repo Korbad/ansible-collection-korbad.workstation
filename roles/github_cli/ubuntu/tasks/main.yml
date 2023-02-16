@@ -1,0 +1,16 @@
+---
+- name: Add Github CLI key
+  apt_key:
+    url: https://cli.github.com/packages/githubcli-archive-keyring.gpg
+    state: present
+
+- name: Add Github CLI Repo
+  apt_repository:
+    repo: deb https://cli.github.com/packages stable main
+    state: present
+    update_cache: true
+
+- name: Install github CLI
+  package:
+    name: gh
+  become: true
