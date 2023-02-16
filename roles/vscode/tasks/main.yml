@@ -1,10 +1,15 @@
 ---
-- name: Podman for Archlinux
+- name: vscode for Archlinux
   include_role:
-    name: podman/arch
+    name: vscode/arch
   when: ansible_distribution == 'Archlinux'
 
-- name: Podman for AlmaLinux
+- name: vscode for AlmaLinux
   include_role:
-    name: podman/alma
+    name: vscode/alma
   when: ansible_distribution == 'AlmaLinux'
+
+- name: vscode for Ubuntu
+  include_role:
+    name: vscode/ubuntu
+  when: ansible_distribution == 'Ubuntu'
