@@ -1,0 +1,8 @@
+---
+- name: Set git config name if it is are defined
+  command:
+    cmd: git config --global user.name "{{ git_username }}"
+
+- name: Set git config email if it is are defined
+  command:
+    cmd: git config --global user.email "{{ git_email }}"
