@@ -1,0 +1,8 @@
+---
+
+
+# source https://github.com/aeimer/ansible-role-install-virtualbox-vagrant/blob/master/defaults/main.yml
+virtualbox_version: 6.1
+virtualbox_apt_key_url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+virtualbox_apt_repo_url: http://download.virtualbox.org/virtualbox/debian
+virtualbox_users: []
