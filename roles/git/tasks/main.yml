@@ -1,5 +1,5 @@
 ---
-- name: vscode for Ubuntu
+- name: Git for Ubuntu
   include_role:
     name: git/ubuntu
   when: ansible_distribution == 'Ubuntu'
