@@ -1,10 +1,19 @@
 ---
+- assert:
+    that:
+      - github_username is defined
+
+- name: Ensure sudo group exists
+  group:
+    name: sudo
+  become: true
+
 - name: Ensure user account exists that matches GitHub username
   user:
     name: "{{ github_username }}"
     shell: /bin/bash
     createhome: true
-    groups: "sudo"
+    groups: sudo
     home: /home/{{ github_username }}
     state: present
   become: true
