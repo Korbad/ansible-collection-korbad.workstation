@@ -1,0 +1,20 @@
+---
+# https://github.com/hashicorp/vagrant/issues/8533
+- name: Add stretch-backports apt sources
+  become: true
+  apt_repository:
+    repo: "{{ apt_sources }}"
+    state: present
+  loop_control:
+    loop_var: apt_sources
+  loop:
+    - "deb http://ftp.debian.org/debian stretch-backports main contrib non-free"
+    - "deb-src http://ftp.debian.org/debian stretch-backports main contrib non-free"
+
+- name: Install stretch-backports
+  become: yes
+  apt:
+    name:
+      - build-essential
+      - "linux-headers-{{ ansible_kernel }}"
+      - virtualbox

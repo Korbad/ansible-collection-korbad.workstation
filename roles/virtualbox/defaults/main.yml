@@ -1,0 +1,3 @@
+# source https://github.com/aeimer/ansible-role-install-virtualbox-vagrant/blob/master/defaults/main.yml
+virtualbox_version: 6.1
+virtualbox_users: []

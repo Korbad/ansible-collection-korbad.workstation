@@ -18,13 +18,3 @@
 - name: Install vagrant for Debian OS family
   apt:
     deb: "{{ vagrant_tmp_deb }}"
-
-# - name: Download Vagrant package
-#   get_url:
-#     url: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb
-#     dest: "~/vagrant_{{ vagrant_version }}_x86_64.deb"
-
-# - name: install vagrant packages
-#   apt:
-#     deb: "/home/josh/vagrant_{{ vagrant_version }}_x86_64.deb"
-#   become: yes

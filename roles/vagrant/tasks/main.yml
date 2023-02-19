@@ -1,0 +1,15 @@
+---
+- name: vagrant for Archlinux
+  include_role:
+    name: vagrant/arch
+  when: ansible_distribution == 'Archlinux'
+
+- name: vagrant for AlmaLinux
+  include_role:
+    name: vagrant/alma
+  when: ansible_distribution == 'AlmaLinux'
+
+- name: vagrant for Ubuntu
+  include_role:
+    name: vagrant/ubuntu
+  when: ansible_distribution == 'Ubuntu'

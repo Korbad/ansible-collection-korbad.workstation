@@ -1,0 +1,14 @@
+---
+virtualbox_public_keys:
+  - id: 54422A4B98AB5139
+    url: https://www.virtualbox.org/download/oracle_vbox.asc
+  - id: A2F683C52980AECF
+    url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+virtualbox_repositories:
+  - type: 'deb [arch=amd64]'
+    url: "http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }}"
+    component: contrib
+virtualbox_version: 6.1
+
+# virtualbox_apt_key_url: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+# virtualbox_apt_repo_url: http://download.virtualbox.org/virtualbox/debian

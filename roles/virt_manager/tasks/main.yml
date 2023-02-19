@@ -1,0 +1,15 @@
+---
+- name: virt_manager for Archlinux
+  include_role:
+    name: virt_manager/arch
+  when: ansible_distribution == 'Archlinux'
+
+- name: virt_manager for AlmaLinux
+  include_role:
+    name: virt_manager/alma
+  when: ansible_distribution == 'AlmaLinux'
+
+- name: virt_manager for Ubuntu
+  include_role:
+    name: virt_manager/ubuntu
+  when: ansible_distribution == 'Ubuntu'

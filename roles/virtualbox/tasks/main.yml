@@ -1,1 +1,15 @@
 ---
+- name: virtualbox for Archlinux
+  include_role:
+    name: virtualbox/arch
+  when: ansible_distribution == 'Archlinux'
+
+# - name: virtualbox for AlmaLinux
+#   include_role:
+#     name: virtualbox/alma
+#   when: ansible_distribution == 'AlmaLinux'
+
+# - name: virtualbox for Ubuntu
+#   include_role:
+#     name: virtualbox/ubuntu
+#   when: ansible_distribution == 'Ubuntu'

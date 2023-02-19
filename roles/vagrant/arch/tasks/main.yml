@@ -1,0 +1,5 @@
+---
+- name: Vagrant for Arch
+  community.general.pacman:
+    name: vagrant
+  become: true

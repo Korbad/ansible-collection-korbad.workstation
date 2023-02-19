@@ -1,0 +1,53 @@
+---
+- name: Ensure Virtualbox is installed
+  community.general.pacman:
+    name: virtualbox
+  become: true
+
+- name: Get the Linux kernel version
+  ansible.builtin.shell: |
+    set -o pipefail
+    uname -r | awk -F. '{ print $1$2 }'
+  register: kernel_version
+  changed_when: false
+
+- name: Install the relevant virtualbox-host-modules
+  community.general.pacman:
+    name: linux{{ kernel_version.stdout }}-virtualbox-host-modules
+    state: present
+  become: true
+
+- name: Load the vboxdrv module
+  modprobe:
+    name: vboxdrv
+    state: present
+  become: true
+
+- name: Load the vboxnetadp module
+  modprobe:
+    name: vboxnetadp
+    state: present
+  become: true
+
+- name: Load the vboxnetflt module
+  modprobe:
+    name: vboxnetflt
+    state: present
+  become: true
+
+- name: Install Oracle VM VirtualBox Extension Pack
+  ansible.builtin.shell: |
+    set -o pipefail
+    pamac build -d --no-confirm virtualbox-ext-oracle | grep "is up to date"
+    if [ $? != 0 ]; then
+      pamac build --no-confirm virtualbox-ext-oracle
+    fi
+  register: command_result
+  failed_when: command_result.rc != 0
+  changed_when: "'successfully' in command_result.stdout"
+  become: true
+
+- name: Ensure vbox guest iso is installed on host
+  community.general.pacman:
+    name: virtualbox-guest-iso
+  become: true

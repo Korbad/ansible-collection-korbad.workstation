@@ -1,0 +1,28 @@
+---
+- name: Install prerequisites
+  apt:
+    name:
+      - software-properties-common
+      - dirmngr
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Register apt key
+  apt_key:
+    id: "{{ item.id }}"
+    url: "{{ item.url }}"
+    state: present
+  with_items: "{{ virtualbox_public_keys }}"
+
+- name: Add repository
+  apt_repository:
+    repo: "{{ item.type }} {{ item.url }} {{ item.component }}"
+    state: present
+    update_cache: true
+    mode: 0644
+  with_items: "{{ virtualbox_repositories }}"
+
+- name: Install virtualbox
+  apt:
+    name: "virtualbox-{{ virtualbox_version }}"
