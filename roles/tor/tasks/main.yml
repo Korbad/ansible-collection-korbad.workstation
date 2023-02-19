@@ -1,0 +1,10 @@
+- name: Install tor browser and required dependencies
+  community.general.pacman:
+    name: "{{ browser_tor }}"
+    state: present
+  become: true
+  vars:
+    browser_tor:
+      - nyx
+      - tor
+      - torbrowser-launcher
