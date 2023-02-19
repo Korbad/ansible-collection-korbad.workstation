@@ -1,0 +1,28 @@
+---
+- name: Ensure that clamav-freshclam is not running in order to update the database
+  ansible.builtin.systemd:
+    state: stopped
+    name: clamav-freshclam
+  become: true
+  notify: freshclam
+  tags:
+    - security
+    - clamav
+
+- name: Start and enable the clamav service
+  ansible.builtin.systemd:
+    state: started
+    name: clamav-daemon
+  become: true
+  tags:
+    - security
+    - clamav
+
+- name: Start and enable the freshclam service
+  ansible.builtin.systemd:
+    state: started
+    name: clamav-freshclam
+  become: true
+  tags:
+    - security
+    - clamav

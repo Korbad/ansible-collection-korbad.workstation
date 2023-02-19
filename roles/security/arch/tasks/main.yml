@@ -1,0 +1,19 @@
+---
+- name: Install security tools
+  community.general.pacman:
+    name: "{{ security_tools }}"
+    state: present
+  become: true
+  vars:
+    security_tools:
+    - clamav
+    - clamtk
+    - gufw
+    - ufw
+    - ufw-extras
+
+- name: Configure Clamav
+  import_tasks: clamav.yml
+
+- name: Configure ufw
+  import_tasks: ufw.yml
