@@ -1,0 +1,35 @@
+---
+- name: libvirt for Archlinux
+  include_role:
+    name: libvirt/arch
+  when: ansible_distribution == 'Archlinux'
+
+# - name: libvirt for AlmaLinux
+#   include_role:
+#     name: libvirt/alma
+#   when: ansible_distribution == 'AlmaLinux'
+
+# - name: libvirt for Ubuntu
+#   include_role:
+#     name: libvirt/ubuntu
+#   when: ansible_distribution == 'Ubuntu'
+
+- name: Ensure the libvirt group exists.
+  ansible.builtin.group:
+    name: libvirt
+    state: present
+  become: true
+
+- name: Add user to the libvirt group.
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: libvirt
+    append: true
+  become: true
+
+- name: enable libvirtd 
+  ansible.builtin.service:
+    name: libvirtd
+    state: started
+    enabled: yes
+  become: true

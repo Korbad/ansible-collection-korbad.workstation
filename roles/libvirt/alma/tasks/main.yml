@@ -1,0 +1,8 @@
+---
+- name: Install the 'Virtualization Host' environment group
+  dnf:
+    name: "@Virtualization Host"
+    state: present
+  become: true
+  notify:
+    - reload libvirtd

@@ -1,0 +1,15 @@
+---
+- name: nftables for Archlinux
+  include_role:
+    name: nftables/arch
+  when: ansible_distribution == 'Archlinux'
+
+# - name: nftables for AlmaLinux
+#   include_role:
+#     name: nftables/alma
+#   when: ansible_distribution == 'AlmaLinux'
+
+# - name: nftables for Ubuntu
+#   include_role:
+#     name: nftables/ubuntu
+#   when: ansible_distribution == 'Ubuntu'

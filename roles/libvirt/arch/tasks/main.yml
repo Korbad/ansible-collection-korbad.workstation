@@ -1,0 +1,33 @@
+---
+# - name: Install libvertb and required dependencies
+#   community.general.pacman:
+#     name: "{{ packages }}"
+#   become: true
+#   vars:
+#     packages:
+#     - libvirt
+#     # - dnsmasq
+#     # - dmidecode
+#     # - bridge-utils
+#     # - openbsd-netcat
+- name: Install libvirt packages
+  community.general.pacman:
+    name: 
+      - libvirt
+      - qemu-full
+      - dnsmasq
+      - bridge-utils
+      # - openbsd-netcat
+      - dmidecode
+      - python-lxml
+      - libvirt-python
+    state:
+      present
+  become: true
+  notify:
+    - reload libvirtd
+
+- name: Archlinux | Install edk2-ovmf for UEFI VMs
+  community.general.pacman:
+    name: edk2-ovmf
+    state: present
