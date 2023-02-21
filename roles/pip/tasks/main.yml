@@ -1,0 +1,4 @@
+- name: Upgrade pip for current interpreter
+  pip:
+    name: pip
+    state: latest
