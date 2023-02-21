@@ -1,0 +1,10 @@
+---
+- name: Update dnf
+  command:
+    cmd: dnf update -y
+  become: yes
+
+- name: Upgrade dnf
+  command:
+    cmd: dnf upgrade -y
+  become: yes
