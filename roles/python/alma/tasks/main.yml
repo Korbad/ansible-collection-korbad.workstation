@@ -3,3 +3,8 @@
   package:
     name: python38
   become: true
+
+- name: Install Python 3.9
+  package:
+    name: python39
+  become: true
