@@ -1,15 +1,15 @@
 ---
-# - name: vscode for Archlinux
+# - name: webex for Archlinux
 #   include_role:
-#     name: vscode/arch
+#     name: webex/arch
 #   when: ansible_distribution == 'Archlinux'
 
-- name: vscode for AlmaLinux
+- name: webex for AlmaLinux
   include_role:
-    name: vscode/alma
+    name: webex/alma
   when: ansible_distribution == 'AlmaLinux'
 
-# - name: vscode for Ubuntu
+# - name: webex for Ubuntu
 #   include_role:
-#     name: vscode/ubuntu
+#     name: webex/ubuntu
 #   when: ansible_distribution == 'Ubuntu'
