@@ -2,8 +2,10 @@
 - name: Ensure Webex rpm is downloaded
   get_url:
     url: https://binaries.webex.com/WebexDesktop-CentOS-Official-Package/Webex.rpm
-    dest: "{{ managed_binaries_path }}"
+    dest: "{{ (managed_binaries_path, 'Webex.rpm') | path_join }}"
 
 - name: Install Webex from RPM
   yum:
     name: "{{ (managed_binaries_path, 'Webex.rpm') | path_join }}"
+    disable_gpg_check: true
+  become: true
