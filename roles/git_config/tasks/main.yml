@@ -15,3 +15,9 @@
     scope: global
     name: user.email
     value: "{{ git_email }}"
+
+- name: Set default branch reconciliation policy
+  community.general.git_config:
+    scope: global
+    name: pull.rebase
+    value: true
