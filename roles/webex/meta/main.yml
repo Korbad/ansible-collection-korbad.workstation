@@ -1,0 +1,3 @@
+---
+dependencies:
+ - name: korbad.project_management.managed_binaries
