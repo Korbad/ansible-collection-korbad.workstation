@@ -3,8 +3,7 @@
     that:
       - (git_username is defined) and (git_username|length > 0)
       - (git_email is defined) and (git_email|length > 0)
-- debug:
-    var: git_username
+
 - name: Set git config name if it is defined
   community.general.git_config:
     scope: global
