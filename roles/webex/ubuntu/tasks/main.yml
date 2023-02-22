@@ -1,0 +1,12 @@
+---
+- name: Ensure Webex DEB is downloaded
+  get_url:
+    url: https://binaries.webex.com/WebexDesktop-Ubuntu-Official-Package/Webex.deb
+    dest: "{{ (managed_binaries_path, 'Webex.deb') | path_join }}"
+
+- name: Install Webex from DEB
+  apt:
+    name: "{{ (managed_binaries_path, 'Webex.deb') | path_join }}"
+    disable_gpg_check: true
+  become: true
+
