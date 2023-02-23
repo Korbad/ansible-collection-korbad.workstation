@@ -1,0 +1,10 @@
+---
+- name: Install Python 3.8
+  kewlfft.aur.aur:
+    name: python38
+  # become: true
+
+- name: Install Python 3.9
+  kewlfft.aur.aur:
+    name: python39
+  # become: true
