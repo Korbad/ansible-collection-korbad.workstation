@@ -17,3 +17,7 @@
 - name: Manage vscode extensions if list of extension is defined
   include_tasks: extensions.yml
   when: managed_vscode_extensions is defined and managed_vscode_extensions is iterable
+
+- name: Manage vscode user settings.json
+  include_tasks: configuration.yml
+  when: managed_vscode_settings_dict is defined

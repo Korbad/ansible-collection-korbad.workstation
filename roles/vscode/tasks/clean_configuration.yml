@@ -1,0 +1,8 @@
+---
+- name: Remove vscode configuration files
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+  - "{{ ansible_env.HOME }}/.config/Code"
+  - "{{ ansible_env.HOME }}/.vscode"
