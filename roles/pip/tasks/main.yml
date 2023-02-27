@@ -1,4 +1,16 @@
+- name: Ensure setuptools is installed
+  pip:
+    name: 
+    - setuptools
+
 - name: Upgrade pip for current interpreter
   pip:
     name: pip
+    state: latest
+
+- name: Upgrade setuptools and wheel
+  pip:
+    name:
+    - setuptools
+    - wheel
     state: latest
