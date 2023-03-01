@@ -1,0 +1,25 @@
+---
+- name: Install Vault
+  package:
+    name: vault
+  become: true
+
+- name: Check if creds is existing
+  shell: vault kv get creds
+  register: check_vault_creds
+  failed_when: '"command not found" in check_vault_creds.stderr'
+
+- name: Enable kv-v2 secrets engine
+  shell: vault secrets enable -path=creds kv-v2
+  when: "check_vault_creds.stderr.find('preflight capability check returned 403') != -1"
+
+- name: Pause for 5 seconds
+  ansible.builtin.pause:
+    seconds: 5
+
+- name: Generate Password and add to Vault secret
+  include_tasks: generate_password.yml
+  loop: "{{ generate_password }}"
+
+- name: Add username to Vault secrets
+  shell: "vault kv patch creds/postgres username={{PSQL_USER}}"
