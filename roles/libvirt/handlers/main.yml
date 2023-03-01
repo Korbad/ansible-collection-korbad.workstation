@@ -6,3 +6,17 @@
     name: libvirtd
     state: reloaded
   become: true
+
+- name: Start and enable libvirtd service
+  systemd:
+    name: libvirtd.service
+    state: started
+    enabled: true
+  become: true
+
+- name: Start and enable virtlogd service
+  systemd:
+    name: virtlogd.service
+    state: started
+    enabled: true
+  become: true

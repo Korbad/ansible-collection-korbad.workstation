@@ -1,20 +1,33 @@
 ---
-# - name: Install libvertb and required dependencies
-#   community.general.pacman:
-#     name: "{{ packages }}"
-#   become: true
-#   vars:
-#     packages:
-#     - libvirt
-#     # - dnsmasq
-#     # - dmidecode
-#     # - bridge-utils
-#     # - openbsd-netcat
+- name: Ensure kernel headers are installed
+  package:
+    name: linux-headers
+    state: present
+  become: true
+
+
+- name: Remove iptables
+  package:
+    name:
+    - iptables
+    - qemu-full
+    state: absent
+    force: true
+  become: true
+
+# https://www.tauceti.blog/posts/testing-ansible-roles-with-molecule-libvirt-vagrant-qemu-kvm/
+- name: Install required packages
+  community.general.pacman:
+    name:
+      - ebtables
+      - python-pip
+  become: true
+
 - name: Install libvirt packages
   community.general.pacman:
     name: 
       - libvirt
-      - qemu-full
+      - qemu-base
       - dnsmasq
       - bridge-utils
       # - openbsd-netcat
@@ -27,7 +40,19 @@
   notify:
     - reload libvirtd
 
+
+- name: Update libvirt config file
+  include_tasks: sock_permissions.yml
+
+- name: Restart NetworkManager
+  systemd:
+    name: NetworkManager.service
+    state: restarted
+    enabled: true
+  become: true
+
 - name: Archlinux | Install edk2-ovmf for UEFI VMs
   community.general.pacman:
     name: edk2-ovmf
     state: present
+  become: true
