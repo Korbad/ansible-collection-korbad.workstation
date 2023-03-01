@@ -1,0 +1,27 @@
+---
+  - name: Pull portainer image
+    containers.podman.podman_image:
+      name: docker.io/portainer/portainer-ce
+      tag: 2.17.0
+
+  - name: Create Portainer data volume
+    containers.podman.podman_volume:
+      name: portainer_data
+
+  - name: get user id
+    shell: id -u
+    register: uid
+
+  - name: Run Portainer container
+    containers.podman.podman_container:
+      name: portainer
+      image: docker.io/portainer/portainer-ce:2.17.0
+      state: started
+      ports:
+        - 9443:9443
+      volume:
+        - "/run/user/{{uid.stdout}}/podman/podman.sock:/var/run/docker.sock:Z"
+        - portainer_data:/data
+      generate_systemd:
+        restart_policy: always
+      privileged: true
