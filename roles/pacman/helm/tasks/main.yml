@@ -1,0 +1,4 @@
+- name: Install Helm
+  community.general.pacman:
+    name: helm
+  become: true
