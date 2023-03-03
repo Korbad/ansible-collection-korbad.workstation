@@ -1,0 +1,5 @@
+- name: Ensure virtualenv is installed
+  community.general.pacman:
+    name: python-virtualenv
+  become: true
+  when: ansible_distribution == 'Archlinux'
