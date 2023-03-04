@@ -1,0 +1,13 @@
+---
+dependencies:
+  - libvirt
+  - nftables
+  - kvm
+  - vagrant
+  - vscode
+  - 1password
+  - virt_manager
+  - minikube
+  - kubernetes.portainer_agent
+  - portainer
+  - hashicorp_vault
