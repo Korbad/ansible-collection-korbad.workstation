@@ -1,5 +1,0 @@
----
-- name: Install and configures workstation
-  hosts: localhost
-  roles:
-  - name: vscode
