@@ -1,16 +1,8 @@
 ---
-- name: Ensure kernel headers are installed
-  package:
-    name: linux-headers
-    state: present
-  become: true
-
-
 - name: Remove iptables
   package:
     name:
     - iptables
-    - qemu-full
     state: absent
     force: true
   become: true
@@ -27,10 +19,8 @@
   community.general.pacman:
     name: 
       - libvirt
-      - qemu-base
       - dnsmasq
       - bridge-utils
-      # - openbsd-netcat
       - dmidecode
       - python-lxml
       - libvirt-python
@@ -39,7 +29,6 @@
   become: true
   notify:
     - reload libvirtd
-
 
 - name: Update libvirt config file
   include_tasks: sock_permissions.yml

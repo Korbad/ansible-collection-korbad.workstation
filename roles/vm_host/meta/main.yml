@@ -1,7 +1,8 @@
 ---
 dependencies:
-  - vagrant
+  - qemu
   - libvirt
+  - vagrant
   - nftables
   - kvm
   - virt_manager
