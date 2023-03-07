@@ -1,0 +1,9 @@
+---
+# https://wiki.archlinux.org/title/Dynamic_Kernel_Module_Support
+- name: Ensure dkms is installed and latest
+  community.general.pacman:
+    name: dkms
+    state: latest
+  become: true
+  when: ansible_distribution == 'Archlinux'
+

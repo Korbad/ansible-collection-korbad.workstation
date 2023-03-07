@@ -1,0 +1,6 @@
+---
+- name: Ensure linux-headers is installed
+  community.general.pacman:
+    name: linux-headers
+  become: true
+  when: ansible_distribution == 'Archlinux'

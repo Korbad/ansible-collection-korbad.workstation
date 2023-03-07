@@ -1,0 +1,7 @@
+---
+- name: Upgrade DKMS before reboot to deal with kernel changes
+  include_role:
+    name: dkms
+
+- name: Perform reboot
+  ansible.builtin.reboot:
