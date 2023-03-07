@@ -1,0 +1,7 @@
+---
+dependencies:
+  - vagrant
+  - libvirt
+  - nftables
+  - kvm
+  - virt_manager
