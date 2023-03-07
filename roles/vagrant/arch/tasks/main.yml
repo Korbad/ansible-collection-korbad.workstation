@@ -3,3 +3,7 @@
   community.general.pacman:
     name: vagrant
   become: true
+
+- name: Ensure libvirt plugin is loaded
+  include_role:
+    name: vagrant/libvirt_plugin
