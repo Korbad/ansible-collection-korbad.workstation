@@ -3,6 +3,7 @@
   community.general.pacman:
     name: qemu-base
     state: absent
+    force: true
   become: true
   when: ansible_distribution == 'Archlinux'
 
