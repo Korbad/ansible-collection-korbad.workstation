@@ -1,0 +1,56 @@
+# Alternative for AWX ansible
+
+# To access, go to http://localhost:3000
+
+- name: Pull an Ansible semaphore image
+  containers.podman.podman_image:
+    name: docker.io/ansiblesemaphore/semaphore:latest
+
+- name: Pull an MariaDB image
+  containers.podman.podman_image:
+    name: docker.io/mariadb
+    tag: "{{mariadb_version}}"
+
+- name: Create an ansible pod
+  containers.podman.podman_pod:
+    name: ansible
+    state: started
+    ports:
+      - "3306:3306"
+      - "3000:3000"
+
+- name: Run MariaDB container
+  containers.podman.podman_container:
+    name: mariadb
+    image: "mariadb:{{mariadb_version}}"
+    pod: ansible
+    volume:
+      - "/opt/data/mysql/:/var/lib/mysql"
+    env:
+      MYSQL_ROOT_PASSWORD: "{{dbroot_password}}"
+      MYSQL_DATABASE:      "semaphore" 
+      MYSQL_USER:          "test_semaphore"
+      MYSQL_PASSWORD:      "{{db_password}}"
+    state: started
+
+- name: Run Sempahohe container
+  containers.podman.podman_container:
+    name: semaphore
+    image: docker.io/semaphoreui/semaphore
+    pod: ansible
+    requires: mariadb
+    volume:
+      - "/opt/data/semaphore/:/opt/data/semaphore"
+    env:
+      SEMAPHORE_DB_USER:        "test_semaphore"
+      SEMAPHORE_DB_PASS:        "{{db_password}}" 
+      SEMAPHORE_DB_HOST:        "127.0.0.1"
+      SEMAPHORE_DB_PORT:        "3306"
+      SEMAPHORE_DB:             "semaphore"
+      SEMAPHORE_PLAYBOOK_PATH:  "/etc/semaphore"
+      SEMAPHORE_ADMIN_PASSWORD: "{{semaphore_password}}"
+      SEMAPHORE_ADMIN_NAME:     "Maintainer"
+      SEMAPHORE_ADMIN_EMAIL:    "admin@localhost"
+      SEMAPHORE_ADMIN:          "admin"
+      SEMAPHORE_WEB_ROOT:       "http://localhost:3000"
+    state: started

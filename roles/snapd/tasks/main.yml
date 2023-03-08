@@ -1,0 +1,12 @@
+---
+- name: Ensure snapd package exists
+  kewlfft.aur.aur:
+    name: snapd
+  when: ansible_distribution == 'Archlinux'
+
+# - name: Enable snapd.socket
+#   systemd:
+#     name: snapd.socket
+#     enabled: true
+#     scope: user
+#     state: started
