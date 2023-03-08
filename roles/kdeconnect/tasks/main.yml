@@ -1,0 +1,6 @@
+---
+- name: Ensure kdeconnect is installed (Arch)
+  community.general.pacman:
+    name: kdeconnect
+  become: true
+  when: ansible_distribution == 'Archlinux'
