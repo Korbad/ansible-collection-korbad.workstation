@@ -3,6 +3,16 @@
   kewlfft.aur.aur:
     name: snapd
   when: ansible_distribution == 'Archlinux'
+  notify:
+  - start-snapd-socket
+  - start-snapd-apparmor
+
+- name: Enable and start snapd service
+  service:
+    name: snapd
+    state: started
+    enabled: true
+  become: true
 
 # - name: Enable snapd.socket
 #   systemd:
@@ -10,3 +20,4 @@
 #     enabled: true
 #     scope: user
 #     state: started
+#   become: true

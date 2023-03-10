@@ -1,0 +1,12 @@
+- name: Ensure AppArmor is installed
+  community.general.pacman:
+    name: apparmor
+  become: true
+  when: ansible_distribution == 'Archlinux'
+
+- name: Ensure AppArmor service is running and enabled
+  ansible.builtin.service:
+    name: apparmor
+    enabled: true
+  become: true
+  when: ansible_distribution == 'Archlinux'
