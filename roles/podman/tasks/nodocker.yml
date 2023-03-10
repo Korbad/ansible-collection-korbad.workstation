@@ -1,0 +1,9 @@
+# https://www.ibm.com/docs/en/spectrum-lsf/10.1.0?topic=podman-preparing-lsf-run-jobs
+- name: Ensure nodocker file exists
+  ansible.builtin.template:
+    dest: /etc/containers/nodocker
+    src: etc/containers/nodocker.j2
+    owner: root
+    group: root
+    mode: 0644
+  become: true

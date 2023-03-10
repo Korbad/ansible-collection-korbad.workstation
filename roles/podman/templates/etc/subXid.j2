@@ -1,0 +1,16 @@
+# Source: https://eengstrom.github.io/musings/generate-non-contiguous-subuid-subgid-maps-for-rootless-podman
+# {{ ansible_managed }}
+# Rather than create UID/GID maps by username:
+#   eric:100000:65536
+# this will create maps by UID:
+#   1001:65601536:65536
+# Moreover, we ensure the maps are non-overlapping regardless of
+# login UID/GID by bitwise shifting login id to the left, 16 bits.
+# This works since the size of each range is 2^16 == 65536.
+# Where that convention comes from, I have no idea.  `useradd`?
+# Note that the `bitwise_shift` function is a custom filter.
+{% for start, end in podman_idmap_ranges.items() %}
+{%   for id in range(start | int, end + 1) %}
+{{ id }}:{{ id | bitwise_shift_left(16) }}:65536
+{%   endfor %}
+{% endfor %}

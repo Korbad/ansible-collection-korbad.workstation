@@ -1,0 +1,10 @@
+---
+- name: Ensure proper subuid range exists for user
+  ansible.builtin.command:
+    cmd: usermod --add-subuids 10000-75535 {{ ansible_env.USER }}
+  become: true
+
+- name: Ensure proper subgids range exists for user
+  ansible.builtin.command:
+    cmd: usermod --add-subgids 10000-75535 {{ ansible_env.USER }}
+  become: true

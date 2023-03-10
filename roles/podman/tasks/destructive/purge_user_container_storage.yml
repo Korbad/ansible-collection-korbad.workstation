@@ -1,0 +1,4 @@
+- name: Ensure container storage is absent
+  file:
+    path: "{{ (ansible_env.HOME, '.local/share/containers/storage') | path_join }}"
+    state: absent
