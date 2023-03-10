@@ -1,0 +1,11 @@
+- name: Run redis container
+  containers.podman.podman_container:
+    name: myredis
+    image: redis
+    command: redis-server --appendonly yes
+    state: present
+    recreate: yes
+    expose:
+      - "{{ redis_exposed_port }}"
+    volumes_from:
+      - mydata
