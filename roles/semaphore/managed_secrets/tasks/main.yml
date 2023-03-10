@@ -1,14 +1,11 @@
 ---
-- name: Ensure secret exists
+- name: Ensure semaphore secret exists
   include_role:
     name: korbad.project_management.managed_secret
   vars:
     managed_secret_name: "{{ item }}"
   loop:
+  - semaphore_db_auth_password
+  - semaphore_config_auth_password
   - semaphore_password
-
-- name: Execute main role
-  include_role:
-    name: semaphore
-  vars:
-    semaphore_password: "{{ lookup('file', managed_secrets_path+'/semaphore_password') }}"
+  - semaphore_db_root_password

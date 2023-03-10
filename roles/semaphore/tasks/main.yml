@@ -1,8 +1,0 @@
----
-- name: Ensure semaphore snap exists
-  community.general.snap:
-    name: semaphore
-
-- name: Set semaphore credentials
-  command:
-    cmd: semaphore user add --admin --name {{ ansible_user }} --login {{ ansible_user }} --email your-email@examaple.com --password {{ semaphore_password }}

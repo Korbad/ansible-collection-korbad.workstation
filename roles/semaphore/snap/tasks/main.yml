@@ -1,0 +1,34 @@
+---
+- name: Ensure semaphore snap exists
+  community.general.snap:
+    name: semaphore
+    classic: true
+  become: true
+
+
+
+# - name: Create systemd service
+#   include_role:
+#     name: semaphore
+
+- name: Create semaphore service
+  ansible.builtin.service:
+    name: semaphore
+    enabled: true
+    state: started
+
+- name: Stop snap
+  community.general.snap:
+    name: semaphore
+    state: disabled
+  become: true
+
+- name: Set semaphore credentials
+  command:
+    cmd: semaphore user add --admin --name {{ ansible_user }} --login {{ ansible_user }} --email your-email@examaple.com --password {{ semaphore_password }}
+  become: true
+
+- name: Ensure semaphore snap is enabled
+  community.general.snap:
+    name: semaphore
+  become: true

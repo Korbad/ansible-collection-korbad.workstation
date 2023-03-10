@@ -1,0 +1,57 @@
+---
+- name: download and install semaphore binary
+  get_url:
+    url: 'https://github.com/ansible-semaphore/semaphore/releases/download/v{{ semaphore_version }}/semaphore_linux_amd64'
+    dest: /usr/bin/semaphore
+    owner: root
+    group: root
+    mode: 755
+  become: true
+
+- name: create semaphore service account
+  user:
+    name: semaphore
+    shell: /bin/bash
+    system: yes
+  become: true
+
+- name: Ensure semaphore service account is in sudoers
+  community.general.sudoers:
+    name: semaphore
+    state: present
+    user: semaphore
+    commands: ALL
+  become: true
+
+- name: create required directories
+  file:
+    path: '{{ item }}'
+    state: directory
+    owner: '{{ semaphore_service_user_name }}'
+    mode: 0740
+  with_items:
+    - '{{ semaphore_config_data_dir }}'
+    - '{{ semaphore_config_log_path }}'
+  become: true
+
+- name: copy input file to temp
+  template: 
+    src: semaphore.stdin.j2
+    dest: /tmp/semaphore.stdin
+  changed_when: false
+  become: true
+
+- name: run semaphore setup
+  shell: semaphore -setup < /tmp/semaphore.stdin
+  become: true
+
+- name: Ensure systemd service exists
+  ansible.builtin.systemd:
+    daemon_reexec: true
+    daemon_reload: true
+    enabled: true
+    force: false
+    name: semaphore
+    scope: system
+    state: started
+  become: true
