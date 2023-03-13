@@ -1,0 +1,14 @@
+---
+- name: Podman network info
+  containers.podman.podman_network_info:
+  register: podmod_network_info
+
+- debug:
+    var: podmod_network_info
+
+- name: Info for all pods
+  containers.podman.podman_pod_info:
+  register: podman_pod_info
+
+- debug:
+    var: podman_pod_info
