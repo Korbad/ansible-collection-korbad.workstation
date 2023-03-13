@@ -1,0 +1,39 @@
+- name: Ensure firefly iii image exists
+  containers.podman.podman_image:
+    name: docker.io/fireflyiii/core:latest
+
+- name: Ensure firefly iii volume exists
+  containers.podman.podman_volume:
+    name: firefly_iii_data_volume
+# https://raw.githubusercontent.com/firefly-iii/firefly-iii/main/.env.example
+- name: Ensure firefly iii container is running
+  containers.podman.podman_container:
+    name: firefly_iii
+    image: docker.io/fireflyiii/core:latest
+    requires: firefly_iii_mariadb
+    pod: firefly_iii_pod
+    state: started
+    volumes:
+      - firefly_iii_data_volume:/var/www/html/storage/upload
+    env:
+      APP_KEY: "{{ firefly_iii_app_key }}"
+      DB_CONNECTION: mysql
+      DB_HOST: "127.0.0.1"
+      DB_PORT: "{{ firefly_iii_internal_db_port }}"
+      DB_DATABASE: "{{ db_name }}"
+      DB_USERNAME: "{{ db_user }}"
+      DB_PASSWORD: "{{ firefly_iii_db_auth_password }}"  
+      SITE_OWNER: korbad@korbad.com
+      TZ: Europe/Amsterdam
+      TRUSTED_PROXIES: "*"
+      APP_URL: "https://localhost:{{ firefly_iii_internal_http_port }}"
+      # MYSQL_USE_SSL=false
+      # MYSQL_SSL_VERIFY_SERVER_CERT=true
+      # # You need to set at least of these options
+      # MYSQL_SSL_CAPATH=/etc/ssl/certs/
+      # MYSQL_SSL_CA=
+      # MYSQL_SSL_CERT=
+      # MYSQL_SSL_KEY=
+      # MYSQL_SSL_CIPHER=
+
+      # REDIS cache???

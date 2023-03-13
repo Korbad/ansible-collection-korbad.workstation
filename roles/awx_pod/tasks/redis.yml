@@ -1,0 +1,4 @@
+---
+- name: Ensure redis image exists
+  containers.podman.podman_image:
+    name: "{{ awx_redis_image }}"

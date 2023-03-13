@@ -1,0 +1,16 @@
+- name: Ensure firefly_iii_pod is destroyed
+  containers.podman.podman_pod:
+    name: firefly_iii_pod
+    state: absent
+
+- name: Ensure database container is destroyed
+  containers.podman.podman_container:
+    name: firefly_iii_mariadb
+    pod: firefly_iii_pod
+    state: absent
+
+- name: Ensure firefly_iii container is destroyed
+  containers.podman.podman_container:
+    name: firefly_iii
+    pod: firefly_iii_pod
+    state: absent

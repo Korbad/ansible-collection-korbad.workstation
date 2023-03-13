@@ -1,0 +1,3 @@
+---
+- name: Ensure redis container is running
+  include_tasks: redis.yml

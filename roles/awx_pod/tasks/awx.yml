@@ -1,0 +1,4 @@
+---
+- name: Ensure the AWX image exists
+  containers.podman.podman_image:
+    name: "{{ awx_image }}"

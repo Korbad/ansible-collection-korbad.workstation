@@ -1,0 +1,2 @@
+awx_redis_image: docker.io/library/redis:latest
+awx_image: quay.io/ansible/awx

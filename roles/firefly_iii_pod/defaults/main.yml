@@ -1,0 +1,8 @@
+mariadb_version: 10
+db_name: firefly_iii
+db_user: firefly_iii
+
+firefly_iii_internal_db_port: 3306 # mariadb default
+
+firefly_iii_exposed_http_port: 3003
+firefly_iii_internal_http_port: 8080
