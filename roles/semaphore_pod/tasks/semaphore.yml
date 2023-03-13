@@ -1,0 +1,30 @@
+- name: Ensure image exists
+  containers.podman.podman_image:
+    name: "{{ semaphore_image_name }}"
+    tag: "{{ semaphore_image_version }}"
+
+- name: Ensure data volume exists
+  containers.podman.podman_volume:
+    name: semaphore_data_volume
+
+- name: Run app container
+  containers.podman.podman_container:
+    name: semaphore
+    image: "{{ semaphore_image }}"
+    pod: semaphore_pod
+    requires: "{{ semaphore_db_container_name }}"
+    state: started
+    volumes:
+      - semaphore_data_volume:/opt/data/semaphore
+    env:
+      SEMAPHORE_DB_USER:        "{{ semaphore_db_name }}"
+      SEMAPHORE_DB_PASS:        "{{ semaphore_db_auth_password }}" 
+      SEMAPHORE_DB_HOST:        "127.0.0.1"
+      SEMAPHORE_DB_PORT:        3306 # mariadb default
+      SEMAPHORE_DB:             "{{ semaphore_db_name }}"
+      SEMAPHORE_PLAYBOOK_PATH:  "/etc/semaphore"
+      SEMAPHORE_ADMIN_PASSWORD: "{{ semaphore_password }}"
+      SEMAPHORE_ADMIN_NAME:     "Maintainer"
+      SEMAPHORE_ADMIN_EMAIL:    "admin@localhost"
+      SEMAPHORE_ADMIN:          "admin"
+      SEMAPHORE_WEB_ROOT:       "http://localhost:{{ semaphore_internal_http_port }}"

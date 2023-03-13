@@ -1,4 +1,8 @@
 ---
 mariadb_version: 10
-semaphore_exposed_db_port: 3306
+
+semaphore_exposed_db_port: 3307
+semaphore_internal_db_port: 3306
+
 semaphore_exposed_http_port: 3000
+semaphore_internal_http_port: 3000

@@ -1,0 +1,13 @@
+---
+- name: Create a semaphore pod
+  containers.podman.podman_pod:
+    name: "{{ semaphore_podname }}"
+    state: started
+    ports:
+      - "{{ semaphore_exposed_http_port }}:{{ semaphore_internal_http_port }}"
+
+- name: MariaDB
+  include_tasks: database.yml
+
+- name: Semaphore
+  include_tasks: semaphore.yml

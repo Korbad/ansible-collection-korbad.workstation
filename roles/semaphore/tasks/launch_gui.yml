@@ -1,4 +1,0 @@
----
-- name: Launch web GUI using surf {{ ansible_host }}:{{ semaphore_exposed_http_port }}
-  shell: nohup surf {{ ansible_host }}:{{ semaphore_exposed_http_port }} &
-  when: ansible_distribution == 'Archlinux'

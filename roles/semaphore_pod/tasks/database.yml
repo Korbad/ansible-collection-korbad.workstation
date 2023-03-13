@@ -1,0 +1,22 @@
+- name: Pull db image
+  containers.podman.podman_image:
+    name: "{{ semaphore_db_image_name }}"
+    tag: "{{ semaphore_db_image_version }}"
+
+- name: Ensure volume exists for db
+  containers.podman.podman_volume:
+    name: semaphore_db_volume
+
+- name: Run database container
+  containers.podman.podman_container:
+    name: semaphore_db
+    image: "{{ semaphore_db_image }}"
+    pod: semaphore_pod
+    state: started
+    volumes:
+    - semaphore_db_volume:/var/lib/mysql
+    env:
+      MYSQL_ROOT_PASSWORD: "{{ semaphore_db_root_password }}"
+      MYSQL_DATABASE:      "{{ semaphore_db_name }}"
+      MYSQL_USER:          "{{ semaphore_db_username }}"
+      MYSQL_PASSWORD:      "{{ semaphore_db_auth_password }}"

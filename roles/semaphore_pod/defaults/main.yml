@@ -1,0 +1,19 @@
+semaphore_podname: semaphore_pod
+
+# app
+semaphore_image_name: docker.io/ansiblesemaphore/semaphore
+semaphore_image_version: v2.8.53
+semaphore_image: docker.io/semaphoreui/semaphore
+
+# database
+semaphore_db_username: semaphore
+semaphore_db_name: semaphore
+semaphore_db_volume_name: semaphore_db_volume
+semaphore_db_image_name: docker.io/mariadb
+semaphore_db_image_version: 10
+semaphore_db_container_name: semaphore_db
+semaphore_db_image: "mariadb:{{ semaphore_db_image_version }}"
+
+# networking
+semaphore_exposed_http_port: 3000
+semaphore_internal_http_port: 3000
