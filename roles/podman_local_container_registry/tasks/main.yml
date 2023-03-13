@@ -1,0 +1,18 @@
+- name: Ensure registry image exists
+  containers.podman.podman_image:
+    name: docker.io/library/registry:2
+
+- name: Ensure registry data volume exists
+  containers.podman.podman_volume:
+    name: registry_data_volume
+
+- name: Run registry container
+  containers.podman.podman_container:
+    name: local_registry
+    image: docker.io/library/registry:2
+    state: started
+    tty: true
+    volumes:
+    - registry_data_volume:/var/lib/registry
+    ports:
+    - "{{ local_podman_registry_port }}:5000"
