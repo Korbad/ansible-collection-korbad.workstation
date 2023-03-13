@@ -1,0 +1,26 @@
+- name: Pull an wiki.js container image
+  containers.podman.podman_image:
+    name: "{{ wikijs_image_name }}"
+
+- name: Ensure volume exists for wikijs config
+  containers.podman.podman_volume:
+    name: wikijs_config_volume
+
+- name: Ensure wikijs container is running
+  containers.podman.podman_container:
+    name: wikijs
+    image: "{{ wikijs_image_name }}"
+    requires: wikijs_mariadb
+    pod: wikijs_pod
+    state: started
+    volumes:
+    - wikijs_config_volume:/wiki/data/content
+    env:
+      PORT: "{{ wikijs_internal_http_port }}"
+      DB_TYPE: mariadb
+      DB_HOST: "127.0.0.1"
+      DB_PORT: 3306 #mariadb default
+      DB_USER: wikijs
+      DB_PASS: "{{ wikijs_db_auth_password }}"
+      DB_NAME: wikijs_mariadb
+  

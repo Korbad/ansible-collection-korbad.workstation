@@ -1,0 +1,13 @@
+---
+- name: Ensure wikijs_pod exists
+  containers.podman.podman_pod:
+    name: wikijs_pod
+    state: started
+    ports:
+    - "{{ wikijs_exposed_http_port }}:{{ wikijs_internal_http_port }}"
+
+- name: Database container
+  include_tasks: database.yml
+
+- name: Wiki.js container
+  include_tasks: wikijs.yml

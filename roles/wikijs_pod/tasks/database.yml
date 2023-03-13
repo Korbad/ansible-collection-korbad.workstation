@@ -1,0 +1,22 @@
+- name: Pull an MariaDB image
+  containers.podman.podman_image:
+    name: "{{ wikijs_db_image_name }}"
+    tag: "{{ wikijs_db_image_tag }}"
+
+- name: Ensure volume exists for db
+  containers.podman.podman_volume:
+    name: wikijs_db_volume
+
+- name: Run database container
+  containers.podman.podman_container:
+    name: wikijs_mariadb
+    image: "{{ wikijs_db_image }}"
+    pod: wikijs_pod
+    state: started
+    volumes:
+    - wikijs_db_volume:/var/lib/mysql
+    env:
+      MYSQL_ROOT_PASSWORD: "{{ wikijs_db_root_password }}"
+      MYSQL_DATABASE:      wikijs_mariadb
+      MYSQL_USER:          wikijs
+      MYSQL_PASSWORD:      "{{ wikijs_db_auth_password }}"

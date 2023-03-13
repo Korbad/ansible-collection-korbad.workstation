@@ -1,0 +1,2 @@
+wikijs_db_root_password: "{{ lookup('file', managed_secrets_path+'/wikijs_db_root_password') }}"
+wikijs_db_auth_password: "{{ lookup('file', managed_secrets_path+'/wikijs_db_auth_password') }}"

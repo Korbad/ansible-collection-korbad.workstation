@@ -1,0 +1,3 @@
+---
+dependencies:
+  - korbad.project_management.managed_secrets

@@ -1,0 +1,9 @@
+---
+- name: Ensure secrets exist
+  include_role:
+    name: korbad.project_management.managed_secret
+  vars:
+    managed_secret_name: "{{ item }}"
+  loop:
+  - wikijs_db_root_password
+  - wikijs_db_auth_password

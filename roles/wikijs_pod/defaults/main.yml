@@ -1,0 +1,12 @@
+mariadb_version: 10
+
+wikijs_exposed_http_port: 3002
+wikijs_internal_http_port: 3000 #wikijs default
+
+# app
+wikijs_image_name: ghcr.io/requarks/wiki
+
+# database
+wikijs_db_image_name: docker.io/mariadb
+wikijs_db_image_tag: 10
+wikijs_db_image: "mariadb:{{ wikijs_db_image_tag }}"
