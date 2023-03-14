@@ -1,3 +1,13 @@
 ---
+- name: Ensure awx pod is running
+  containers.podman.podman_pod:
+    name: awx_pod
+    state: started
+    ports:
+    - "{{ awx_exposed_http_port }}:{{ awx_internal_http_port }}"
+
 - name: Ensure redis container is running
   include_tasks: redis.yml
+
+- name: Ensure awx container is running
+  include_tasks: awx.yml

@@ -1,2 +1,10 @@
-awx_redis_image: docker.io/library/redis:latest
+---
 awx_image: quay.io/ansible/awx
+awx_image_tag: latest
+
+awx_redis_image: docker.io/library/redis
+awx_redis_tag: latest
+
+awx_exposed_http_port: 3003
+awx_internal_http_port: 3000
+
