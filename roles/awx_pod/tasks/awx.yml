@@ -2,3 +2,19 @@
 - name: Ensure the AWX image exists
   containers.podman.podman_image:
     name: "{{ awx_image }}"
+
+- name: Ensure data volume exists for awx
+  containers.podman.podman_volume:
+    name: awx_data_volume
+
+- name: Ensure awx container is running
+  containers.podman.podman_container:
+    name: awx
+    image: "{{ awx_image_name }}"
+    requires: awx_redis_container
+    pod: awx_pod
+    state: started
+    volumes:
+    - awx_data_volume:???
+    env:
+      PORT: ?
