@@ -1,0 +1,15 @@
+---
+- name: discord for Archlinux
+  include_role:
+    name: discord/arch
+  when: ansible_distribution == 'Archlinux'
+
+- name: discord for AlmaLinux
+  include_role:
+    name: discord/alma
+  when: ansible_distribution == 'AlmaLinux'
+
+# - name: discord for Ubuntu
+#   include_role:
+#     name: discord/ubuntu
+#   when: ansible_distribution == 'Ubuntu'
