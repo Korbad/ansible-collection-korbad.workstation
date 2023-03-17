@@ -1,0 +1,13 @@
+---
+- name: Install cockpit
+  package:
+    name: cockpit
+    state: present
+  become: true
+
+- name: Start and enable cockpit.socket
+  systemd:
+    name: cockpit.socket
+    state: started
+    enabled: yes
+  become: true

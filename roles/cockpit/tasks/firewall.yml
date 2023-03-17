@@ -1,0 +1,18 @@
+---
+- name: Add firewall rule for Cockpit
+  firewalld:
+    service: cockpit
+    state: enabled
+    permanent: true
+  become: true
+
+- name: Update cockpit.socket configuration
+  ini_file:
+    path: /etc/systemd/system/cockpit.socket.d/listen.conf
+    section: Socket
+    option: ListenStream
+    value: 0.0.0.0:{{ cockpit_port }}
+    state: present
+  become: true
+  notify:
+    - reload cockpit.socket
