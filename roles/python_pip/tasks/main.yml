@@ -1,0 +1,5 @@
+---
+- name: Ensure python-pip is installed
+  pacman:
+    name: python-pip
+  when: ansible_distribution == 'Archlinux'
