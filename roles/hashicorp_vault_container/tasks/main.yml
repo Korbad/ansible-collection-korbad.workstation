@@ -1,0 +1,31 @@
+---
+- name: Create a pod for Vault
+  containers.podman.podman_pod:
+    name: "{{ vault_pod_name }}"
+    state: present
+
+- name: Pull Vault image
+  containers.podman.podman_image:
+    name: "{{ vault_image_name }}"
+    source: pull
+
+- name: Create Vault data volume
+  containers.podman.podman_volume:
+    name: "{{ vault_data_volume_name }}"
+    state: present
+
+- name: Deploy Vault container
+  containers.podman.podman_container:
+    name: "{{ vault_container_name }}"
+    image: "{{ vault_image_name }}"
+    pod: "{{ vault_pod_name }}"
+    state: started
+    command: "vault server -config={{ vault_config_dir }}"
+    env:
+      VAULT_ADDR: "http://{{ vault_listen_address }}"
+      VAULT_LOCAL_CONFIG: '{"backend": {"file": {"path": "{{ vault_data_dir }}" }}, "listener": {"tcp": {"address": "{{ vault_listen_address }}", "tls_disable": "true" }}}'
+    volume:
+      - "{{ vault_data_volume_name }}:{{ vault_data_dir }}"
+      - "{{ vault_config_dir }}"
+    labels:
+      app: "{{ vault_app_label }}"

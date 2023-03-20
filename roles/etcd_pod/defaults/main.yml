@@ -1,0 +1,9 @@
+---
+etcd_client_port: 2379
+etcd_pod_name: etcd_pod
+etcd_image_name: quay.io/coreos/etcd
+etcd_container_name: etcd_container
+etcd_data_volume_name: etcd_data_volume
+etcd_data_dir: /etcd-data
+etcd_app_label: etcd
+etcd_api_version: v3

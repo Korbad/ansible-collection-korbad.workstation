@@ -1,0 +1,10 @@
+---
+vault_client_port: 8200
+vault_pod_name: vault_pod
+vault_image_name: vault
+vault_container_name: vault_container
+vault_data_volume_name: vault_data_volume
+vault_data_dir: /vault/data
+vault_config_dir: /vault/config
+vault_app_label: vault
+vault_listen_address: "0.0.0.0:{{ vault_client_port }}"
