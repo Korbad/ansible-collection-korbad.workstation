@@ -1,0 +1,17 @@
+---
+cfssl_image_link: docker.io/cfssl/cfssl
+cfssl_image_version: 1.6.1
+cfssl_image_name: "{{ cfssl_image_link }}:{{ cfssl_image_version }}"
+cfssl_container_name: cfssl_container
+cfssl_pod_name: cfssl_pod
+cfssl_app_label: cfssl
+cfssl_api_port: 8888
+
+cfssl_config_signing_default_expiry: "8760h"
+cfssl_config_signing_client_expiry: "8760h"
+cfssl_config_signing_server_expiry: "8760h"
+
+ca_key_path: /etc/cfssl/ca-key.pem
+ca_cert_path: /etc/cfssl/ca.pem
+
+user_ca_directory: "{{ managed_intermediate_ca_cert_dir_path }}"

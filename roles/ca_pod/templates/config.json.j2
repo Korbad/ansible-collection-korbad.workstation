@@ -1,0 +1,25 @@
+{
+    "signing": {
+        "default": {
+            "expiry": "{{ cfssl_config_signing_default_expiry }}"
+        },
+        "profiles": {
+            "client": {
+                "usages": [
+                    "signing",
+                    "key encipherment",
+                    "client auth"
+                ],
+                "expiry": "{{ cfssl_config_signing_client_expiry }}"
+            },
+            "server": {
+                "usages": [
+                    "signing",
+                    "key encipherment",
+                    "server auth"
+                ],
+                "expiry": "{{ cfssl_config_signing_server_expiry }}"
+            }
+        }
+    }
+}
