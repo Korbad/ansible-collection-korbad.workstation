@@ -10,3 +10,4 @@
   kewlfft.aur.aur:
     name: discord-canary
     update_cache: true
+    state: latest

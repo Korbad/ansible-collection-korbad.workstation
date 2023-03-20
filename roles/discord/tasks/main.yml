@@ -8,8 +8,3 @@
   include_role:
     name: discord/alma
   when: ansible_distribution == 'AlmaLinux'
-
-# - name: discord for Ubuntu
-#   include_role:
-#     name: discord/ubuntu
-#   when: ansible_distribution == 'Ubuntu'
