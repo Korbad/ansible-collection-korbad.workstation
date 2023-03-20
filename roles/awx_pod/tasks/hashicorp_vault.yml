@@ -1,0 +1,36 @@
+---
+- name: Get hashicorp_vault image stats if it exists
+  containers.podman.podman_image_info:
+    name: "{{ awx_hashicorp_vault_image_link }}:{{ awx_hashicorp_vault_image_version }}"
+  register: hashicorp_vault_image_info
+
+- name: Ensure hashicorp_vault image exists
+  containers.podman.podman_image:
+    name: "{{ awx_hashicorp_vault_image_link }}"
+    tag: "{{ awx_hashicorp_vault_image_version }}"
+  when: hashicorp_vault_image_info.images|length == 0
+
+# - name: Wait for Consul container to be ready
+#   ansible.builtin.wait_for:
+#     host: "127.0.0.1"
+#     port: "{{ awx_hashicorp_consul_internal_port }}"
+#     state: started
+#     delay: 5
+#     timeout: 60
+
+- name: Create HashiCorp Vault container
+  containers.podman.podman_container:
+    name: awx_hashicorp_vault
+    image: "{{ awx_hashicorp_vault_image_link }}"
+    state: started
+    pod: awx_pod
+    requires:
+    - awx_hashicorp_consul
+    env:
+      VAULT_ADDR: "http://0.0.0.0:{{ awx_hashicorp_vault_internal_port }}"
+      VAULT_LOCAL_CONFIG: '{"backend": {"consul": {"address": "http://localhost:{{ awx_hashicorp_consul_internal_port }}", "path": "vault/"}}}'
+    capabilities:
+      - IPC_LOCK
+    command: server
+
+

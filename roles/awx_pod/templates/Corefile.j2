@@ -1,0 +1,7 @@
+. {
+    errors
+    health
+    log
+    forward . {{ coredns_forward_servers|join(' ') }}
+    cache {{ coredns_cache_duration }}
+}

@@ -1,0 +1,5 @@
+---
+- name: Destroy pod
+  containers.podman.podman_pod:
+    name: awx_pod
+    state: absent

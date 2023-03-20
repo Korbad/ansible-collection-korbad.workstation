@@ -1,0 +1,37 @@
+---
+- name: Get nginx image stats if it exists
+  containers.podman.podman_image_info:
+    name: "{{ awx_nginx_image_link }}:{{ awx_nginx_image_version }}"
+  register: nginx_image_info
+
+- name: Ensure nginx image exists
+  containers.podman.podman_image:
+    name: "{{ awx_nginx_image_link }}"
+    tag: "{{ awx_nginx_image_version }}"
+  when: nginx_image_info.images|length == 0
+
+- name: Ensure nginx hmtl volume exists
+  containers.podman.podman_volume:
+    name: awx_nginx_html_volume
+
+- name: Ensure nginx conf volume exists
+  containers.podman.podman_volume:
+    name: awx_nginx_conf_volume
+  register: awx_nginx_conf_volume_info
+
+- name: Write nginx configuration file to volume
+  template:
+    src: nginx.conf.j2
+    dest: "{{ awx_nginx_conf_mountpoint }}/nginx.conf"
+  vars:
+    awx_nginx_conf_mountpoint: "{{ awx_nginx_conf_volume_info.volume.Mountpoint }}"
+
+- name: Ensure nginx container is running
+  containers.podman.podman_container:
+    name: awx_nginx
+    image: "{{ awx_nginx_image_link }}"
+    state: started
+    pod: awx_pod
+    volumes:
+    - awx_nginx_html_volume:/usr/share/nginx/html
+    - awx_nginx_conf_volume:/etc/nginx/conf.d

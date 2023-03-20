@@ -1,7 +1,14 @@
 ---
-- name: Ensure the AWX image exists
+- name: Get awx image stats if it exists
+  containers.podman.podman_image_info:
+    name: "{{ awx_image_link }}:{{ awx_image_version }}"
+  register: awx_image_info
+
+- name: Ensure awx image exists
   containers.podman.podman_image:
-    name: "{{ awx_image }}"
+    name: "{{ awx_image_link }}"
+    tag: "{{ awx_image_version }}"
+  when: awx_image_info.images|length == 0
 
 - name: Ensure data volume exists for awx
   containers.podman.podman_volume:
@@ -9,12 +16,19 @@
 
 - name: Ensure awx container is running
   containers.podman.podman_container:
-    name: awx
-    image: "{{ awx_image_name }}"
-    requires: awx_redis_container
+    name: "{{ awx_container_name }}"
+    image: "{{ awx_image_link }}"
+    requires:
+    - awx_postgres
+    - awx_awx
+    - awx_nginx
     pod: awx_pod
     state: started
-    volumes:
-    - awx_data_volume:???
     env:
-      PORT: ?
+      DATABASE_USER: awx
+      DATABASE_PASSWORD: "{{ awx_postgres_auth_password }}"
+      DATABASE_NAME: awx
+      DATABASE_PORT: "{{ postgres_port }}"
+      DATABASE_HOST: awx_postgres
+      AWX_ADMIN_USER: admin
+      AWX_ADMIN_PASSWORD: "{{ awx_admin_password }}"

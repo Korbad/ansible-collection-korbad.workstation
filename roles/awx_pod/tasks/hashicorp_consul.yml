@@ -1,0 +1,81 @@
+---
+- name: Get hashicorp_consul image stats if it exists
+  containers.podman.podman_image_info:
+    name: "{{ awx_hashicorp_consul_image_link }}:{{ awx_hashicorp_consul_image_version }}"
+  register: hashicorp_consul_image_info
+
+- name: Ensure hashicorp_consul image exists
+  containers.podman.podman_image:
+    name: "{{ awx_hashicorp_consul_image_link }}"
+    tag: "{{ awx_hashicorp_consul_image_version }}"
+  when: hashicorp_consul_image_info.images|length == 0
+
+- name: Ensure volume exists for Consul data
+  containers.podman.podman_volume:
+    name: awx_hashicorp_consul_data_volume
+
+- name: Ensure volume exists for Consul config
+  containers.podman.podman_volume:
+    name: awx_hashicorp_consul_config_volume
+  register: awx_hashicorp_consul_config_volume_info
+
+# - name: Generate Consul configuration file
+#   ansible.builtin.template:
+#     src: consul_config.json.j2
+#     dest: "{{ awx_hashicorp_consul_config_volume_mountpoint }}/consul_config.json"
+#   vars:
+#     awx_hashicorp_consul_config_volume_mountpoint: "{{ awx_hashicorp_consul_config_volume_info.volume.Mountpoint }}"
+#     datacenter: dc1
+#     server: true
+#     ui: true
+#     bind_addr: 0.0.0.0
+#     log_level: "DEBUG"
+
+
+
+# - name: Ensure awx_hashicorp_consul container is running
+#   containers.podman.podman_container:
+#     name: awx_hashicorp_consul
+#     image: "{{ awx_hashicorp_consul_image_link }}"
+#     pod: awx_pod
+#     state: started
+#     volumes:
+#       - awx_hashicorp_consul_data_volume:/consul/data
+#       - awx_hashicorp_consul_config_volume:/consul/config/consul_config.json
+#     env:
+#       CONSUL_BIND_INTERFACE: lo
+#     command: "agent -config-dir=/consul/config"
+
+- name: Ensure awx_hashicorp_consul container is running
+  containers.podman.podman_container:
+    name: awx_hashicorp_consul
+    image: "{{ awx_hashicorp_consul_image_link }}"
+    pod: awx_pod
+    state: started
+    volumes:
+      - awx_hashicorp_consul_data_volume:/consul/data
+      - awx_hashicorp_consul_config_volume:/consul/config/consul_config.json
+    env:
+      CONSUL_BIND_INTERFACE: lo
+    command: >
+      agent
+      -server
+      -ui
+      -bootstrap-expect=1
+      -datacenter=dc1
+      -data-dir=/consul/data
+      -bind=0.0.0.0
+      -log-level=DEBUG
+
+# - name: Wait for Consul CA to finish initializing
+#   ansible.builtin.uri:
+#     url: "http://localhost:{{ awx_hashicorp_consul_internal_port }}/v1/agent/self"
+#     return_content: yes
+#     status_code: 200
+#   register: consul_agent_info
+
+# - debug:
+#     var: consul_agent_info
+  # until: "consul_agent_info.json['Config']['Connect']['CAReady']"
+  # retries: 30
+  # delay: 10
