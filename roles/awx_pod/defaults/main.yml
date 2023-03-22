@@ -35,3 +35,12 @@ awx_hashicorp_vault_internal_port: 8200
 awx_hashicorp_consul_image_version: 1.13
 awx_hashicorp_consul_image_link: docker.io/hashicorp/consul
 awx_hashicorp_consul_internal_port: 8500
+
+awx_secret_key: mysecretkey
+awx_database_user: awx
+awx_database_password: "{{ awx_postgres_auth_password }}"
+awx_database_name: awx
+awx_database_port: "{{ postgres_port }}"
+awx_database_host: awx_postgres
+awx_allowed_hosts: localhost,127.0.0.1
+awx_timezone: UTC

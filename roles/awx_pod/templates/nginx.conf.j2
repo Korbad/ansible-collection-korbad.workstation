@@ -1,5 +1,5 @@
 upstream awx_web {
-    server awx:{{ awx_port }};
+    server {{ awx_container_name }}:{{ awx_port }};
 }
 server {
     listen 80;

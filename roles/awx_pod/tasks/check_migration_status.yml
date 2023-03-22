@@ -1,0 +1,9 @@
+- name: Check the status of the AWX database migration
+  ansible.builtin.command:
+    cmd: "podman exec -i {{ awx_container_name }} awx-manage check_migrations"
+  register: migration_status_output
+  changed_when: false
+
+- name: Display the migration status
+  ansible.builtin.debug:
+    var: migration_status_output.stdout_lines

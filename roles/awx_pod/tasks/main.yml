@@ -6,16 +6,16 @@
     ports:
     - "{{ awx_exposed_http_port }}:{{ awx_internal_http_port }}"
 
-- name: Ensure nginx container is running
-  include_tasks: nginx.yml
-
 - name: Ensure postgres container is running
   include_tasks: postgres.yml
 
 - name: Ensure awx container is running
   include_tasks: awx.yml
 
+- name: Ensure nginx container is running (after awx is running)
+  include_tasks: nginx.yml
 
-
+- name: Check the migration status of the AWX database
+  include_tasks: check_migration_status.yml
 
 

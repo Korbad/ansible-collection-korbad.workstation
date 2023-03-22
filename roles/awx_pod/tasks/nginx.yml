@@ -26,7 +26,7 @@
   vars:
     awx_nginx_conf_mountpoint: "{{ awx_nginx_conf_volume_info.volume.Mountpoint }}"
 
-- name: Ensure nginx container is running
+- name: Ensure nginx container is running (after AWX)
   containers.podman.podman_container:
     name: awx_nginx
     image: "{{ awx_nginx_image_link }}"
