@@ -26,11 +26,6 @@
     name: cfssl_conf_volume
   register: cfssl_conf_volume_info
 
-- name: Ensure cfssl_ca volume exists
-  containers.podman.podman_volume:
-    name: cfssl_ca_volume
-  register: cfssl_ca_volume_info
-
 - name: Write cfssl configuration file to volume if it has changed
   template:
     src: config.json.j2
@@ -39,6 +34,11 @@
     cfssl_conf_mountpoint: "{{ cfssl_conf_volume_info.volume.Mountpoint }}"
   register: cfssl_conf_update_result
 
+- name: Ensure cfssl_ca volume exists
+  containers.podman.podman_volume:
+    name: cfssl_ca_volume
+  register: cfssl_ca_volume_info
+  
 - name: Copy user's local CA files to cfssl_ca volume
   synchronize:
     src: "{{ user_ca_directory }}/"
@@ -64,4 +64,4 @@
       - cfssl_html_volume:/usr/share/cfssl/html
       - cfssl_conf_volume:/etc/cfssl/conf.d
       - cfssl_ca_volume:/etc/cfssl
-  # when: cfssl_container_info.containers|length == 0 or cfssl_conf_update_result.changed
+  

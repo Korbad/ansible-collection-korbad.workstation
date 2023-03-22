@@ -1,0 +1,28 @@
+- name: Check the status of the cfssl container
+  containers.podman.podman_container_info:
+    name: "{{ cfssl_container_name }}"
+  register: cfssl_container_status
+
+- name: Display the status of the cfssl container
+  ansible.builtin.debug:
+    var: cfssl_container_status.containers[0].State.Status
+
+- name: Get cfssl container logs
+  ansible.builtin.shell:
+    cmd: "podman logs {{ cfssl_container_name }} | tail -n 20"
+  register: cfssl_container_logs
+  changed_when: false
+
+- name: Display cfssl container logs
+  ansible.builtin.debug:
+    var: cfssl_container_logs.stdout_lines
+
+- name: Perform a health check on the cfssl container
+  uri:
+    url: "http://localhost:{{ cfssl_api_port }}/api/v1/cfssl/health"
+    status_code: 200
+  register: cfssl_health_check
+
+- name: Display the health check result
+  ansible.builtin.debug:
+    var: cfssl_health_check.json
