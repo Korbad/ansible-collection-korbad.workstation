@@ -3,13 +3,13 @@
   slurp:
     path: "{{ vscode_config_path }}"
   register: slurp_json
-    
+
 - name: update vscode settings.json
   copy:
     dest: "{{ vscode_config_path }}"
     content: "{{ vscode_configuration | to_nice_json }}"
     remote_src: true
   vars:
-    current_config: "{{ slurp_json.content | b64decode | from_json }}"
-    vscode_configuration: "{{ current_config | combine(managed_vscode_settings_dict)}}"
+    vscode_current_config: "{{ slurp_json.content | b64decode | from_json }}"
+    vscode_configuration: "{{ vscode_current_config | default({}, true) | combine(managed_vscode_settings_dict)}}"
   when: managed_vscode_settings_dict is defined

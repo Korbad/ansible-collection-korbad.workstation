@@ -5,3 +5,4 @@
   loop: "{{ managed_vscode_extensions }}"
   loop_control:
     loop_var: extension
+  when: managed_vscode_extensions is defined and managed_vscode_extensions is iterable
