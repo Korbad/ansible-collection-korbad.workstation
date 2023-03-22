@@ -1,0 +1,20 @@
+jenkins_pod_name: jenkins_pod
+jenkins_container_name: jenkins_container
+jenkins_image_link: docker.io/jenkins/jenkins
+jenkins_image_version: lts
+jenkins_http_port: 8080
+jenkins_app_label: jenkins
+
+jenkins_system_message: "welcome to jenkins.korbad"
+jenkins_num_executors: 2
+jenkins_use_security: true
+jenkins_deny_anonymous_read_access: true
+jenkins_disable_signup: true
+
+jenkins_cli_enabled: true
+
+jenkins_git_global_config_name: "jenkins"
+jenkins_git_global_config_email: "jenkins@example.com"
+jenkins_git_create_account_based_on_email: false
+jenkins_git_global_config_notify: "NEVER"
+jenkins_git_global_config_timeout: 10

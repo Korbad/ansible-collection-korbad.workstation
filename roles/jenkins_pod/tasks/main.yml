@@ -1,0 +1,95 @@
+---
+- name: Get Jenkins image stats if it exists
+  containers.podman.podman_image_info:
+    name: "{{ jenkins_image_link }}:{{ jenkins_image_version }}"
+  register: jenkins_image_info
+
+- name: Ensure Jenkins image exists
+  containers.podman.podman_image:
+    name: "{{ jenkins_image_link }}"
+    tag: "{{ jenkins_image_version }}"
+  when: jenkins_image_info.images|length == 0
+
+- name: Ensure jenkins_home volume exists
+  containers.podman.podman_volume:
+    name: jenkins_home_volume
+  register: jenkins_home_volume_info
+
+- name: Create a pod for Jenkins
+  containers.podman.podman_pod:
+    name: "{{ jenkins_pod_name }}"
+    state: started
+    publish:
+      - "{{ jenkins_http_port }}:8080"
+
+- name: Deploy Jenkins container
+  containers.podman.podman_container:
+    name: "{{ jenkins_container_name }}"
+    image: "{{ jenkins_image_link }}"
+    pod: "{{ jenkins_pod_name }}"
+    state: started
+    labels:
+      app: "{{ jenkins_app_label }}"
+    volumes:
+      - jenkins_home_volume:/var/jenkins_home
+
+- name: Wait for Jenkins container to be up
+  wait_for:
+    host: localhost
+    port: "{{ jenkins_http_port }}"
+    state: started
+    delay: 5
+    timeout: 60
+
+- name: Write Jenkins config.xml to jenkins_home_volume
+  template:
+    src: jenkins_config.xml.j2
+    dest: "{{ jenkins_home_mountpoint }}/config.xml"
+    owner: 10999
+    group: 10999
+    mode: '0644'
+  vars:
+    jenkins_home_mountpoint: "{{ jenkins_home_volume_info.volume.Mountpoint }}"
+  register: jenkins_config_update_result
+  become: true
+
+- name: Write Jenkins CLI config to jenkins_home_volume
+  template:
+    src: jenkins_CLI.xml.j2
+    dest: "{{ jenkins_home_mountpoint }}/jenkins.CLI.xml"
+    owner: 10999
+    group: 10999
+    mode: '0644'
+  vars:
+    jenkins_home_mountpoint: "{{ jenkins_home_volume_info.volume.Mountpoint }}"
+  register: jenkins_cli_config_update_result
+  become: true
+
+- name: Write Jenkins Git plugin config to jenkins_home_volume
+  template:
+    src: hudson.plugins.git.GitSCM.xml.j2
+    dest: "{{ jenkins_home_mountpoint }}/hudson.plugins.git.GitSCM.xml"
+    owner: 10999
+    group: 10999
+    mode: '0644'
+  vars:
+    jenkins_home_mountpoint: "{{ jenkins_home_volume_info.volume.Mountpoint }}"
+  register: jenkins_git_plugin_config_update_result
+  become: true
+
+- name: Read initialAdminPassword from jenkins_home_volume
+  slurp:
+    src: "{{ jenkins_home_mountpoint }}/secrets/initialAdminPassword"
+  vars:
+    jenkins_home_mountpoint: "{{ jenkins_home_volume_info.volume.Mountpoint }}"
+  become: true
+  register: initial_admin_password_b64
+
+- name: Decode initialAdminPassword
+  set_fact:
+    initial_admin_password: "{{ initial_admin_password_b64['content'] | b64decode }}"
+  
+- name: Display initialAdminPassword
+  debug:
+    var: initial_admin_password
+

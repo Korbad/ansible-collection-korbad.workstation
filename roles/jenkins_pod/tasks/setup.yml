@@ -1,0 +1,48 @@
+---
+- name: Install necessary plugins
+  community.general.jenkins_plugin:
+    name: "{{ item }}"
+    url: "http://localhost:{{ jenkins_http_port }}"
+    username: "korbad"
+    password: "{{ initial_admin_password }}"
+  loop:
+    - plain-credentials
+    - credentials
+
+- name: Create credentials Groovy script from template
+  ansible.builtin.template:
+    src: credentials.groovy.j2
+    dest: /tmp/credentials.groovy
+  vars:
+    credential_id: example-credential-id
+    credential_username: example-username
+    credential_password: example-password
+    credential_description: Example credential created by Ansible
+
+- name: Add credentials to Jenkins
+  ansible.builtin.uri:
+    url: "http://localhost:{{ jenkins_http_port }}/scriptText"
+    method: POST
+    user: "korbad"
+    password: "{{ initial_admin_password }}"
+    body: "{{ lookup('file', '/tmp/credentials.groovy') }}"
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+  register: result
+  failed_when: "'Finished: SUCCESS' not in result.content"
+
+- name: Remove temporary credentials Groovy script
+  ansible.builtin.file:
+    path: /tmp/credentials.groovy
+    state: absent
+
+
+- name: Install necessary plugins
+  community.general.jenkins_plugin:
+    name: "{{ item }}"
+    url: "http://localhost:{{ jenkins_http_port }}"
+    username: "korbad"
+    password: "{{ initial_admin_password }}"
+  loop:
+    - job-dsl
+    - pipeline
