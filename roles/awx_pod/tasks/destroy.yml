@@ -3,3 +3,10 @@
   containers.podman.podman_pod:
     name: awx_pod
     state: absent
+- name: Destroy containers
+  containers.podman.podman_container:
+    name: "{{ item }}"
+    state: absent
+  loop:
+  - awx_nginx
+  - awx_postgres

@@ -14,16 +14,32 @@
   containers.podman.podman_volume:
     name: awx_data_volume
 
+- name: Ensure awx conf volume exists
+  containers.podman.podman_volume:
+    name: awx_conf_volume
+  register: awx_conf_volume_info
+
+- name: Write awx configuration file to volume
+  template:
+    src: awx.conf.j2
+    dest: "{{ awx_conf_mountpoint }}/awx.conf"
+  vars:
+    awx_conf_mountpoint: "{{ awx_conf_volume_info.volume.Mountpoint }}"
+    secret_key: mysecretkey
+    allowed_hosts: localhost,127.0.0.1
+    timezone: UTC
+
 - name: Ensure awx container is running
   containers.podman.podman_container:
     name: "{{ awx_container_name }}"
     image: "{{ awx_image_link }}"
     requires:
     - awx_postgres
-    - awx_awx
     - awx_nginx
     pod: awx_pod
     state: started
+    volumes:
+    - awx_conf_volume:/etc/tower/conf.d
     env:
       DATABASE_USER: awx
       DATABASE_PASSWORD: "{{ awx_postgres_auth_password }}"

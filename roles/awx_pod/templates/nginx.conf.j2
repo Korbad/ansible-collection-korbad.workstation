@@ -1,6 +1,5 @@
-resolver localhost;
 upstream awx_web {
-    server localhost:{{ awx_port }};
+    server awx:{{ awx_port }};
 }
 server {
     listen 80;
@@ -13,4 +12,3 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-

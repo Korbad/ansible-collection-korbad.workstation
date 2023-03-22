@@ -54,7 +54,7 @@
     state: started
     volumes:
       - awx_hashicorp_consul_data_volume:/consul/data
-      - awx_hashicorp_consul_config_volume:/consul/config/consul_config.json
+      - awx_hashicorp_consul_config_volume:/consul/config/
     env:
       CONSUL_BIND_INTERFACE: lo
     command: >

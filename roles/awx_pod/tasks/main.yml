@@ -6,26 +6,16 @@
     ports:
     - "{{ awx_exposed_http_port }}:{{ awx_internal_http_port }}"
 
+- name: Ensure nginx container is running
+  include_tasks: nginx.yml
+
+- name: Ensure postgres container is running
+  include_tasks: postgres.yml
+
+- name: Ensure awx container is running
+  include_tasks: awx.yml
 
 
 
-# - name: Ensure hashicorp_consul container is running
-#   include_tasks: hashicorp_consul.yml
 
-# - name: Ensure hashicorp_vault container is running
-#   include_tasks: hashicorp_vault.yml
 
-# - name: Ensure coredns container is running
-#   include_tasks: coredns.yml
-
-# - name: Ensure redis container is running
-#   include_tasks: redis.yml
-
-# - name: Ensure nginx container is running
-#   include_tasks: nginx.yml
-
-# - name: Ensure postgres container is running
-#   include_tasks: postgres.yml
-
-# - name: Ensure awx container is running
-#   include_tasks: awx.yml
