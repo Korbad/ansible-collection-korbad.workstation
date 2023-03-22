@@ -18,3 +18,5 @@ jenkins_git_global_config_email: "jenkins@example.com"
 jenkins_git_create_account_based_on_email: false
 jenkins_git_global_config_notify: "NEVER"
 jenkins_git_global_config_timeout: 10
+
+jenkins_username: jenkins
