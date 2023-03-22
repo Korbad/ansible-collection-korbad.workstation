@@ -1,0 +1,4 @@
+---
+- name: Ensure podman-desktop-companion-appimage is installed
+  kewlfft.aur.aur:
+    name: podman-desktop-companion-appimage

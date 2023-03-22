@@ -1,0 +1,4 @@
+- name: Ensure gephi is installed
+  pacman:
+    name: gephi
+  become: true
