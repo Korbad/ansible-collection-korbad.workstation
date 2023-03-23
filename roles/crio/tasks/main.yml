@@ -1,0 +1,15 @@
+- name: Install required packages
+  ansible.builtin.pacman:
+    name:
+      - kubeadm
+      - cni-plugins
+      - cri-o
+    state: present
+  become: true
+
+- name: Enable and start CRI-O
+  ansible.builtin.systemd:
+    name: crio
+    state: started
+    enabled: yes
+  become: true
