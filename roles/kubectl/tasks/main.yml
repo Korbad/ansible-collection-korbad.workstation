@@ -1,0 +1,13 @@
+- name: Ensure kubectl-bin is not installed
+  ansible.builtin.pacman:
+    name:
+      - kubectl-bin
+    state: absent
+  become: true
+
+- name: Install required packages
+  ansible.builtin.pacman:
+    name:
+      - kubectl
+    state: present
+  become: true
