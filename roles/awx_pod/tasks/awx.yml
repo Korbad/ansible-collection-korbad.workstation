@@ -43,9 +43,9 @@
   containers.podman.podman_container:
     name: "{{ awx_container_name }}"
     image: "{{ awx_image_link }}"
+    command: awx-manage migrate --noinput
     requires:
     - awx_postgres
-    # - awx_nginx
     pod: awx_pod
     state: started
     volumes:
