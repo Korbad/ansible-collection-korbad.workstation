@@ -1,2 +1,9 @@
 ---
-cockpit_port: 9090 #this cannot be changed without role updates
+cockpit_exposed_http_port: 9090
+cockpit_plugins:
+- cockpit-dashboard
+- cockpit-podman
+- cockpit-machines
+- cockpit-networkmanager
+- cockpit-packagekit
+- cockpit-selinux
