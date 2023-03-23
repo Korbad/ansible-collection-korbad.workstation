@@ -1,0 +1,5 @@
+- name: Install Cockpit plugins
+  package:
+    name: "{{ cockpit_plugins }}"
+    state: present
+  become: true

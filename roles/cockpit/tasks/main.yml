@@ -11,3 +11,6 @@
     state: started
     enabled: yes
   become: true
+
+- name: Update cockpit.socket configuration
+  include_tasks: firewall.yml
