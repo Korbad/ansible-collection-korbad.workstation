@@ -1,0 +1,38 @@
+
+
+- name: Initialize kubeadm
+  ansible.builtin.shell:
+    cmd: kubeadm init --pod-network-cidr={{ pod_network_cidr }}
+  register: kubeadm_init_output
+  args:
+    creates: /etc/kubernetes/admin.conf
+  become: true   
+
+- name: Setup kubeconfig for root user
+  ansible.builtin.assemble:
+    src: /etc/kubernetes/admin.conf
+    dest: /root/.kube/config
+    mode: 0644
+  become: true
+
+- name: Install Flannel network plugin
+  kubernetes.core.k8s:
+    state: present
+    src: https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+    kubeconfig: /etc/kubernetes/admin.conf
+
+- name: Allow workloads on the master node
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Node
+    name: "{{ ansible_hostname }}"
+    kubeconfig: /etc/kubernetes/admin.conf
+    apply: yes
+    definition:
+      metadata:
+        labels:
+          node-role.kubernetes.io/master: ""
+        taints:
+          - effect: "NoSchedule"
+            key: "node-role.kubernetes.io/master"
+            time_added: null
