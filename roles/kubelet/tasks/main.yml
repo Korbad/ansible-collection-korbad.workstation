@@ -1,0 +1,46 @@
+- name: Install kubelet
+  ansible.builtin.pacman:
+    name:
+      - kubelet
+    state: present
+  become: true
+  
+- name: Ensure kubelet.service.d directory exists
+  ansible.builtin.file:
+    path: "{{ kubelet_service_directory }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  become: true
+
+- name: Configure CRI-O as container runtime for Kubernetes
+  ansible.builtin.template:
+    src: templates/10-kubeadm.conf.j2
+    dest: "{{ kubelet_service_directory }}/{{ kubelet_configuration_file }}"
+    owner: root
+    group: root
+    mode: 0644
+  register: kubelet_config_result
+  become: true
+
+- name: Reload systemd configuration
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  become: true
+  when: kubelet_config_result.changed
+
+- name: Restart kubelet service
+  ansible.builtin.systemd:
+    name: kubelet
+    state: restarted
+  become: true
+  when: kubelet_config_result.changed
+
+- name: Restart CRI-O service
+  ansible.builtin.systemd:
+    name: crio
+    state: restarted
+    daemon_reload: yes
+  become: true
+  when: kubelet_config_result.changed

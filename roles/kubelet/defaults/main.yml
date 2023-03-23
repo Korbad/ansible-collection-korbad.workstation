@@ -1,0 +1,2 @@
+kubelet_service_directory: "/etc/systemd/system/kubelet.service.d"
+kubelet_configuration_file: "10-kubeadm.conf"

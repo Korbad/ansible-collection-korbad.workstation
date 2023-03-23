@@ -1,0 +1,3 @@
+---
+dependencies:
+  - br_netfilter_kernel_module

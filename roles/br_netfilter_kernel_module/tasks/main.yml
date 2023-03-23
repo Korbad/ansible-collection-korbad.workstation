@@ -1,0 +1,5 @@
+- name: Load br_netfilter kernel module
+  ansible.builtin.modprobe:
+    name: br_netfilter
+    state: present
+  become: true

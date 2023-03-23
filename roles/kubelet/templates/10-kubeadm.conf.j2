@@ -1,0 +1,3 @@
+[Service]
+EnvironmentFile=-/etc/default/kubelet
+Environment="KUBELET_EXTRA_ARGS=--container-runtime=remote --container-runtime-endpoint=unix:///var/run/crio/crio.sock --runtime-request-timeout=5m"
