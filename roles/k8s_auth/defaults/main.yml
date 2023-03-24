@@ -1,0 +1,7 @@
+---
+k8s_api_host: "https://{{ k8s_api_hostname }}:{{ k8s_api_port }}"
+k8s_api_hostname: "localhost"
+k8s_api_port: 6443
+k8s_ssl_ca_cert: /path/to/ca.crt
+k8s_client_cert: /path/to/client.crt
+k8s_client_key: /path/to/client.key
