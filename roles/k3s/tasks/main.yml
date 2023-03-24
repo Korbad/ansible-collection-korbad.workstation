@@ -1,0 +1,9 @@
+- name: Get k3s status
+  k8s_status:
+    api_version: v1
+    kind: Namespace
+    name: kube-system
+  register: k3s_status
+- name: Print k3s status
+  debug:
+    var: k3s_status.status.phase
