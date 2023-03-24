@@ -1,0 +1,5 @@
+---
+awx_operator_chart_repo: https://github.com/ansible/awx-helm.git
+awx_operator_chart_name: awx
+awx_operator_chart_version: 0.14.0
+awx_operator_namespace: awx

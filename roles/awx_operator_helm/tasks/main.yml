@@ -1,0 +1,57 @@
+---
+- name: Ensure the awx namespace exists
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Namespace
+    name: "{{ awx_operator_namespace }}"
+    state: present
+    ca_cert: "{{ k8s_ssl_ca_cert }}"
+    client_cert: "{{ k8s_client_cert }}"
+    client_key: "{{ k8s_client_key }}"
+    host: "{{ k8s_api_host }}"
+
+- name: Add AWX Operator Helm repository
+  kubernetes.core.helm_repository:
+    name: awx
+    url: "{{ awx_operator_chart_repo }}"
+    state: present
+    ca_cert: "{{ k8s_ssl_ca_cert }}"
+    client_cert: "{{ k8s_client_cert }}"
+    client_key: "{{ k8s_client_key }}"
+    host: "{{ k8s_api_host }}"
+
+- name: Update Helm repositories
+  kubernetes.core.helm:
+    command: repo update
+    ca_cert: "{{ k8s_ssl_ca_cert }}"
+    client_cert: "{{ k8s_client_cert }}"
+    client_key: "{{ k8s_client_key }}"
+    host: "{{ k8s_api_host }}"
+
+- name: Deploy AWX Operator using Helm
+  kubernetes.core.helm:
+    name: "{{ awx_operator_chart_name }}"
+    chart_ref: awx/{{ awx_operator_chart_name }}
+    release_namespace: "{{ awx_operator_namespace }}"
+    create_namespace: yes
+    state: present
+    version: "{{ awx_operator_chart_version }}"
+    ca_cert: "{{ k8s_ssl_ca_cert }}"
+    client_cert: "{{ k8s_client_cert }}"
+    client_key: "{{ k8s_client_key }}"
+    host: "{{ k8s_api_host }}"
+  register: awx_operator_helm_result
+
+- name: Wait for AWX Operator to be ready
+  kubernetes.core.k8s_info:
+    kind: Deployment
+    namespace: "{{ awx_operator_namespace }}"
+    name: awx-operator
+    ca_cert: "{{ k8s_ssl_ca_cert }}"
+    client_cert: "{{ k8s_client_cert }}"
+    client_key: "{{ k8s_client_key }}"
+    host: "{{ k8s_api_host }}"
+  register: awx_operator_deployment
+  until: awx_operator_deployment.resources[0].status.readyReplicas | default(0) | int >= 1
+  retries: 60
+  delay: 10
