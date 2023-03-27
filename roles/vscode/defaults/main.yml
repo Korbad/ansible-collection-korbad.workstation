@@ -1,1 +1,1 @@
-vscode_config_path: "{{ ansible_env.HOME }}/.config/Code - OSS/User/settings.json"
+vscode_config_path: "{{ (ansible_env.HOME, '.config','Code','User','settings.json') | path_join }}"

@@ -1,0 +1,20 @@
+---
+- name: Ensure 'Code - OSS' is installed (Open Source build of code_oss)
+  pacman:
+    name: code
+    state: latest
+  become: true
+
+- name: Enable code_oss marketplace in Code OSS
+  kewlfft.aur.aur:
+    name: code-marketplace
+
+- name: Unblock features in Code OSS
+  kewlfft.aur.aur:
+    name: code-features
+
+- name: Manage code_oss extensions if list of extension is defined
+  include_tasks: extensions.yml
+  
+- name: Manage code_oss user settings.json
+  include_tasks: configuration.yml

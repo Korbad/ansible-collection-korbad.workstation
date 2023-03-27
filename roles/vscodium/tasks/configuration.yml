@@ -1,0 +1,15 @@
+---
+- name: slurp settings.json
+  slurp:
+    path: "{{ vscodium_config_path }}"
+  register: slurp_json
+
+- name: update vscodium settings.json
+  copy:
+    dest: "{{ vscodium_config_path }}"
+    content: "{{ vscodium_configuration | to_nice_json }}"
+    remote_src: true
+  vars:
+    vscodium_current_config: "{{ slurp_json.content | b64decode | from_json }}"
+    vscodium_configuration: "{{ vscodium_current_config | default({}, true) | combine(managed_vscodium_settings_dict)}}"
+  when: managed_vscodium_settings_dict is defined

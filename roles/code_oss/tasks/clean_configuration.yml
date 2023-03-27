@@ -1,0 +1,5 @@
+---
+- name: Remove configuration files
+  file:
+    path: "{{ code_oss_config_path }}"
+    state: absent

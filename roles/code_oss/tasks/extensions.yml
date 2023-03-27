@@ -1,0 +1,7 @@
+---
+- name: Install extension
+  include_tasks: extension.yml
+  loop: "{{ managed_code_oss_extensions }}"
+  loop_control:
+    loop_var: extension
+  when: managed_code_oss_extensions is defined and managed_code_oss_extensions is iterable

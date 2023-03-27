@@ -1,6 +1,4 @@
 ---
-- name: Install VSCode
-  pacman:
-    name: code
-    state: latest
-  become: true
+- name: Ensure that Visual Studio Code is installed (Microsoft, contains proprietary code)
+  kewlfft.aur.aur:
+    name: visual-studio-code-bin

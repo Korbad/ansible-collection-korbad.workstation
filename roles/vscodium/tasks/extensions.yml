@@ -1,0 +1,8 @@
+---
+- name: Install extension
+  command:
+    cmd: code --install-extension {{ extension }}
+  loop: "{{ managed_vscodium_extensions }}"
+  loop_control:
+    loop_var: extension
+  when: managed_vscodium_extensions is defined and managed_vscodium_extensions is iterable

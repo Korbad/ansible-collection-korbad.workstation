@@ -1,0 +1,13 @@
+---
+- name: Ensure that VSCodium is installed (FOSS binaries of VS Code)
+  kewlfft.aur.aur:
+    name: vscodium
+
+- name: Enable vscode marketplace in vscodium
+  kewlfft.aur.aur:
+    name: vscodium-marketplace
+
+- name: Enable hooks that allow more VSCode extensions to work with vscodium
+  kewlfft.aur.aur:
+    name: vscodium-features
+

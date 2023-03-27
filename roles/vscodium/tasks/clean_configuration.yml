@@ -1,0 +1,5 @@
+---
+- name: Remove configuration files
+  file:
+    path: "{{ vscodium_config_path }}"
+    state: absent
