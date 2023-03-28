@@ -38,12 +38,11 @@
   vars:
     awx_settings_mountpoint: "{{ awx_settings_volume_info.volume.Mountpoint }}"
     
-
 - name: Ensure awx container is running
   containers.podman.podman_container:
     name: "{{ awx_container_name }}"
     image: "{{ awx_image_link }}"
-    command: awx-manage migrate --noinput
+    command: "/bin/bash -c 'awx-manage migrate --noinput && supervisord -n'"
     requires:
     - awx_postgres
     pod: awx_pod

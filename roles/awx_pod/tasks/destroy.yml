@@ -1,12 +1,20 @@
 ---
-- name: Destroy pod
+- name: Remove AWX container
+  containers.podman.podman_container:
+    name: "{{ awx_container_name }}"
+    state: absent
+
+- name: Remove Nginx container
+  containers.podman.podman_container:
+    name: awx_nginx
+    state: absent
+
+- name: Remove PostgreSQL container
+  containers.podman.podman_container:
+    name: awx_postgres
+    state: absent
+
+- name: Remove AWX pod
   containers.podman.podman_pod:
     name: awx_pod
     state: absent
-- name: Destroy containers
-  containers.podman.podman_container:
-    name: "{{ item }}"
-    state: absent
-  loop:
-  - awx_nginx
-  - awx_postgres

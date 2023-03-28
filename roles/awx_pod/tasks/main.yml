@@ -12,10 +12,18 @@
 - name: Ensure awx container is running
   include_tasks: awx.yml
 
+- name: Wait for AWX database migrations
+  include_tasks: wait_for_awx_database_migration.yml
+
 - name: Ensure nginx container is running (after awx is running)
   include_tasks: nginx.yml
 
-- name: Check the migration status of the AWX database
-  include_tasks: check_migration_status.yml
-
-
+- name: Wait for AWX API to be available
+  ansible.builtin.uri:
+    url: "http://localhost:{{ awx_exposed_http_port }}/api/"
+    status_code: 200
+    timeout: 30
+  register: awx_api_result
+  until: awx_api_result.status == 200
+  retries: 60
+  delay: 10
