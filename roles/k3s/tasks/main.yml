@@ -1,9 +1,22 @@
+- name: Check Kubernetes API server connectivity
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Namespace
+    name: default
+    kubeconfig_file_path: "{{ kubeconfig_file_path }}"
+    kubeconfig_context: "{{ kubeconfig_context }}"
+    kubeconfig_username: "{{ kubeconfig_username }}"
+    kubeconfig_password: "{{ kubeconfig_password }}"
+  register: k8s_info
+
 - name: Get k3s status
-  k8s_status:
+  kubernetes.core.k8s_info:
     api_version: v1
     kind: Namespace
     name: kube-system
   register: k3s_status
+
 - name: Print k3s status
   debug:
     var: k3s_status.status.phase
+

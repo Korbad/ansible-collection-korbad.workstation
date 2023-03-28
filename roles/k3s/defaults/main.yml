@@ -1,0 +1,2 @@
+kubeconfig_file_path: "{{ (ansible_env.HOME, '.kube', 'config') | path_join }}"
+kubeconfig_context: default
