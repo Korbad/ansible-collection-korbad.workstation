@@ -1,0 +1,12 @@
+- name: Install cpupower
+  pacman:
+    name: cpupower
+    state: present
+  become: true
+
+- name: Enable and start cpupower service
+  ansible.builtin.systemd:
+    name: cpupower
+    enabled: yes
+    state: started
+  become: true
