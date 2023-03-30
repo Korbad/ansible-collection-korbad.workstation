@@ -1,0 +1,3 @@
+nftables_package_state: present
+nftables_service_state: started
+nftables_service_enabled: true

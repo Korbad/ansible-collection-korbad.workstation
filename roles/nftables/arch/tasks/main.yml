@@ -2,15 +2,14 @@
 - name: Ensure Nftables packages are in their desired state
   ansible.builtin.package:
     name: nftables
-    state: present
+    state: "{{ nftables_package_state }}"
   register: pkg_install_result
   until: pkg_install_result is success
   become: true
 
-# iptables cannot be removed on Arch
 - name: Manage nftables service
   ansible.builtin.service:
-    state: started
+    state: "{{ nftables_service_state }}"
     name: nftables
-    enabled: true
+    enabled: "{{ nftables_service_enabled }}"
   become: true

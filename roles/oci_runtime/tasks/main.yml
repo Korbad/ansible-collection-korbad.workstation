@@ -1,0 +1,16 @@
+---
+- name: Check for crun
+  shell: command -v crun
+  register: crun_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Check for runc
+  shell: command -v runc
+  register: runc_check
+  ignore_errors: true
+  changed_when: false
+  
+- name: Ensure selected OCI Runtime is installed and configured
+  include_role: "{{ oci_runtime }}"
+  when: oci_runtime in supported_oci_runtimes
