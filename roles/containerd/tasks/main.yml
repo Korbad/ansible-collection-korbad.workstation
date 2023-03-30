@@ -1,0 +1,12 @@
+- name: Install containerd
+  ansible.builtin.pacman:
+    name: containerd
+    state: present
+  become: true
+
+- name: Enable and start containerd service
+  ansible.builtin.systemd:
+    name: containerd
+    state: started
+    enabled: yes
+  become: true
