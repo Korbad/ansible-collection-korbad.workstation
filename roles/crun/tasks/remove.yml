@@ -1,0 +1,18 @@
+- name: Check if crun service file exists
+  ansible.builtin.stat:
+    path: /etc/systemd/system/crun.service
+  register: crun_service_file
+
+- name: Ensure the CRI-O service is disabled and stopped
+  ansible.builtin.systemd:
+    name: crun
+    state: stopped
+    enabled: false
+  become: true
+  when: crun_service_file.stat.exists
+
+- name: Ensure crun-o is not installed
+  ansible.builtin.pacman:
+    name: cri-o
+    state: absent
+  become: true
