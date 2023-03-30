@@ -1,4 +1,11 @@
 - name: Ensure firewalld is installed
   ansible.builtin.pacman:
     name: firewalld
+    state: "{{ firewalld_state }}"
+  become: true
+
+- name: Install python3-firewall package
+  ansible.builtin.package:
+    name: python3-firewall
+    state: "{{ firewalld_state }}"
   become: true
