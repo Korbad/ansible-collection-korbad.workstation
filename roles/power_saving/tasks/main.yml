@@ -1,0 +1,7 @@
+- name: Disable Wi-Fi
+  ansible.builtin.command:
+    cmd: rfkill block wifi
+
+- name: Disable Bluetooth
+  ansible.builtin.command:
+    cmd: rfkill block bluetooth

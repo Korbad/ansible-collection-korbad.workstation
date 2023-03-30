@@ -1,0 +1,5 @@
+- name: Install rfkill
+  pacman:
+    name: rfkill
+    state: present
+  become: true
