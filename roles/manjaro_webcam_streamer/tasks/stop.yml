@@ -1,0 +1,7 @@
+---
+- name: Disable and stop the webcam streaming service
+  systemd:
+    name: webcam_streaming
+    state: stopped
+    enabled: false
+  become: true
