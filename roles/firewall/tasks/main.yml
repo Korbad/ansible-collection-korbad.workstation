@@ -1,0 +1,48 @@
+---
+- name: Check if UFW service is enabled and running
+  ansible.builtin.systemd:
+    name: ufw
+    state: started
+    enabled: yes
+  register: ufw_service
+  ignore_errors: yes
+  check_mode: yes
+
+- name: Check if firewalld service is enabled and running
+  ansible.builtin.systemd:
+    name: firewalld
+    state: started
+    enabled: yes
+  register: firewalld_service
+  ignore_errors: yes
+  check_mode: yes
+
+- name: Check if iptables service is enabled and running
+  ansible.builtin.systemd:
+    name: iptables
+    state: started
+    enabled: yes
+  register: iptables_service
+  ignore_errors: yes
+  check_mode: yes
+
+- name: Check if nftables service is enabled and running
+  ansible.builtin.systemd:
+    name: nftables
+    state: started
+    enabled: yes
+  register: nftables_service
+  ignore_errors: yes
+  check_mode: yes
+
+- name: Set fact with running firewall(s)
+  ansible.builtin.set_fact:
+    firewalls:
+      ufw: "{{ ufw_service is not failed }}"
+      firewalld: "{{ firewalld_service is not failed }}"
+      iptables: "{{ iptables_service is not failed }}"
+      nftables: "{{ nftables_service is not failed }}"
+
+- name: Ensure selected OCI Runtime is installed and configured
+  include_role: "{{ firewall_software }}"
+  when: firewall_software in supported_firewall_software
