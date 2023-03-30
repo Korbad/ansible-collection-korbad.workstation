@@ -1,0 +1,26 @@
+- name: Check if Kubernetes API server is running
+  uri:
+    url: https://{{ k8s_api_hostname }}:{{ k8s_api_port }}/version
+    method: GET
+    validate_certs: False
+  register: k8s_api_status
+  ignore_errors: True
+
+- name: Fail if Kubernetes API server is not running
+  fail:
+    msg: "Kubernetes API server is not running"
+  when: k8s_api_status.status != 200
+
+- name: Check if Kubernetes API server is accessible
+  wait_for:
+    host: "{{ k8s_api_hostname }}"
+    port: "{{ k8s_api_port }}"
+    state: started
+    timeout: 10
+  register: k8s_api_access_status
+  ignore_errors: True
+
+- name: Fail if Kubernetes API server is not accessible
+  fail:
+    msg: "Kubernetes API server is not accessible from this machine"
+  when: k8s_api_access_status.failed == True

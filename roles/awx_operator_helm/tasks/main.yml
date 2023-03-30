@@ -1,4 +1,11 @@
 ---
+
+- name: Ensure firewall is configured for k8s
+  include_tasks: firewall.yml
+
+- name: Check if k8s server is responding
+  include_tasks: check.yml
+
 - name: Ensure the awx namespace exists
   kubernetes.core.k8s:
     api_version: v1
