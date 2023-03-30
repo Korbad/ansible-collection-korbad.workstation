@@ -19,7 +19,6 @@
   community.general.pacman:
     name: 
       - libvirt
-      - dnsmasq
       - bridge-utils
       - dmidecode
       - python-lxml
