@@ -1,9 +1,6 @@
 - name: Install required packages
   ansible.builtin.pacman:
-    name:
-      - kubeadm
-      - cni-plugins
-      - cri-o
+    name: cri-o
     state: present
   become: true
 

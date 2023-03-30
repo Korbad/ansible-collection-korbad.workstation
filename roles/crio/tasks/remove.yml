@@ -1,0 +1,18 @@
+- name: Check if crio service file exists
+  ansible.builtin.stat:
+    path: /etc/systemd/system/crio.service
+  register: crio_service_file
+
+- name: Ensure the CRI-O service is disabled and stopped
+  ansible.builtin.systemd:
+    name: crio
+    state: stopped
+    enabled: false
+  become: true
+  when: crio_service_file.stat.exists
+
+- name: Ensure crio-o is not installed
+  ansible.builtin.pacman:
+    name: cri-o
+    state: absent
+  become: true
