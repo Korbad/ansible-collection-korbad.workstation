@@ -37,12 +37,13 @@
     dest: "{{ awx_settings_mountpoint }}/settings.py"
   vars:
     awx_settings_mountpoint: "{{ awx_settings_volume_info.volume.Mountpoint }}"
-    
+
+
 - name: Ensure awx container is running
   containers.podman.podman_container:
     name: "{{ awx_container_name }}"
     image: "{{ awx_image_link }}"
-    command: "/bin/bash -c 'awx-manage migrate --noinput && supervisord -n'"
+    command: supervisord -c /etc/supervisord.conf
     requires:
     - awx_postgres
     pod: awx_pod
@@ -58,3 +59,22 @@
       DATABASE_HOST: awx_postgres
       AWX_ADMIN_USER: admin
       AWX_ADMIN_PASSWORD: "{{ awx_admin_password }}"
+  register: awx_container
+
+- block:
+  - name: Wait for postgres container to be running
+    ansible.builtin.wait_for:
+      host: awx_postgres
+      port: "{{ postgres_port }}"
+      state: started
+      delay: 10
+      timeout: 60
+
+- name: Run AWX database migration
+  containers.podman.podman_container_exec:
+    container: "{{ awx_container_name }}"
+    command: awx-manage migrate --noinput
+  register: awx_migration_result
+  until: awx_migration_result is success
+  retries: 20
+  delay: 30
