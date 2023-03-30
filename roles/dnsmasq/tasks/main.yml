@@ -1,0 +1,13 @@
+---
+- name: Install dnsmasq
+  ansible.builtin.pacman:
+    name: dnsmasq
+    state: present
+  become: true
+
+- name: Enable and start dnsmasq service
+  ansible.builtin.systemd:
+    name: dnsmasq
+    state: started
+    enabled: true
+  become: true

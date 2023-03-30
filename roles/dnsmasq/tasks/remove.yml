@@ -1,0 +1,13 @@
+---
+- name: Ensure dnsmasq service is stopped and disabled
+  ansible.builtin.systemd:
+    name: dnsmasq
+    state: stopped
+    enabled: false
+  become: true
+
+- name: Ensure dnsmasq is not installed
+  ansible.builtin.pacman:
+    name: dnsmasq
+    state: absent
+  become: true
