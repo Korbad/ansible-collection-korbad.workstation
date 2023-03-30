@@ -1,0 +1,7 @@
+---
+- name: Ensure runc is not installed
+  ansible.builtin.pacman:
+    name: runc
+    state: absent
+    force: true
+  become: true
