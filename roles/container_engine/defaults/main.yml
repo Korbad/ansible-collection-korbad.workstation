@@ -1,0 +1,5 @@
+---
+container_engine: podman
+supported_container_engines:
+- podman
+- docker

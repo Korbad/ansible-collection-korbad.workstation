@@ -1,0 +1,4 @@
+---
+- name: Ensure selected Container Engine is installed and configured
+  include_role: "{{ container_engine }}"
+  when: container_engine in supported_container_engines
