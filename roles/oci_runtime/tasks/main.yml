@@ -12,5 +12,6 @@
   changed_when: false
   
 - name: Ensure selected OCI Runtime is installed and configured
-  include_role: "{{ oci_runtime }}"
+  include_role:
+    name: "{{ oci_runtime }}"
   when: oci_runtime in supported_oci_runtimes
