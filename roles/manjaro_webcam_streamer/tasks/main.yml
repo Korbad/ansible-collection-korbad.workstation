@@ -1,0 +1,23 @@
+---
+- name: Install required packages
+  pacman:
+    name:
+      - gstreamer
+      - gst-plugins-base
+      - gst-plugins-good
+      - gst-plugins-bad
+      - gst-plugins-ugly
+    state: present
+
+- name: Copy webcam streaming service template
+  template:
+    src: webcam_streaming.service.j2
+    dest: /etc/systemd/system/webcam_streaming.service
+    mode: 0644
+
+- name: Enable and start the webcam streaming service
+  systemd:
+    name: webcam_streaming
+    state: started
+    enabled: yes
+    daemon_reload: yes

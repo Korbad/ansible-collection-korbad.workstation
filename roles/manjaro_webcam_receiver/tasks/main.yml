@@ -1,0 +1,24 @@
+---
+- name: Install required packages
+  pacman:
+    name:
+      - gstreamer
+      - gst-plugins-base
+      - gst-plugins-good
+      - gst-plugins-bad
+      - gst-plugins-ugly
+      - xorg-xhost
+    state: present
+
+- name: Copy webcam receiver service template
+  template:
+    src: webcam_receiver.service.j2
+    dest: /etc/systemd/system/webcam_receiver.service
+    mode: 0644
+
+- name: Enable and start the webcam receiver service
+  systemd:
+    name: webcam_receiver
+    state: started
+    enabled: yes
+    daemon_reload: yes

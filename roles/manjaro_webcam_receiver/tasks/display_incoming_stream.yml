@@ -1,0 +1,32 @@
+---
+- name: Ensure xhost is set to allow local connections
+  ansible.builtin.command:
+    cmd: xhost +SI:localuser:{{ webcam_user }}
+  args:
+    creates: /tmp/xhost_set
+  register: xhost_result
+
+- name: Create xhost_set temporary file
+  ansible.builtin.copy:
+    content: ""
+    dest: /tmp/xhost_set
+  when: xhost_result.changed
+
+- name: Serve incoming webcam stream over HTTP
+  ansible.builtin.shell:
+    cmd: gst-launch-1.0 udpsrc port={{ remote_port }} ! application/x-rtp,media=video,encoding-name=VP8,payload=96 ! rtpvp8depay ! vp8dec ! videoconvert ! x264enc tune=zerolatency ! h264parse ! mpegtsmux ! tcpserversink host=0.0.0.0 port={{ http_port }}
+  args:
+    chdir: "{{ lookup('env', 'HOME') }}"
+  async: 300
+  poll: 0
+
+- name: Create HTML file from Jinja2 template
+  ansible.builtin.template:
+    src: webcam_stream.j2
+    dest: "{{ lookup('env', 'HOME') }}/webcam_stream.html"
+
+- name: Open webcam stream HTML file in the default web browser
+  ansible.builtin.command:
+    cmd: xdg-open "{{ lookup('env', 'HOME') }}/webcam_stream.html"
+  environment:
+    DISPLAY: ":0.0"
