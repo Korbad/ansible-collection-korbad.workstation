@@ -1,0 +1,4 @@
+- name: Ensure docker machine driver for kvm2 is installed
+  kewlfft.aur.aur:
+    name:
+    - docker-machine-driver-kvm2

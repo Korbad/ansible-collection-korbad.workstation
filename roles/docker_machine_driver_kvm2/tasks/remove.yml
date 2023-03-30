@@ -1,0 +1,5 @@
+- name: Remove docker machine kvm driver
+  community.general.pacman:
+    name: docker-machine-driver-kvm2
+    state: absent
+    executable: yay
