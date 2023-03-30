@@ -4,3 +4,8 @@
     name: yay
     state: present
   become: true
+
+- name: Update cache
+  community.general.pacman:
+    update_cache: true
+    executable: yay
