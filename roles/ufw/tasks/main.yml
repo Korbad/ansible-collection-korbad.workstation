@@ -1,0 +1,10 @@
+- name: Install ufw package
+  pacman:
+    name: ufw
+    state: present
+  become: true
+
+- name: Enable ufw firewall
+  ufw:
+    state: enabled
+  become: true
