@@ -1,0 +1,33 @@
+---
+
+
+- name: Check for containerd
+  shell: command -v containerd
+  register: containerd_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Check for crio
+  shell: command -v crio
+  register: crio_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Set container runtime variable
+  set_fact:
+    container_runtime_found: >-
+      {% if containerd_check.rc == 0 %}
+      containerd
+      {% endif %}
+      {% if crio_check.rc == 0 %}
+      crio
+      {% endif %}
+
+- name: Display container runtime
+  debug:
+    msg: "Container runtime: {{ container_runtime_found }}"
+
+- name: Ensure container runtime is installed and configured
+  include_role:
+    name: "{{ container_runtime }}"
+  when: container_runtime in supported_container_runtimes

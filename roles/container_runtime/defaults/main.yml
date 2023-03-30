@@ -1,0 +1,5 @@
+---
+container_runtime: crio
+supported_container_runtimes:
+- crio
+- containerd
