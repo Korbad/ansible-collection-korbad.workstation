@@ -1,13 +1,25 @@
 ---
-awx_exposed_http_port: 3003
-awx_internal_http_port: 80
+awx_pod_internal_port: 8081
+awx_pod_external_port: 3003
+
+awx_container_internal_port: 8052
+awx_container_external_port: 8052
+
+awx_postgres_internal_port: 5432
+awx_postgres_external_port: 5432
+
+awx_redis_internal_port: 6379
+awx_redis_external_port: 6379
+
+awx_nginx_internal_port: 
+awx_nginx_external_port: 
 
 awx_image_link: quay.io/ansible/awx
 awx_image_version: 21.13.0
 awx_container_name: awx
 
-awx_redis_image: docker.io/library/redis
-awx_redis_tag: 7.0.9
+awx_redis_image_link: docker.io/library/redis
+awx_redis_image_tag: 7.0.9
 
 awx_postgres_image_name: postgres
 awx_postgres_image_version: 13
@@ -20,12 +32,6 @@ awx_coredns_image_link: docker.io/coredns/coredns
 awx_coredns_image_version: 1.10.1
 coredns_internal_port: 53
 coredns_external_port: 1053
-
-postgres_port: 5432
-# rabbitmq_port: 5672
-# memcached_port: 11211
-
-awx_port: 8052
 
 awx_hashicorp_vault_image_version: 1.12
 awx_hashicorp_vault_image_link: docker.io/hashicorp/vault
@@ -40,7 +46,7 @@ awx_secret_key: mysecretkey
 awx_database_user: awx
 awx_database_password: "{{ awx_postgres_auth_password }}"
 awx_database_name: awx
-awx_database_port: "{{ postgres_port }}"
+awx_database_port: "{{ awx_postgres_internal_port }}"
 awx_database_host: awx_postgres
 awx_allowed_hosts: localhost,127.0.0.1
 awx_timezone: UTC

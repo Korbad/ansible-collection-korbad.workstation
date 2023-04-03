@@ -1,16 +1,12 @@
-http {
-    server {
-        listen {{ awx_internal_http_port }};
-        server_name localhost;
+server {
+    listen {{ awx_pod_internal_port }};
+    server_name localhost;
 
-        location / {
-            proxy_pass http://awx_pod:{{ awx_port }};
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-        }
+    location / {
+        proxy_pass http://awx_pod:{{ awx_container_external_port }};
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
-
-events {}

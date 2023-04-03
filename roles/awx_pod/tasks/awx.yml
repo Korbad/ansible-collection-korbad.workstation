@@ -38,14 +38,13 @@
   vars:
     awx_settings_mountpoint: "{{ awx_settings_volume_info.volume.Mountpoint }}"
 
-
 - name: Ensure awx container is running
   containers.podman.podman_container:
     name: "{{ awx_container_name }}"
     image: "{{ awx_image_link }}"
-    command: supervisord -c /etc/supervisord.conf
     requires:
     - awx_postgres
+    - awx_redis
     pod: awx_pod
     state: started
     volumes:
@@ -55,26 +54,19 @@
       DATABASE_USER: awx
       DATABASE_PASSWORD: "{{ awx_postgres_auth_password }}"
       DATABASE_NAME: awx
-      DATABASE_PORT: "{{ postgres_port }}"
+      DATABASE_PORT: "{{ awx_postgres_internal_port }}"
       DATABASE_HOST: awx_postgres
       AWX_ADMIN_USER: admin
       AWX_ADMIN_PASSWORD: "{{ awx_admin_password }}"
+      REDIS_URL: "unix:///var/run/redis/redis.sock"
   register: awx_container
 
-- block:
-  - name: Wait for postgres container to be running
-    ansible.builtin.wait_for:
-      host: awx_postgres
-      port: "{{ postgres_port }}"
-      state: started
-      delay: 10
-      timeout: 60
-
-- name: Run AWX database migration
-  containers.podman.podman_container_exec:
-    container: "{{ awx_container_name }}"
-    command: awx-manage migrate --noinput
-  register: awx_migration_result
-  until: awx_migration_result is success
-  retries: 20
-  delay: 30
+# - name: Run AWX database migration
+#   ansible.builtin.command:
+#     cmd: >-
+#       podman exec {{ awx_container_name }}
+#       awx-manage migrate --noinput
+#   async: 3600
+#   poll: 60
+#   register: awx_database_migration_result
+#   changed_when: "'No migrations to apply' not in awx_database_migration_result.stdout"

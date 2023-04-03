@@ -4,26 +4,29 @@
     name: awx_pod
     state: started
     ports:
-    - "{{ awx_exposed_http_port }}:{{ awx_internal_http_port }}"
+    - "{{ awx_pod_external_port }}:{{ awx_pod_internal_port }}"
 
 - name: Ensure postgres container is running
   include_tasks: postgres.yml
 
+- name: Ensure redis container is running
+  include_tasks: redis.yml
+
 - name: Ensure awx container is running
   include_tasks: awx.yml
 
-- name: Wait for AWX database migrations
-  include_tasks: wait_for_awx_database_migration.yml
+# - name: Wait for AWX database migrations
+#   include_tasks: wait_for_awx_database_migration.yml
 
-- name: Ensure nginx container is running (after awx is running)
-  include_tasks: nginx.yml
+# - name: Ensure nginx container is running (after awx is running)
+#   include_tasks: nginx.yml
 
-- name: Wait for AWX API to be available
-  ansible.builtin.uri:
-    url: "http://localhost:{{ awx_exposed_http_port }}/api/"
-    status_code: 200
-    timeout: 30
-  register: awx_api_result
-  until: awx_api_result.status == 200
-  retries: 60
-  delay: 10
+# - name: Wait for AWX API to be available
+#   ansible.builtin.uri:
+#     url: "http://localhost:{{ awx_pod_external_port }}/api/"
+#     status_code: 200
+#     timeout: 30
+#   register: awx_api_result
+#   until: awx_api_result.status == 200
+#   retries: 60
+#   delay: 10
