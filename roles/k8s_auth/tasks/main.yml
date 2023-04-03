@@ -7,11 +7,3 @@
     client_key: "{{ k8s_client_key }}"
   register: k8s_auth_result
 
-- name: Set k8s_auth_params variable
-  set_fact:
-    k8s_auth_params:
-      validate_certs: yes
-      ca_cert: "{{ k8s_ssl_ca_cert }}"
-      client_cert: "{{ k8s_client_cert }}"
-      client_key: "{{ k8s_client_key }}"
-      host: "{{ k8s_api_host }}"

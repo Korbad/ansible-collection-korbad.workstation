@@ -1,0 +1,58 @@
+---
+- name: Get current kubectl context
+  command: kubectl config current-context
+  register: current_context
+
+- name: Get Minikube cluster configuration
+  command: minikube config view
+  register: minikube_config
+
+- name: Get kubectl config
+  command: kubectl config view --minify -o json
+  register: kubectl_config_output
+
+- name: Set kubectl_config fact
+  set_fact:
+    kubectl_config: "{{ kubectl_config_output.stdout | from_json }}"
+
+- name: Check Kubernetes API server connectivity
+  uri:
+    url: "{{ kubectl_config.clusters[0].cluster.server }}"
+    method: GET
+    validate_certs: "{{ kubectl_config.clusters[0].cluster.certificate-authority-data is defined }}"
+    return_content: yes
+  register: k8s_api_server
+  ignore_errors: yes
+
+- name: Display API server connectivity status
+  debug:
+    msg: "API server is accessible"
+  when: k8s_api_server.status == 200
+
+- name: Display API server connectivity error
+  debug:
+    msg: "API server is not accessible: {{ k8s_api_server.msg }}"
+  when: k8s_api_server.failed
+
+- name: Get namespaces
+  kubernetes.core.k8s_info:
+    kind: Namespace
+    kubeconfig: "{{ kubectl_config }}"
+  register: k8s_namespaces
+  when: not k8s_api_server.failed
+
+- name: Get nodes
+  kubernetes.core.k8s_info:
+    kind: Node
+    kubeconfig: "{{ kubectl_config }}"
+  register: k8s_nodes
+  when: not k8s_api_server.failed
+
+- name: Get pods in all namespaces
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: "{{ item.metadata.name }}"
+    kubeconfig: "{{ kubectl_config }}"
+  register: k8s_pods
+  with_items: "{{ k8s_namespaces.resources }}"
+  when: not k8s_api_server.failed
