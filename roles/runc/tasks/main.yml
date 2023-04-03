@@ -1,0 +1,5 @@
+---
+- name: Ensure runc is installed
+  ansible.builtin.pacman:
+    name: runc
+  become: true
