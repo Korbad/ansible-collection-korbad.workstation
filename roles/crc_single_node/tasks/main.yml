@@ -1,0 +1,42 @@
+---
+- name: Install CRC binary
+  ansible.builtin.copy:
+    src: "{{ crc_binary_path }}/crc"
+    dest: "/usr/local/bin/crc"
+    mode: 0755
+
+- name: Set up CRC
+  ansible.builtin.command:
+    cmd: crc setup
+  become: true
+  register: crc_setup_result
+  changed_when: "'CodeReady Containers is now set up for use' in crc_setup_result.stdout"
+
+- name: Download CRC pull secret
+  get_url:
+    url: "https://mirror.openshift.com/pub/okd/4.9/cluster-authentication-operator/pull-secret"
+    dest: "/tmp/pull-secret"
+    mode: "0600"
+
+- name: Start CRC with OKD
+  ansible.builtin.command:
+    cmd: crc start -p /tmp/pull-secret --memory 16384 --cpus 4
+  become: true
+  register: crc_start_result
+  changed_when: "'Started the OpenShift cluster' in crc_start_result.stdout"
+
+- name: Get CRC login command
+  ansible.builtin.command:
+    cmd: crc console --credentials
+  become: true
+  register: crc_login_command_result
+
+- name: Extract login command
+  set_fact:
+    crc_login_command: "{{ crc_login_command_result.stdout_lines[-1] }}"
+  become: true
+
+- name: Log in to CRC
+  ansible.builtin.shell:
+    cmd: "{{ crc_login_command }}"
+  become: true
