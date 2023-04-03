@@ -1,0 +1,12 @@
+---
+vault_env:
+  VAULT_ADDR: http://<localhost_ip>:30820
+  VAULT_TOKEN: <token from vault web ui>
+PSQL_USER: awx_admin
+generate_password:
+  - name: awx
+    path: creds/awx
+  - name: postgres
+    path: creds/postgres
+  - name: traggo
+    path: creds/traggo

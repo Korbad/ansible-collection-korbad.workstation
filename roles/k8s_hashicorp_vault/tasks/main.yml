@@ -1,0 +1,14 @@
+---
+- name: Add Hashicorp Repository
+  kubernetes.core.helm_repository:
+    name: hashicorp
+    repo_url: "https://helm.releases.hashicorp.com"
+
+- name: Deploy Hashicorp Vault
+  kubernetes.core.helm:
+    name: test
+    chart_ref: hashicorp/vault
+    update_repo_cache: true
+    release_namespace: tools
+    values: "{{ lookup('file', 'vault-values.yml') | from_yaml }}"
+    force: true
