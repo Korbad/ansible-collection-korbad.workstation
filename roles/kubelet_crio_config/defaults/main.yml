@@ -1,0 +1,3 @@
+kubelet_extra_args: "--container-runtime=remote --container-runtime-endpoint=unix:///var/run/crio/crio.sock --runtime-request-timeout=5m"
+kubelet_vars_config_file: /var/lib/kubelet/config.yaml
+kubelet_service_kubeadm_config_file: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf

@@ -1,0 +1,35 @@
+---
+- name: Update containerRuntimeEndpoint in kubelet config.yaml
+  ansible.builtin.lineinfile:
+    path: "{{ kubelet_vars_config_file }}"
+    regexp: '^containerRuntimeEndpoint:'
+    line: 'containerRuntimeEndpoint: "unix:///var/run/crio/crio.sock"'
+  become: true
+  notify:
+  - restart kubelet service
+  - restart crio service
+  - reload systemd daemon
+
+- name: Configure kubelet to use CRI-O container runtime
+  lineinfile:
+    path: "{{ kubelet_service_kubeadm_config_file }}"
+    regexp: '^Environment="KUBELET_EXTRA_ARGS='
+    line: 'Environment="KUBELET_EXTRA_ARGS={{ kubelet_extra_args }}"'
+    create: yes
+    state: present
+  become: true
+  notify:
+  - restart kubelet service
+  - restart crio service
+  - reload systemd daemon
+
+- name: Update kubelet service file to include container-runtime-endpoint flag
+  ansible.builtin.lineinfile:
+    path: "{{ kubelet_service_kubeadm_config_file }}"
+    regexp: '^(ExecStart=.*)$'
+    line: '\1 --container-runtime-endpoint=unix:///var/run/crio/crio.sock'
+  become: true
+  notify:
+  - restart kubelet service
+  - restart crio service
+  - reload systemd daemon
