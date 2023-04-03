@@ -1,0 +1,18 @@
+---
+- name: Clone AWX repository
+  ansible.builtin.git:
+    repo: https://github.com/ansible/awx.git
+    dest: "{{ awx_repo_path }}"
+    force: yes
+
+- name: Install Ansible collections
+  ansible.builtin.command:
+    cmd: ansible-galaxy collection install -r {{ awx_repo_path }}/requirements.yml
+    warn: no
+
+- name: Deploy AWX with Podman
+  ansible.builtin.include_role:
+    name: awx
+  vars:
+    awx_repo_path: "{{ awx_repo_path }}"
+  tags: deploy
