@@ -1,0 +1,9 @@
+- name: Apply Flannel networking
+  kubernetes.core.k8s:
+    state: present
+    kubeconfig: "{{ ansible_env.HOME }}/.kube/config"
+    definition: "{{ lookup('url', 'https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml', split_lines=False) }}"
+  register: flannel_result
+  until: flannel_result is succeeded
+  retries: 5
+  delay: 10

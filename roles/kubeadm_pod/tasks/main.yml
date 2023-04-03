@@ -2,37 +2,65 @@
 
 - name: Initialize kubeadm
   ansible.builtin.shell:
-    cmd: kubeadm init --pod-network-cidr={{ pod_network_cidr }}
+    cmd: kubeadm init --config={{ kubadm_config_file }}
   register: kubeadm_init_output
   args:
     creates: /etc/kubernetes/admin.conf
-  become: true   
-
-- name: Setup kubeconfig for root user
-  ansible.builtin.assemble:
-    src: /etc/kubernetes/admin.conf
-    dest: /root/.kube/config
-    mode: 0644
   become: true
 
-- name: Install Flannel network plugin
-  kubernetes.core.k8s:
-    state: present
-    src: https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-    kubeconfig: /etc/kubernetes/admin.conf
+- name: Display kubeadm init output
+  debug:
+    var: kubeadm_init_output.stdout_lines
 
-- name: Allow workloads on the master node
+# - include_role:
+#     name: k8s_auth
+
+# - name: Authenticate with the Kubernetes API
+#   kubernetes.core.k8s_auth:
+#     host: "https://{{ inventory_hostname }}:{{ k8s_api_port }}"
+#     ca_cert: "{{ ca_cert_path }}"
+#     username: minikube
+#     password: your_password
+#   register: auth_results
+
+- name: Create a namespace
   kubernetes.core.k8s:
-    api_version: v1
-    kind: Node
-    name: "{{ ansible_hostname }}"
-    kubeconfig: /etc/kubernetes/admin.conf
-    apply: yes
+    kubeconfig: "{{ ansible_env.HOME }}/.kube/config"
+    state: present
     definition:
+      apiVersion: v1
+      kind: Namespace
       metadata:
-        labels:
-          node-role.kubernetes.io/master: ""
-        taints:
-          - effect: "NoSchedule"
-            key: "node-role.kubernetes.io/master"
-            time_added: null
+        name: my-namespace
+  environment:
+    KUBECONFIG: "{{ ansible_env.HOME }}/.kube/config"
+    K8S_AUTH_KUBECONFIG: "{{ ansible_env.HOME }}/.kube/config"
+    K8S_AUTH_API_KEY: "{{ auth_results.k8s_auth.api_key }}"
+
+
+# - name: Setup kubectl config
+#   kubernetes.core.k8s_config:
+#     kubeconfig_path: "{{ ansible_env.HOME }}/.kube/config"
+#     context: kubernetes-admin@kubernetes
+#     cluster: kubernetes
+#     api_server: "https://{{ inventory_hostname }}:{{ k8s_api_port }}"
+#     validate_certs: no
+
+# - name: Install Flannel network plugin
+#   include_tasks: networking.yml
+
+# - name: Allow workloads on the master node
+#   kubernetes.core.k8s:
+#     api_version: v1
+#     kind: Node
+#     name: "{{ ansible_hostname }}"
+#     kubeconfig: /etc/kubernetes/admin.conf
+#     apply: yes
+#     definition:
+#       metadata:
+#         labels:
+#           node-role.kubernetes.io/master: ""
+#         taints:
+#           - effect: "NoSchedule"
+#             key: "node-role.kubernetes.io/master"
+#             time_added: null
