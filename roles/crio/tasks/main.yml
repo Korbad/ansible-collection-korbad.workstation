@@ -10,3 +10,23 @@
     state: started
     enabled: yes
   become: true
+
+- name: Ensure /var/log/crio and /var/log/crio/pods directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - /var/log/crio
+    - /var/log/crio/pods
+  become: true
+  notify: restart crio service
+
+- name: Ensure configuration file is accurate
+  include_tasks: runtime_config.yml
+
+# -  debug: msg="crio restart"
+#    notify: restart crio service
+#    changed_when: true

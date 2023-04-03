@@ -1,0 +1,4 @@
+---
+dependencies:
+  - cni_plugins
+  - systemd

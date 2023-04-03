@@ -1,0 +1,9 @@
+---
+- name: Update CRI-O configuration
+  ansible.builtin.template:
+    src: templates/crio.conf.j2
+    dest: "{{ crio_conf_path }}"
+    mode: 0644
+  become: true
+  changed_when: true
+  notify: restart and reload crio service

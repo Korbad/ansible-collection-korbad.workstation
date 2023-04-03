@@ -1,0 +1,11 @@
+[crio]
+log_level = "{{ crio_log_level }}"
+
+[crio.storage]
+root = "{{ crio_storage_root }}"
+runroot = "{{ crio_storage_runroot }}"
+
+{% if crio_runtime | length > 0 %}
+[crio.runtime]
+runtime = "{{ crio_runtime }}"
+{% endif %}

@@ -16,3 +16,11 @@
     name: cri-o
     state: absent
   become: true
+
+- name: Remove CRI-O configuration and data directories
+  ansible.builtin.file:
+    path:
+      - /etc/crio
+      - /var/lib/containers
+    state: absent
+  become: true

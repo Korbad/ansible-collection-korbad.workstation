@@ -1,0 +1,10 @@
+- name: Check if CRI-O is running in rootless mode
+  ansible.builtin.shell:
+    cmd: "crictl info | grep -q 'rootless: true'"
+  changed_when: false
+  register: crio_rootless_check
+  ignore_errors: true
+
+- name: Display CRI-O mode
+  ansible.builtin.debug:
+    msg: "CRI-O is running in {{ 'rootless' if crio_rootless_check.rc == 0 else 'rootful' }} mode"

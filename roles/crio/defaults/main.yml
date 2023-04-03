@@ -1,0 +1,6 @@
+crio_conf_path: /etc/crio/crio.conf
+crio_log_level: info
+crio_storage_root: /var/lib/containers/storage
+crio_storage_runroot: /var/run/containers/storage
+crio_runtime: runc
+user_home: "{{ ansible_env.HOME }}"

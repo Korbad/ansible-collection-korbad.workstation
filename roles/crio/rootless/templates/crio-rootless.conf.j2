@@ -1,0 +1,35 @@
+[crio]
+cgroup_manager = "cgroupfs"
+storage_driver = "overlay"
+conmon = "/usr/bin/conmon"
+pids_limit = 1024
+registries = ['docker.io', 'quay.io']
+rootless = true
+rootless_cni = true
+rootless_extra_mounts = ["/var/run:/var/run:shared"]
+[crio.image]
+default_transport = "docker-daemon"
+[crio.runtime]
+runtime = "runc"
+[crio.network]
+plugin_path = "/usr/libexec/cni"
+network_dir = "/etc/cni/net.d"
+[crio.cni]
+bin_dir = "/usr/libexec/cni"
+conf_dir = "/etc/cni/net.d"
+[crio.cni.plugins]
+path = [
+    "/usr/libexec/cni",
+    "/opt/cni/bin"
+]
+[crio.cni.plugins.podman]
+executable = "/usr/bin/podman"
+args = [
+    "cni",
+    "--conmon",
+    "/usr/bin/conmon",
+    "--cni-conf-dir",
+    "/etc/cni/net.d",
+    "--cni-bin-dir",
+    "/usr/libexec/cni"
+]
