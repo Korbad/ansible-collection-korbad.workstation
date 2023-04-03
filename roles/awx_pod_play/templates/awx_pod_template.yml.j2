@@ -19,7 +19,7 @@ spec:
     - name: DATABASE_NAME
       value: awx
     - name: DATABASE_PORT
-      value: "{{ postgres_port }}"
+      value: "{{ awx_postgres_internal_port }}"
     - name: DATABASE_HOST
       value: awx-postgres
     - name: AWX_ADMIN_USER
@@ -38,7 +38,7 @@ spec:
     - name: DATABASE_NAME
       value: awx
     - name: DATABASE_PORT
-      value: "{{ postgres_port }}"
+      value: "{{ awx_postgres_internal_port }}"
     - name: DATABASE_HOST
       value: awx-postgres
     - name: AWX_ADMIN_USER
@@ -56,5 +56,5 @@ spec:
     - name: POSTGRES_DB
       value: awx
     ports:
-    - containerPort: {{ postgres_port }}
+    - containerPort: {{ awx_postgres_internal_port }}
 

@@ -1,4 +1,4 @@
 awx_image_link: quay.io/ansible/awx
 awx_image_version: 19.2.2
 postgres_image_version: 12
-postgres_port: 5432
+awx_postgres_internal_port: 5432
