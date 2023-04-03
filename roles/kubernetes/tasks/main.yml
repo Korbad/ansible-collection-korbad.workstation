@@ -3,11 +3,3 @@
   pip:
     name: 
     - kubernetes
-
-- name: Install portainer agent in cluster
-  include_role:
-    name: kubernetes/portainer_agent
-
-- name: Install hashi_vault in cluster
-  include_role:
-    name: kubernetes/hashicorp_vault
