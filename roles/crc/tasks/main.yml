@@ -1,0 +1,4 @@
+---
+- name: Ensure crc-bin is installed
+  kewlfft.aur.aur:
+    name: crc-bin

@@ -1,0 +1,6 @@
+---
+crc_sem_ver: 4.9.0-rc.4
+crc_download_url: "https://mirror.openshift.com/pub/okd/{{ crc_sem_ver }}/{{ crc_sem_ver }}/okd/server/crc-linux-amd64.tar.xz"
+crc_download_dest: "/tmp/crc-linux-amd64.tar.xz"
+crc_extract_dest: "/tmp"
+crc_install_path: "/usr/local/bin/crc"
