@@ -1,0 +1,19 @@
+---
+- name: Check if OKD installation and client binaries exist
+  stat:
+    path: "{{ okd_binary_dest }}/{{ item }}"
+  register: binaries_check
+  with_items:
+    - openshift-install
+    - oc
+
+- name: Extract OKD installation and client binaries using oc
+  command: oc adm release extract --tools "{{ okd_container_image_link }}" --to="{{ okd_binary_dest }}"
+  args:
+    creates:
+      - "{{ okd_binary_dest }}/openshift-install"
+      - "{{ okd_binary_dest }}/oc"
+  become: true
+  register: extract_result
+  changed_when: extract_result.stdout != ""
+  when: not (binaries_check.results | map(attribute='stat.exists') | select('equalto', true) | list | length == 2)

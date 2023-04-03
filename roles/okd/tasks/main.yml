@@ -1,0 +1,55 @@
+---
+- name: Set crc config for okd
+  command:
+    cmd: crc config set preset okd
+
+
+- name: Pull okd installer using oc
+  include_tasks: pull_using_oc.yml
+
+- name: Create installation directory
+  file:
+    path: "{{ okd_install_directory }}"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Create pull-secret file from template
+  template:
+    src: pull-secret.json.j2
+    dest: "{{ okd_install_directory }}/pull-secret.json"
+    mode: '0600'
+  become: true
+
+- name: Read the content of pull-secret.json
+  ansible.builtin.slurp:
+    src: "{{ okd_install_directory }}/pull-secret.json"
+  register: pull_secret_slurp
+  become: true
+
+- name: Read the content of the SSH public key
+  ansible.builtin.slurp:
+    src: "~/.ssh/id_rsa.pub"
+  register: ssh_key_slurp
+
+- name: Create install-config.yaml from template
+  template:
+    src: install-config.yaml.j2
+    dest: "{{ okd_install_directory }}/install-config.yaml"
+  vars:
+    pull_secret_content: "{{ pull_secret_slurp.content | b64decode }}"
+    ssh_key_content: "{{ ssh_key_slurp.content | b64decode }}"
+  become: true
+
+- name: Run OKD installer
+  command: openshift-install create cluster --dir={{ okd_install_directory }}
+  args:
+    chdir: "{{ okd_install_directory }}"
+    creates: "{{ okd_install_directory }}/auth/kubeconfig"
+  become: true
+
+- name: Copy kubeconfig file
+  copy:
+    src: "{{ okd_install_directory }}/auth/kubeconfig"
+    dest: "~/.kube/config"
+    mode: '0600'

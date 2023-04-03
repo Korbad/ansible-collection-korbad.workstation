@@ -1,0 +1,6 @@
+---
+okd_container_image_tag: 4.12.0-0.okd-2023-03-18-084815
+okd_container_image_link: "quay.io/openshift/okd:{{ okd_container_image_tag }}"
+okd_binary_dest: /usr/local/bin
+okd_install_directory: /opt/okd-install
+okd_pull_secret_file: pull-secret.json

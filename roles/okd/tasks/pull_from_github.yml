@@ -1,0 +1,23 @@
+- name: Download OKD installation and client binaries
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ lookup('env', 'HOME') }}/{{ item.filename }}"
+    mode: '0755'
+  loop:
+    - url: "{{ okd_install_binary_url }}"
+      filename: "openshift-install-linux.tar.gz"
+    - url: "{{ okd_client_binary_url }}"
+      filename: "openshift-client-linux.tar.gz"
+  register: downloaded_binaries
+  changed_when: "'OK' in (downloaded_binaries.results | map(attribute='msg') | list)"
+
+- name: Extract OKD installation and client binaries
+  unarchive:
+    src: "{{ lookup('env', 'HOME') }}/{{ item.src }}"
+    dest: "{{ okd_binary_dest }}"
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+  loop:
+    - src: "openshift-install-linux.tar.gz"
+    - src: "openshift-client-linux.tar.gz"
+  when: downloaded_binaries.changed

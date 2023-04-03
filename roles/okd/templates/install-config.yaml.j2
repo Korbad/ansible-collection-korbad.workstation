@@ -1,0 +1,17 @@
+# roles/okd_install/templates/install-config.yaml.j2
+---
+apiVersion: v1
+baseDomain: example.com
+metadata:
+  name: okd-cluster
+platform:
+  none: {}
+compute:
+- name: worker
+  replicas: 0
+controlPlane:
+  name: master
+  replicas: 1
+fips: false
+pullSecret: '{{ pull_secret_content }}'
+sshKey: '{{ ssh_key_content }}'
