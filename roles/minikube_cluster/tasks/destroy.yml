@@ -1,0 +1,5 @@
+- name: Stop Minikube cluster
+  command: minikube stop
+
+- name: Delete Minikube cluster
+  command: minikube delete --all
