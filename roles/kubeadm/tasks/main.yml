@@ -1,0 +1,11 @@
+---
+- name: Install kubeadm package
+  pacman:
+    name: kubeadm
+  become: true
+
+- name: Create kubeadm configuration file from template
+  ansible.builtin.template:
+    src: kubeadm-config.yaml.j2
+    dest: "{{ kubadm_config_file }}"
+  become: true

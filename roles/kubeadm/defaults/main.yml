@@ -1,0 +1,1 @@
+kubadm_config_file: /etc/kubernetes/kubeadm-config.yaml
