@@ -3,8 +3,3 @@
   package:
     name: patch
   become: true
-
-- name: Upgrade AUR
-  kewlfft.aur.aur:
-    upgrade: true
-    update_cache: true
