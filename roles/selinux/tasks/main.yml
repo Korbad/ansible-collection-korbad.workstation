@@ -1,0 +1,4 @@
+- name: Ensure SELinux is in permissive mode
+  ansible.builtin.selinux:
+    state: "{{ selinux_state }}"
+  become: true
