@@ -1,10 +1,10 @@
 - name: Install {{ extension }} extension
   command: code --install-extension {{ extension }}
   args:
-    creates: "{{ (vscode_extensions_path, extension) | path_join }}
-  register: "{{ extension }}_installed"
+    creates: "{{ (code_oss_extensions_path, extension) | path_join }}"
+  register: extension_install
 
 - name: Fail if extension not installed
   fail:
     msg: "{{ extension }} extension not installed"
-  when: "{{ extension }}_installed.rc != 0"
+  when: extension_install.rc != 0
