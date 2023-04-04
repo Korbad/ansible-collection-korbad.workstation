@@ -3,7 +3,7 @@
     path: /etc/systemd/system/crun.service
   register: crun_service_file
 
-- name: Ensure the CRI-O service is disabled and stopped
+- name: Ensure the crun service is disabled and stopped
   ansible.builtin.systemd:
     name: crun
     state: stopped
@@ -11,8 +11,9 @@
   become: true
   when: crun_service_file.stat.exists
 
-- name: Ensure crun-o is not installed
+- name: Ensure crun is not installed
   ansible.builtin.pacman:
-    name: cri-o
+    name: crun
     state: absent
+    force: true
   become: true
