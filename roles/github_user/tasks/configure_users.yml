@@ -1,0 +1,28 @@
+---
+- name: Ensure sudo group exists
+  group:
+    name: sudo
+  become: true
+
+- name: "Manage {{ github_username }} user"
+  user:
+    name: "{{ github_username }}"
+    create_home: yes
+    system: yes
+    groups:
+      - sudo
+  become: true
+
+- name: Manage /etc/sudoers.d directory
+  file:
+    path: /etc/sudoers.d
+    state: directory
+  become: true
+
+- name: Manage sudoers file
+  community.general.sudoers:
+    name: "{{ github_username }}"
+    user: "{{ github_username }}"
+    commands: ALL
+    state: present
+  become: true

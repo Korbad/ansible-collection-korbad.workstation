@@ -1,0 +1,8 @@
+---
+- name: Authorize public key pulled from github
+  ansible.posix.authorized_key:
+    user: "{{ github_username }}"
+    state: present
+    key: "https://github.com/{{ github_username }}.keys"
+    manage_dir: true
+  become: true
