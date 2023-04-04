@@ -1,0 +1,3 @@
+iptables_package_state: present
+iptables_service_state: started
+iptables_service_enabled: true

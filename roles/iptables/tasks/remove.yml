@@ -1,0 +1,13 @@
+- name: Stop and disable iptables service
+  systemd:
+    name: iptables
+    state: stopped
+    enabled: no
+  become: true
+  ignore_errors: true
+
+- name: Ensure iptables package is not installed
+  pacman:
+    name: iptables
+    state: absent
+  become: true

@@ -1,0 +1,20 @@
+---
+- name: Ensure iptables packages are in their desired state
+  ansible.builtin.package:
+    name: iptables
+    state: "{{ iptables_package_state }}"
+  register: pkg_install_result
+  become: true
+
+- name: Manage iptables service
+  ansible.builtin.service:
+    state: "{{ iptables_service_state }}"
+    name: iptables
+    enabled: "{{ iptables_service_enabled }}"
+  become: true
+
+- name: Ensure iptables-nft package is installed
+  pacman:
+    name: iptables-nft
+    state: present
+  become: true
