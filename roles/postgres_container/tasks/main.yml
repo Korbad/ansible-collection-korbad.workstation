@@ -1,0 +1,29 @@
+---
+- name: Get postgres image stats if it exists
+  containers.podman.podman_image_info:
+    name: "{{ standalone_postgres_image_link }}:{{ standalone_postgres_image_version }}"
+  register: postgres_image_info
+
+- name: Ensure postgres image exists
+  containers.podman.podman_image:
+    name: "{{ standalone_postgres_image_link }}"
+    tag: "{{ standalone_postgres_image_version }}"
+  when: postgres_image_info.images|length == 0
+
+- name: Ensure volume exists for db
+  containers.podman.podman_volume:
+    name: standalone_postgres_volume
+
+- name: Ensure database container is running
+  containers.podman.podman_container:
+    name: standalone_postgres
+    image: "{{ standalone_postgres_image_link }}"
+    pod: standalone_pod
+    state: started
+    volumes:
+    - standalone_postgres_volume:/var/lib/postgresql/data
+    env:
+      POSTGRES_USER: standalone
+      POSTGRES_PASSWORD: "{{ standalone_postgres_auth_password }}"
+      POSTGRES_DB: standalone
+  
