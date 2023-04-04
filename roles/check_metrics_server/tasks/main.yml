@@ -1,0 +1,24 @@
+---
+- name: Check Metrics Server status
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: kube-system
+    label_selectors:
+      - k8s-app=metrics-server
+    kubeconfig: "{{ kubeconfig_path | default(omit,True) }}"
+  register: metrics_server_pods
+
+- name: Display Metrics Server pods status
+  ansible.builtin.debug:
+    var: metrics_server_pods.resources
+
+- name: Check Metrics Server permissions
+  kubernetes.core.k8s_info:
+    kind: ClusterRole,ClusterRoleBinding
+    namespace: kube-system
+    kubeconfig: "{{ kubeconfig_path | default(omit,True) }}"
+  register: metrics_server_permissions
+
+- name: Display Metrics Server permissions
+  ansible.builtin.debug:
+    var: metrics_server_permissions.resources
