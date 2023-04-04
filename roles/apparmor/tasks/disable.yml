@@ -1,0 +1,13 @@
+- name: Check if AppArmor is active
+  ansible.builtin.shell: systemctl is-active apparmor
+  register: apparmor_status
+  changed_when: false
+  failed_when: false
+  become: true
+
+- name: Stop AppArmor if it's active
+  ansible.builtin.systemd:
+    name: apparmor
+    state: stopped
+  when: apparmor_status.stdout == 'active'
+  become: true
