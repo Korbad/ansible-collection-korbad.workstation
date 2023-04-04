@@ -1,7 +1,0 @@
----
-firewall_software: ufw
-supported_firewall_software:
-- ufw
-- nftables
-- iptables
-- firewalld
