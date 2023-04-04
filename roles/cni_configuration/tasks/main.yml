@@ -1,0 +1,39 @@
+---
+- name: List all pods in kube-system namespace
+  kubernetes.core.k8s_info:
+    kind: Pod
+    namespace: kube-system
+    kubeconfig: "{{ kubeconfig_path | default(omit,True) }}"
+  register: kube_system_pods
+
+- name: Display kube-system pods
+  ansible.builtin.debug:
+    var: kube_system_pods.resources
+
+# - name: Ensure CNI configuration directory exists
+#   ansible.builtin.file:
+#     path: /etc/cni/net.d
+#     state: directory
+
+# - name: Copy CNI configuration file
+#   ansible.builtin.copy:
+#     src: /path/to/your/cni/configuration/file
+#     dest: /etc/cni/net.d
+#     owner: root
+#     group: root
+#     mode: '0644'
+
+# - name: Ensure CNI plugin directory exists
+#   ansible.builtin.file:
+#     path: /opt/cni/bin
+#     state: directory
+
+# - name: Copy CNI plugin binaries
+#   ansible.builtin.copy:
+#     src: /path/to/your/cni/plugin/binaries
+#     dest: /opt/cni/bin
+#     owner: root
+#     group: root
+#     mode: '0755'
+
+
