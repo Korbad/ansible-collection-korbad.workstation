@@ -1,0 +1,38 @@
+---
+- name: Get nginx image stats if it exists
+  containers.podman.podman_image_info:
+    name: "{{ standalone_nginx_image_link }}:{{ standalone_nginx_image_version }}"
+  register: nginx_image_info
+
+- name: Ensure nginx image exists
+  containers.podman.podman_image:
+    name: "{{ standalone_nginx_image_link }}"
+    tag: "{{ standalone_nginx_image_version }}"
+  when: nginx_image_info.images|length == 0
+
+- name: Ensure nginx hmtl volume exists
+  containers.podman.podman_volume:
+    name: standalone_nginx_html_volume
+
+- name: Ensure nginx conf volume exists
+  containers.podman.podman_volume:
+    name: standalone_nginx_conf_volume
+  register: standalone_nginx_conf_volume_info
+
+# - name: Write nginx configuration file to volume
+#   template:
+#     src: nginx.conf.j2
+#     dest: "{{ standalone_nginx_conf_mountpoint }}/nginx.conf"
+#   vars:
+#     standalone_nginx_conf_mountpoint: "{{ standalone_nginx_conf_volume_info.volume.Mountpoint }}"
+
+- name: Ensure nginx container is running
+  containers.podman.podman_container:
+    name: standalone_nginx
+    image: "{{ standalone_nginx_image_link }}"
+    state: started
+    publish:
+      - "8111:80"
+    volumes:
+    - standalone_nginx_html_volume:/usr/share/nginx/html
+    - standalone_nginx_conf_volume:/etc/nginx/conf.d

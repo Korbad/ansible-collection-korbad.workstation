@@ -1,0 +1,2 @@
+standalone_nginx_image_link: quay.io/libpod/alpine_nginx
+standalone_nginx_image_version: latest
