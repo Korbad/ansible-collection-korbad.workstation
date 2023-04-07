@@ -1,0 +1,13 @@
+- name: Download metrics-server components
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+    dest: "{{ managed_k8s_manifests_path }}/dashboard.yaml"
+    force: no
+  register: download_result
+
+- name: Apply metrics-server components
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    src: "{{ managed_k8s_manifests_path }}/dashboard.yaml"
+  when: download_result is changed
