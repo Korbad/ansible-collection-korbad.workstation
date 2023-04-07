@@ -3,9 +3,23 @@
     name: firewalld
     state: "{{ firewalld_state }}"
   become: true
+  notify:
+  - restart and enable firewalld
 
 - name: Install python3-firewall package
   ansible.builtin.package:
     name: python3-firewall
     state: "{{ firewalld_state }}"
   become: true
+  notify:
+  - restart and enable firewalld
+
+- name: Update FirewallBackend parameter to use iptables
+  ini_file:
+    path: /etc/firewalld/firewalld.conf
+    section: firewalld
+    option: FirewallBackend
+    value: iptables
+  become: true
+  notify:
+  - restart and enable firewalld
