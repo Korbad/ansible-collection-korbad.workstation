@@ -1,5 +1,4 @@
-- name: Install Cockpit plugins
-  package:
+- name: Ensure cockpit plugins are installed
+  community.general.pacman:
     name: "{{ cockpit_plugins }}"
-    state: present
   become: true

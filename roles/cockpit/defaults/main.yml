@@ -1,13 +1,9 @@
 ---
 cockpit_exposed_http_port: 9090
 cockpit_plugins:
-- cockpit-dashboard
-- cockpit-podman
 - cockpit-machines
-- cockpit-networkmanager
+- cockpit-podman
+- cockpit-pcp
+- cockpit-storaged
 - cockpit-packagekit
-- cockpit-selinux
-- cockpit-firewall
-- cockpit-nftables
-- cockpit-nftables-services
-- cockpit-nftables-ssh
+

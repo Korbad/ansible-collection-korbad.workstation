@@ -14,3 +14,6 @@
 
 - name: Update cockpit.socket configuration
   include_tasks: firewall.yml
+
+- name: Ensure cockpit plugins are installed
+  include_tasks: plugins.yml
