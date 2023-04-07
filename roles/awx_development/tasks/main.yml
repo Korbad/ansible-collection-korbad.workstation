@@ -1,0 +1,40 @@
+---
+# https://github.com/ansible/awx/blob/21.14.0/tools/docker-compose/README.md
+
+- name: Create temporary directory
+  tempfile:
+    state: directory
+  register: temp_dir
+
+- name: Clone awx repo
+  git:
+    repo: https://github.com/ansible/awx.git
+    dest: "{{ temp_dir.path }}"
+    version: "{{ awx_version | default(omit, True) }}"
+
+# - name: Create receptor container === CONTAINERCMD=docker TAG=quay.io/ansible/receptor:v1.3.0 make container
+# - name: Set ENV VAR RECEPTOR_IMAGE for both the docker-compose-build and docker-compose steps # # export RECEPTOR_IMAGE=quay.io/ansible/receptor:v1.3.0
+# - name: Update file tools/docker-compose/inventory
+# - name: inventory file, set your pg_password, broadcast_websocket_secret, secret_key, and any other settings you need for your deployment.
+# - name: Update file tools/docker-compose/ansible/migrate.yml
+
+- name: Ensure receptor image exists
+
+- name: compose-build
+  command:
+    cmd: make docker-compose-build
+    chdir: "{{ temp_dir.path }}"
+  environment:
+    COMPOSE_TAG: devel
+    COMPOSE_UP_OPTS: -d
+    RECEPTOR_IMAGE: "{{ receptor_image_full_link }}"
+
+# - name: Check container image list for ansible/awx_devel image
+# - name: Execute make docker-compose (this attaches the terminal session to the awx container, we'll need to work around that)
+# - name: http response test https://localhost:8043/#/home
+# - name: api response test https://localhost:8043/api/v2
+# - name: create admin user, from within container shell execute $ docker exec -ti tools_awx_1 awx-manage createsuperuser
+# - name: check running container tools_postgres_1
+# - name: OPTIONAL There are more steps (Cluster testing, different database stuff)
+# - name: OPTIONAL SAML/OIDC authentication (ldap, keycloak)
+# - name: OPTIONAL splunk (or prometheus, grafana)
