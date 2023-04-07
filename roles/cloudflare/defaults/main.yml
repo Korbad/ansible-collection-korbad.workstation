@@ -1,0 +1,5 @@
+---
+cloudflare_api_token: "Insert api token"
+cloudflare_zone_id: "your zone id here"
+cloudflare_tunnel_name: "your tunnel name here"
+cloudflare_tunnel_url: "your tunnel url here"

@@ -1,0 +1,292 @@
+# Current step
+#  Assign values to the variables
+#  Link to steps = https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/deployment-guides/ansible/
+
+
+# ***Notes
+# if symlink is already on the system, you can comment the symlink task to avoid the error like this below
+
+# fatal: [localhost]: FAILED! => {"changed": true, "cmd": "sudo ln -s /var/lib/snapd/snap /snap", "delta": "0:00:00.009555", "end": "2023-01-11 18:47:38.868236", "msg": "non-zero return code", "rc": 1, "start": "2023-01-11 18:47:38.858681", "stderr": "ln: failed to create symbolic link '/snap/snap': File exists", "stderr_lines": ["ln: failed to create symbolic link '/snap/snap': File exists"], "stdout": "", "stdout_lines": []}
+
+- name: install snapd
+  pacman:
+    name: snapd
+    state: present
+
+- name: install terraform
+  pacman:
+    name: terraform
+    state: present
+
+- name: Enable and start snapd. socket
+  shell: sudo systemctl enable --now snapd.socket
+
+# - name: Create symlink
+#   shell: sudo ln -s /var/lib/snapd/snap /snap
+
+- name: Install google-cloud-sdk
+  shell: sudo snap install google-cloud-sdk --classic 
+
+- name: Install google-cloud cli
+  shell: gcloud auth application-default login
+  
+- name: Create ansible-tunnel directory
+  become: true
+  file:
+    path: /home/jhumel/repo/ManjaroOS/ansible-tunnel
+    state: directory
+
+- name: Navigate to ansible-tunnel directory
+  become: true
+  command: pwd
+  args:
+    chdir: /home/jhumel/repo/ManjaroOS/ansible-tunnel
+
+# - name: Create variables.tf file
+#   become: true
+#   file:
+#     path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/variables.tf
+#     state: touch
+    
+# - name: Add content to variables.tf file
+#   become: true
+#   blockinfile:
+#     path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/variables.tf
+#     block: |
+#       # GCP variablesvariable 
+#       "gcp_project_id" {  
+#           description = "Google Cloud Platform (GCP) project ID"  
+#           type        = string
+#       }
+
+#       variable "zone" {  
+#           description = "Geographical zone for the GCP VM instance"  
+#           type        = string
+#       }
+
+#       variable "machine_type" {  
+#           description = "Machine type for the GCP VM instance"  
+#           type        = string
+#       }
+
+#       # Cloudflare variables
+
+#       variable "cloudflare_zone" {  
+#           description = "Domain used to expose the GCP VM instance to the Internet"  
+#           type        = string
+#       }
+
+#       variable "cloudflare_zone_id" {  
+#           description = "Zone ID for your domain"  
+#           type        = string
+#       }
+
+#       variable "cloudflare_account_id" {  
+#           description = "Account ID for your Cloudflare account"  
+#           type        = string  
+#           sensitive   = true
+#       }
+
+#       variable "cloudflare_email" {  
+#           description = "Email address for your Cloudflare account"  
+#           type        = string  
+#           sensitive   = true
+#       }
+
+#       variable "cloudflare_token" {  
+#           description = "Cloudflare API token created at https://dash.cloudflare.com/profile/api-tokens"  
+#           type        = string}
+
+# - name: Create terraform.tfvars file
+#   become: true
+#   file:
+#     path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/terraform.tfvars
+#     state: touch
+    
+# - name: Add content to terraform.tfvars file
+#   become: true
+#   blockinfile:
+#     path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/terraform.tfvars
+#     block: |
+#      cloudflare_zone           = ""
+#      cloudflare_zone_id        = ""
+#      cloudflare_account_id     = "
+#      cloudflare_email          = ""
+#      cloudflare_token          = ""
+#      gcp_project_id            = "local-abbey-374407"
+#      zone                      = "Asia/Manila"
+#      machine_type              = "Linux"
+
+- name: Adding providers.tf file
+  become: true
+  file:
+    path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/providers.tf
+    state: touch
+    
+- name: Add content to providers.tf file
+  become: true
+  blockinfile:
+    path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/providers.tf
+    block: |
+      terraform {  
+        required_providers {    
+          cloudflare = {      
+            source = "cloudflare/cloudflare"    
+          }    
+        
+          google = {      
+            source = "hashicorp/google"    
+          }    
+        
+          random = {      
+            source = "hashicorp/random"    
+          }  
+        }  
+        required_version = ">= 0.13"
+      }
+
+      # Providers
+
+      provider "cloudflare" {  
+          api_token    = var.cloudflare_token
+      }
+      provider "google" {  
+          project    = var.gcp_project_id
+      }
+
+      provider "random" {
+
+      }
+
+- name: Create Cloudflare-config.tf
+  become: true
+  file:
+    path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/Cloudflare-config.tf
+    state: touch
+    
+- name: Add content to Cloudflare-config.tf file
+  become: true
+  blockinfile:
+    path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/Cloudflare-config.tf
+    block: |
+      # Generates a 35-character secret for the tunnel
+      resource "random_id" "tunnel_secret" {
+      byte_length = 35
+      }
+
+      # Creates a new locally-managed tunnel for the GCP VM
+      resource "cloudflare_algo_tunnel" "auto_tunnel" {
+      account_id = vars.cloudflare_account_id
+      name       = "Ansible GCP tunnel"
+      secret     = random_id.tunnel_secret.b64_std
+      }
+
+      # Creates the CNAME record that routes ssh_app.${var.cloudflare_zone} to the tunnel.
+      resource "cloudflare_record" "ssh_app" {
+      zone_id = var.cloudflare_zone_id
+      name    = "ssh_app"
+      value   = "${cloudflare_argo_tunnel.auto_tunnel.id}.cfargotunnel.com"
+      type    = "CNAME"
+      proxied = true
+      }
+
+- name: Create GCP-config.tf
+  become: true
+  file:
+    path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/GCP-config.tf
+    state: touch
+    
+- name: Add content to GCP-config.tf file
+  become: true
+  blockinfile:
+    path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/GCP-config.tf
+    block: |
+      # Sets up a GCP VM instance.
+      resource "google_compute_instance" "origin" {
+      name         = "ansible-inst"
+      machine_type = var.machine_type
+      zone         = var.zone
+      tags         = []
+      boot_disk {
+          initialize_params {
+          image = data.google_compute_image.image.self_link
+          }
+      }
+      network_interface {
+          network = "default"
+          access_config {
+          // Ephemeral IP
+          }
+      }
+      scheduling {
+          preemptible = true
+          automatic_restart = false
+      }
+
+      // Installs Python3 on the VM.
+      provisioner "remote-exec" {
+          inline = [
+          "sudo apt update", "sudo apt install python3 -y",  "echo Done!"
+          ]
+          connection {
+          host = self.network_interface.0.access_config.0.nat_ip
+          user = "<username in GCP>"
+          type = "ssh"
+          private_key= file("<path to private key>")
+          }
+      }
+      provisioner "local-exec" {
+          // If specifying an SSH key and user, add `--private-key <path to private key> -u var.name`
+          command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u <username in GCP> --private-key <path to private key> -i ${self.network_interface.0.access_config.0.nat_ip}, playbook.yml"
+      }
+
+      metadata = {
+          cf-email     = var.cloudflare_email
+          cf-zone      = var.cloudflare_zone
+          ssh-keys     = "<username in GCP>:${file("<path to public key>")}"
+      }
+      depends_on = [
+          local_file.tf_ansible_vars_file
+      ]
+      }
+- name: Create export.tf
+  become: true
+  file:
+    path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/export.tf
+    state: touch
+    
+- name: Add content to export.tf file
+  become: true
+  blockinfile:
+    path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/export.tf
+    block: |
+      resource "local_file" "tf_ansible_vars_file" {  
+        content = <<-DOC    
+        # Ansible vars_file containing variable values from Terraform.    
+        tunnel_id: ${cloudflare_argo_tunnel.auto_tunnel.id}    
+        account: ${var.cloudflare_account_id}    
+        tunnel_name: ${cloudflare_argo_tunnel.auto_tunnel.name}    
+        secret: ${random_id.tunnel_secret.b64_std}    
+        zone: ${var.cloudflare_zone}    
+        DOC
+        filename = "./tf_ansible_vars_file.yml"
+      }
+
+- name: Basic deploy of service
+  community.general.terraform:
+    project_path: /home/jhumel/repo/ManjaroOS/ansible-tunnel/
+    state: present
+    force_init: true
+    binary_path: "path_here_of_cloudflare"
+    working_dir: directory_here
+    plan_file: /home/jhumel/repo/ManjaroOS/ansible-tunnel/providers.tf
+    complex_vars: true
+    variables:
+      api_token: "{{ cloudflare_api_token }}"
+      zone_id: "{{  cloudflare_zone_id }}"
+      tunnel_name: "{{ clourflare_tunnel_name }}"
+      tunnel_url: "{{ cloudflare_tunnel_url }}"
+- name: Apply changes
+
+
+  
