@@ -1,35 +1,104 @@
 ---
-- name: Update containerRuntimeEndpoint in kubelet config.yaml
-  ansible.builtin.lineinfile:
-    path: "{{ kubelet_vars_config_file }}"
-    regexp: '^containerRuntimeEndpoint:'
-    line: 'containerRuntimeEndpoint: "unix:///var/run/crio/crio.sock"'
+- name: Update kubelet configuration using template
+  template:
+    src: kubelet_config.yaml.j2
+    dest: "{{ kubelet_vars_config_file }}"
+    owner: root
+    group: root
+    mode: 0644
   become: true
   notify:
-  - restart kubelet service
-  - restart crio service
-  - reload systemd daemon
+    - restart crio service
+    - restart kubelet service
+    - reload systemd daemon
+  vars:
+    cluster_dns:
+      - 10.233.0.3
+    cluster_domain: cluster.local
+    resolv_conf: /etc/resolv.conf
 
-- name: Configure kubelet to use CRI-O container runtime
-  lineinfile:
-    path: "{{ kubelet_service_kubeadm_config_file }}"
-    regexp: '^Environment="KUBELET_EXTRA_ARGS='
-    line: 'Environment="KUBELET_EXTRA_ARGS={{ kubelet_extra_args }}"'
-    create: yes
-    state: present
-  become: true
+- name: Configure kubelet.service
+  template:
+    src: kubelet.service.j2
+    dest: "{{ kubelet_base_service_file }}"
+    owner: root
+    group: root
+    mode: 0644
   notify:
-  - restart kubelet service
-  - restart crio service
-  - reload systemd daemon
+    - restart crio service
+    - restart kubelet service
+    - reload systemd daemon
 
-- name: Update kubelet service file to include container-runtime-endpoint flag
-  ansible.builtin.lineinfile:
-    path: "{{ kubelet_service_kubeadm_config_file }}"
-    regexp: '^(ExecStart=.*)$'
-    line: '\1 --container-runtime-endpoint=unix:///var/run/crio/crio.sock'
-  become: true
+- name: Configure kubelet.env
+  template:
+    src: kubelet.env.j2
+    dest: "{{ kubelet_env_file }}"
+    owner: root
+    group: root
+    mode: 0644
   notify:
-  - restart kubelet service
-  - restart crio service
-  - reload systemd daemon
+    - restart crio service
+    - restart kubelet service
+    - reload systemd daemon
+  vars:
+    kubelet_extra_args: "--container-runtime=remote --container-runtime-endpoint=unix:///var/run/crio/crio.sock --runtime-request-timeout=5m"
+
+
+
+
+# - name: Update containerRuntimeEndpoint in kubelet config.yaml
+#   ansible.builtin.lineinfile:
+#     path: "{{ kubelet_vars_config_file }}"
+#     regexp: '^containerRuntimeEndpoint:'
+#     line: 'containerRuntimeEndpoint: "unix:///var/run/crio/crio.sock"'
+#   become: true
+#   notify:
+#   - restart crio service
+#   - restart kubelet service
+#   - reload systemd daemon
+
+# - name: Configure kubelet to use CRI-O container runtime
+#   lineinfile:
+#     path: "{{ kubelet_service_kubeadm_config_file }}"
+#     regexp: '^Environment="KUBELET_EXTRA_ARGS='
+#     line: 'Environment="KUBELET_EXTRA_ARGS={{ kubelet_extra_args }}"'
+#     create: yes
+#     state: present
+#   become: true
+#   notify:
+#   - restart crio service
+#   - restart kubelet service
+#   - reload systemd daemon
+
+# - name: Configure kubelet with CNI directories
+#   ansible.builtin.lineinfile:
+#     path: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+#     regexp: '^Environment="KUBELET_CONFIG_ARGS=--config=(.*)"$'
+#     line: 'Environment="KUBELET_CONFIG_ARGS=--config=\1 --cni-conf-dir=/etc/cni/net.d --cni-bin-dir=/opt/cni/bin"'
+#   become: true
+#   notify: restart kubelet service
+
+
+# - name: Configure kubelet.service
+#   template:
+#     src: kubelet.service.j2
+#     dest: "{{ kubelet_base_service_file }}"
+#     owner: root
+#     group: root
+#     mode: 0644
+#   notify:
+#   - restart crio service
+#   - restart kubelet service
+#   - reload systemd daemon
+
+# - name: Configure kubelet.env
+#   template:
+#     src: kubelet.env.j2
+#     dest: "{{ kubelet_env_file }}"
+#     owner: root
+#     group: root
+#     mode: 0644
+#   notify:
+#   - restart crio service
+#   - restart kubelet service
+#   - reload systemd daemon

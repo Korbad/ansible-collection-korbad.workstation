@@ -4,15 +4,3 @@
       - kubelet
     state: present
   become: true
-
-- name: Ensure kubelet.service.d directory exists
-  ansible.builtin.file:
-    path: "{{ kubelet_service_directory }}"
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-  become: true
-  notify:
-  - restart kubelet service
-  - reload systemd daemon

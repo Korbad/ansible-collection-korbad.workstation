@@ -1,0 +1,3 @@
+- name: Set current machine up as kubectl proxy
+  command:
+    cmd: kubectl proxy

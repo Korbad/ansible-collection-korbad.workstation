@@ -1,0 +1,2 @@
+# kubeconfig_path: "{{ ansible_env.HOME }}/.kube/config"
+kubeconfig_path: /etc/rancher/k3s/k3s.yaml #points to the Kubernetes configuration file (kubeconfig) that is used by kubectl and other Kubernetes clients to communicate with the API server. This file contains information about the cluster, such as the API server's address, the cluster's CA certificate, and the credentials to use for authentication.
