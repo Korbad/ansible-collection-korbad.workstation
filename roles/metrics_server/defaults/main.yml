@@ -1,0 +1,1 @@
+managed_k8s_manifests_path: "{{ ansible_env.HOME }}"

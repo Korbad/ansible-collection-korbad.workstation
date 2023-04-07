@@ -1,0 +1,58 @@
+- name: Download metrics-server components
+  ansible.builtin.get_url:
+    url: https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+    dest: "{{ managed_k8s_manifests_path }}/metrics-server-components.yaml"
+    force: no
+  register: download_result
+
+- name: Apply metrics-server components
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    src: "{{ managed_k8s_manifests_path }}/metrics-server-components.yaml"
+  when: download_result is changed
+
+- name: Update metrics-server deployment configuration
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    state: present
+    kind: Deployment
+    namespace: kube-system
+    name: metrics-server
+    merge_type:
+      - strategic-merge
+    definition:
+      spec:
+        template:
+          spec:
+            containers:
+              - name: metrics-server
+                args:
+                  - --kubelet-insecure-tls
+                  - --kubelet-preferred-address-types=InternalIP
+
+- name: Check metrics server permissions
+  kubernetes.core.k8s_info:
+    kind: ClusterRole,ClusterRoleBinding
+    namespace: kube-system
+    kubeconfig: "{{ kubeconfig_path }}"
+  register: metrics_server_permissions
+
+- name: Display metrics server permissions
+  ansible.builtin.debug:
+    var: metrics_server_permissions.resources
+
+- name: Remove node taint
+  kubernetes.core.k8s:
+    kubeconfig: "{{ kubeconfig_path }}"
+    api_version: v1
+    kind: Node
+    name: metrics-server
+    definition:
+      metadata:
+        name: metrics-server
+      spec:
+        taints:
+          - key: "node.kubernetes.io/not-ready"
+            effect: "NoSchedule"
+            action: "remove"
