@@ -1,0 +1,21 @@
+- name: Disable swap
+  ansible.builtin.command: swapoff -a
+  args:
+    warn: false
+  changed_when: false
+  become: true
+
+- name: Gather information about mounted filesystems
+  ansible.builtin.setup:
+    gather_subset: '!all,!min,mounts'
+  register: mounts_info
+
+- name: Remove all swap entries from /etc/fstab
+  ansible.posix.mount:
+    path: "{{ item.mount }}"
+    src: "{{ item.device }}"
+    fstype: swap
+    state: absent
+  loop: "{{ mounts_info.ansible_facts.ansible_mounts }}"
+  when: "'swap' in item.fstype"
+  become: true
