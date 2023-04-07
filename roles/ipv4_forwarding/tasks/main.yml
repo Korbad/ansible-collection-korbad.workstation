@@ -1,0 +1,9 @@
+# https://www.willhaley.com/blog/k3s-arch-linux/
+- name: Enable IP forwarding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: 1
+    state: present
+    sysctl_set: yes
+    ignoreerrors: yes
+  become: true
