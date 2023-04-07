@@ -1,0 +1,46 @@
+- name: get service facts
+  ansible.builtin.service_facts:
+    
+- name: Disable hibernate
+  service:
+    state: stopped
+    enabled: no
+    name: hibernate.target
+  become: true
+
+- name: Wait for hibernate.target to finish
+  wait_for:
+    path: /sys/power/state
+    state: absent
+  register: result
+  become: true
+
+- name: Disable suspend
+  service:
+    state: stopped
+    enabled: no
+    name: suspend.target
+  become: true
+
+- name: Disable hybrid-sleep
+  service:
+    state: stopped
+    enabled: no
+    name: hybrid-sleep.target
+  become: true
+
+- name: Create /etc/systemd/sleep.conf
+  file:
+    path: /etc/systemd/sleep.conf
+    state: touch
+  become: true
+
+- name: Disable hibernate and suspend
+  lineinfile:
+    path: /etc/systemd/sleep.conf
+    state: present
+    mode: '0644'
+    line:
+      - 'HibernateMode=suspend'
+      - 'SuspendState=suspend'
+  become: true
