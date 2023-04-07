@@ -1,0 +1,12 @@
+---
+- name: Check network plugin status
+  community.kubernetes.k8s_info:
+    kind: Pod
+    namespace: kube-system
+    label_selectors:
+      - k8s-app=<your_network_plugin_label>
+  register: network_plugin_pods
+
+- name: Display network plugin pods status
+  ansible.builtin.debug:
+    var: network_plugin_pods.resources
