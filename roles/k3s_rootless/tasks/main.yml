@@ -1,0 +1,7 @@
+---
+- name: Ensure symlink exists from k3s rancher path to user path
+  
+
+
+
+  # kubeconfig_path: "{{ ansible_env.HOME }}/.kube/config"

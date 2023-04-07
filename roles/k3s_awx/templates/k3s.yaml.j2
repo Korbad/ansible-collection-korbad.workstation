@@ -1,0 +1,5 @@
+---
+write-kubeconfig-mode: "0644"
+container-runtime-endpoint: "/var/run/crio/crio.sock"
+flannel-backend: "{{ flannel_backend_type }}"
+disable: "{{ 'traefik' if traefik_enabled | lower == 'false' }}"

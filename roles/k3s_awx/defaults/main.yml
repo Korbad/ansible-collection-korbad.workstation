@@ -1,0 +1,5 @@
+---
+flannel_backend_type: "vxlan"
+traefik_enabled: "false"
+k3s_config_directory: "/etc/rancher/k3s"
+k3s_config_file_name: "config.yaml"

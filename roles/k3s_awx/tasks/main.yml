@@ -1,0 +1,32 @@
+---
+- name: Ensure k3s configuration directory exists
+  ansible.builtin.file:
+    path: "{{ k3s_config_directory }}"
+    state: directory
+    mode: '0755'
+
+- name: Configure k3s with cri-o, Flannel, and disable Traefik
+  template:
+    src: k3s.yaml.j2
+    dest: "{{ k3s_config_directory }}/{{ k3s_config_file_name }}"
+  notify:
+    - restart k3s service
+
+- name: Ensure k3s service is restarted before AWX Operator is installed
+  meta: flush_handlers
+
+- name: Install AWX Operator
+  ansible.builtin.k8s:
+    state: present
+    src: "https://raw.githubusercontent.com/ansible/awx-operator/devel/deploy/awx-operator.yaml"
+
+- name: Deploy AWX instance
+  ansible.builtin.k8s:
+    state: present
+    definition:
+      apiVersion: awx.ansible.com/v1
+      kind: AWX
+      metadata:
+        name: awx
+      spec:
+        tower_ingress_type: LoadBalancer

@@ -1,22 +1,40 @@
-- name: Check Kubernetes API server connectivity
-  kubernetes.core.k8s_info:
-    api_version: v1
-    kind: Namespace
-    name: default
-    kubeconfig_file_path: "{{ kubeconfig_file_path }}"
-    kubeconfig_context: "{{ kubeconfig_context }}"
-    kubeconfig_username: "{{ kubeconfig_username }}"
-    kubeconfig_password: "{{ kubeconfig_password }}"
-  register: k8s_info
+- name: Download k3s binary
+  ansible.builtin.get_url:
+    url: "{{ k3s_binary_url }}"
+    dest: "{{ k3s_binary_path }}"
+    mode: '0755'
+  become: true
 
-- name: Get k3s status
-  kubernetes.core.k8s_info:
-    api_version: v1
-    kind: Namespace
-    name: kube-system
-  register: k3s_status
+- name: Create K3s service environment file
+  ansible.builtin.template:
+    src: k3s.service.env.j2
+    dest: "{{ k3s_service_env_file }}"
+  become: true
+  notify:
+  - restart k3s service and reload systemd daemon
 
-- name: Print k3s status
-  debug:
-    var: k3s_status.status.phase
+- name: Deploy k3s service file
+  ansible.builtin.template:
+    src: k3s.service.j2
+    dest: "{{ k3s_systemd_service_file }}"
+    owner: root
+    group: root
+    mode: '0644'
+  register: k3s_service_file
+  become: true
+  notify:
+  - restart k3s service and reload systemd daemon
 
+- name: Create K3s config file
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: "{{ k3s_config_file }}"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  notify:
+  - restart k3s service and reload systemd daemon
+
+- name: Ensure that the k3s config file has appropriate permssions and userspace link
+  include_tasks: k3s_user_permissions.yml
