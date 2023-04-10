@@ -1,0 +1,5 @@
+---
+- name: Ensure inkscape is installed
+  pacman:
+    name: inkscape
+  become: true
