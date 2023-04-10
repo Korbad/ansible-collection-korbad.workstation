@@ -18,7 +18,7 @@
 # - name: inventory file, set your pg_password, broadcast_websocket_secret, secret_key, and any other settings you need for your deployment.
 # - name: Update file tools/docker-compose/ansible/migrate.yml
 
-- name: Ensure receptor image exists
+# - name: Ensure receptor image exists
 
 - name: compose-build
   command:
@@ -27,7 +27,7 @@
   environment:
     COMPOSE_TAG: devel
     COMPOSE_UP_OPTS: -d
-    RECEPTOR_IMAGE: "{{ receptor_image_full_link }}"
+    # RECEPTOR_IMAGE: "{{ receptor_image_full_link }}"
 
 # - name: Check container image list for ansible/awx_devel image
 # - name: Execute make docker-compose (this attaches the terminal session to the awx container, we'll need to work around that)
