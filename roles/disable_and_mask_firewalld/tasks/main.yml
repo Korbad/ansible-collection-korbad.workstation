@@ -1,0 +1,10 @@
+---
+- name: Mask firewalld
+  ansible.builtin.command:
+    cmd: systemctl mask firewalld.server
+  become: true
+
+
+
+# # reboot
+# $ sudo systemctl reboot
