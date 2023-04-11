@@ -1,24 +1,26 @@
-k3s_binary_url: https://get.k3s.io
+k3s_installer_url: https://get.k3s.io
+k3s_installer_dir: "{{ ansible_env.HOME }}/k3s_installer"
 k3s_binary_path: /usr/local/bin/k3s
-k3s_service_env_file: /etc/systemd/system/k3s.service.env
-k3s_kubeconfig_mode: 644
-k3s_systemd_service_file: /etc/systemd/system/k3s.service
-k3s_crio_socket: /var/run/crio/crio.sock
-rancher_k3s_kubeconfig_path: /etc/rancher/k3s/k3s.yaml #points to the Kubernetes configuration file (kubeconfig) that is used by kubectl and other Kubernetes clients to communicate with the API server. This file contains information about the cluster, such as the API server's address, the cluster's CA certificate, and the credentials to use for authentication.
-user_kubeconfig_path: "{{ (ansible_env.HOME, '.kube', 'config') | path_join }}"
-k3s_config_file: /etc/rancher/k3s/config.yaml
-managed_k8s_manifests_path: "{{ ansible_env.HOME }}"
-kubeconfig_path: "{{ rancher_k3s_kubeconfig_path }}"
-k3s_data_dir: /var/lib/rancher/k3s
-k3s_config_dir: "{{ k3s_config_file | dirname }}"
 
-# Directory for gathering the k3s token for clustering. I don't see this changing.
-k3s_token_location: "{{ k3s_config_dir }}/cluster-token"
+# k3s_service_env_file: /etc/systemd/system/k3s.service.env
+# k3s_kubeconfig_mode: 644
+# k3s_systemd_service_file: /etc/systemd/system/k3s.service
+# k3s_crio_socket: /var/run/crio/crio.sock
+# rancher_k3s_kubeconfig_path: /etc/rancher/k3s/k3s.yaml # CLIENT CONFIG: Used by kubectl to connect to k3s k8s API server. This file contains information about the cluster, such as the API server's address, the cluster's CA certificate, and the credentials to use for authentication.
+# user_kubeconfig_path: "{{ (ansible_env.HOME, '.kube', 'config') | path_join }}"
+# k3s_config_file: /etc/rancher/k3s/config.yaml # SERVER CONFIG: Used to configure k3s server and components (API server bind address, database config, continaer runtime and other server-side settings)
+# managed_k8s_manifests_path: "{{ ansible_env.HOME }}"
+# kubeconfig_path: "{{ rancher_k3s_kubeconfig_path }}"
+# k3s_data_dir: /var/lib/rancher/k3s
+# k3s_config_dir: "{{ k3s_config_file | dirname }}"
 
-# Path for additional Kubernetes Manifests
-# https://rancher.com/docs/k3s/latest/en/advanced/#auto-deploying-manifests
-k3s_server_manifests_dir: "{{ k3s_data_dir }}/server/manifests"
+# # Directory for gathering the k3s token for clustering. I don't see this changing.
+# k3s_token_location: "{{ k3s_config_dir }}/cluster-token"
 
-# Path for static pod manifests that are deployed on the control plane
-# https://github.com/k3s-io/k3s/pull/1691
-k3s_server_pod_manifests_dir: "{{ k3s_data_dir }}/agent/pod-manifests"
+# # Path for additional Kubernetes Manifests
+# # https://rancher.com/docs/k3s/latest/en/advanced/#auto-deploying-manifests
+# k3s_server_manifests_dir: "{{ k3s_data_dir }}/server/manifests"
+
+# # Path for static pod manifests that are deployed on the control plane
+# # https://github.com/k3s-io/k3s/pull/1691
+# k3s_server_pod_manifests_dir: "{{ k3s_data_dir }}/agent/pod-manifests"

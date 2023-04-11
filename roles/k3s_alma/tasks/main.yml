@@ -1,0 +1,28 @@
+- name: Ensure k3s installer directory exists
+  file:
+    state: directory
+    path: "{{ k3s_installer_dir }}"
+
+- name: Download k3s installer
+  ansible.builtin.get_url:
+    url: "{{ k3s_installer_url }}"
+    dest: "{{ k3s_installer_dir }}/k3s_install.sh"
+    mode: '0755'
+
+- name: Execute installer script
+  ansible.builtin.command:
+    cmd: sh k3s_install.sh
+    chdir: "{{ k3s_installer_dir }}"
+    creates: "{{ k3s_binary_path }}"
+  
+- name: Check service
+  ansible.builtin.command:
+    cmd: systemctl status k3s.service
+
+- name: Config check
+  ansible.builtin.command:
+    cmd: k3s config-check
+
+- name: Get nodes
+  ansible.builtin.command:
+    cmd: kubectl get nodes

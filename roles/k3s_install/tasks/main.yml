@@ -25,6 +25,12 @@
   notify:
   - restart k3s service and reload systemd daemon
 
+- name: Ensure k3s config directory exists
+  file:
+    state: directory
+    path: "{{ k3s_config_file | dirname }}"
+  become: true
+
 - name: Create K3s config file
   ansible.builtin.template:
     src: config.yaml.j2
@@ -33,8 +39,12 @@
     group: root
     mode: '0644'
   become: true
+  changed_when: true
   notify:
   - restart k3s service and reload systemd daemon
+
+- name: Flush handlers before accessing the k3s.yml client config
+  meta: flush_handlers
 
 - name: Ensure that the k3s config file has appropriate permssions and userspace link
   include_tasks: k3s_user_permissions.yml

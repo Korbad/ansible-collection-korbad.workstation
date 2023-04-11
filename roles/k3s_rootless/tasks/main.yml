@@ -1,7 +1,19 @@
 ---
-- name: Ensure symlink exists from k3s rancher path to user path
-  
+- name: Ensure .kube user directory exists
+  file:
+    state: directory
+    dest: "{{ user_kubeconfig_path | dirname }}"
 
+- name: Copy k3s.yaml from Rancher to userspace ~/.kube/config
+  copy:
+    src: "{{ kubeconfig_path }}"
+    dest: "{{ user_kubeconfig_path }}"
+    remote_src: true
+    mode: 0600
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  become: true
 
-
-  # kubeconfig_path: "{{ ansible_env.HOME }}/.kube/config"
+- name: Override kubeconfig_path with user path
+  set_fact:
+    kubeconfig_path: "{{ user_kubeconfig_path }}"

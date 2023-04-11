@@ -1,0 +1,22 @@
+- name: Stop and disable K3s service
+  systemd:
+    name: k3s
+    state: stopped
+    enabled: no
+  become: true
+
+- name: Run K3s uninstall script
+  command: /usr/local/bin/k3s-uninstall.sh
+  ignore_errors: true
+
+- name: Remove K3s installation directory
+  file:
+    path: /usr/local/bin/k3s
+    state: absent
+  become: true
+
+- name: Remove K3s data directory (optional)
+  file:
+    path: /var/lib/rancher/k3s
+    state: absent
+  become: true
