@@ -12,7 +12,7 @@
   when: containerd_service_file.stat.exists
 
 - name: Ensure containerd is not installed
-  ansible.builtin.pacman:
+  ansible.builtin.package:
     name: containerd
     state: absent
   become: true
