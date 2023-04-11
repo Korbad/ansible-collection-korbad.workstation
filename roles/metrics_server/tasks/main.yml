@@ -30,6 +30,11 @@
                 args:
                   - --kubelet-insecure-tls
                   - --kubelet-preferred-address-types=InternalIP
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  readOnlyRootFilesystem: false
+                  runAsNonRoot: true
+                  runAsUser: 1000
 
 - name: Check metrics server permissions
   kubernetes.core.k8s_info:
