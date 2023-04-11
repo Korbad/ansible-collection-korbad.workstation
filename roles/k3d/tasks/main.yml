@@ -1,0 +1,16 @@
+---
+- name: Ensure k3d installer directory exists
+  file:
+    state: directory
+    path: "{{ k3d_installer_dir }}"
+
+- name: Download k3d installer
+  ansible.builtin.get_url:
+    url: "{{ k3d_installer_url }}"
+    dest: "{{ k3d_installer_dir | dirname }}/install.sh"
+    mode: '0755'
+
+- name: Execute installer script
+  ansible.builtin.command:
+    cmd: sh install.sh
+    chdir: "{{ k3d_installer_dir }}"
