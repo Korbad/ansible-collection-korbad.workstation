@@ -31,3 +31,17 @@
     enabled: true
     scope: user
     state: started
+
+- name: Ensure the docker socket file doesn't exist
+  file:
+    path: /var/run/docker.sock
+    state: absent
+  become: true
+
+# https://k3d.io/v5.4.1/usage/advanced/podman/
+- name: Create symlink for Podman socket to be used in place for Docker socket
+  file:
+    src: "/run/user/{{ ansible_user_uid }}/podman/podman.sock"
+    dest: /var/run/docker.sock
+    state: link
+  become: true

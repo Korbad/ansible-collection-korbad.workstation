@@ -1,0 +1,13 @@
+- name: Ensure podman.service is started and enabled
+  ansible.builtin.service:
+    name: podman.service
+    state: started
+    enabled: true
+  become: true
+
+- name: Enable podman.socket is enabled and started
+  systemd:
+    name: podman.socket
+    enabled: true
+    scope: user
+    state: started
