@@ -4,9 +4,13 @@
   become: true
 
 - name: Ensure setuptools is installed
-  pip:
-    name: 
-    - setuptools
+  shell: pip list | grep setuptools
+  register: check_setuptools
+  failed_when: "'command not found' in check_setuptools.stderr"
+
+- name: Insall setuptools
+  shell: pip install setuptools
+  when: check_setuptools.rc != 0
 
 - name: Upgrade pip for current interpreter
   pip:
