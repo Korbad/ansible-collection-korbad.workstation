@@ -1,10 +1,10 @@
 ---
-- name: Install Python 3.8
-  kewlfft.aur.aur:
+- name: Ensure python38 is installed
+  community.general.pacman:
     name: python38
-  # become: true
+    executable: yay
 
-- name: Install Python 3.9
-  kewlfft.aur.aur:
+- name: Ensure python39 is installed
+  community.general.pacman:
     name: python39
-  # become: true
+    executable: yay
