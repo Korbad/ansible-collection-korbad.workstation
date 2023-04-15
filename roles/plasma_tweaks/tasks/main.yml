@@ -8,21 +8,11 @@
     msg: "Configuration file not found in {{ ansible_env.HOME }}/.config/plasma-org.kde.plasma.desktop-appletsrc"
   when: not config_file.stat.exists
 
-- name: Ensure TaskManager group exists
-  lineinfile:
-    path: "{{ ansible_env.HOME }}/.config/plasma-org.kde.plasma.desktop-appletsrc"
-    regexp: '^\[TaskManager\]$'
-    line: '[TaskManager]'
-    state: present
-  notify: 
-  - restart plasmashell
-
 - name: Set 'Mark applications that play audio' setting
   lineinfile:
     path: "{{ ansible_env.HOME }}/.config/plasma-org.kde.plasma.desktop-appletsrc"
-    regexp: '^TaskManagerItemMuteIndicator='
-    line: "TaskManagerItemMuteIndicator={{ 1 if mark_audio_enabled else 0 }}"
-    insertafter: '^\[TaskManager\]$'
-  changed_when: true
+    regexp: '^indicateAudioStreams='
+    line: "indicateAudioStreams={{ 1 if mark_audio_enabled else 0 }}"
+    insertafter: '^\[Containments\]\[2\]\[Applets\]\[4\]\[Configuration\]\[General\]'
   notify: 
   - restart plasmashell
