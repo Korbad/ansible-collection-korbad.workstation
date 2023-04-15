@@ -1,10 +1,14 @@
 ---
-- name: Ensure python38 is installed
-  community.general.pacman:
-    name: python38
-    executable: yay
+- name: Refresh gpg key for python38 in AUR
+  ansible.builtin.command:
+    cmd: gpg --keyserver keyserver.ubuntu.com --recv-keys E3FF2839C048B25C084DEBE9B26995E310250568
 
-- name: Ensure python39 is installed
-  community.general.pacman:
+- name: Install Python 3.8
+  kewlfft.aur.aur:
+    name: python38
+  # become: true
+
+- name: Install Python 3.9
+  kewlfft.aur.aur:
     name: python39
-    executable: yay
+  # become: true
