@@ -1,0 +1,5 @@
+---
+- name: Ensure make is installed
+  community.general.pacman:
+    name: make
+  become: true
