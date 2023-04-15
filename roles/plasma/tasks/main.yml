@@ -1,0 +1,8 @@
+---
+- name: Copy the plasmashell systemd service file
+  template:
+    src: plasmashell.service.j2
+    dest: "{{ ansible_env.HOME }}/.config/systemd/user/plasmashell.service"
+    mode: 0644
+  notify:
+  - restart plasmashell

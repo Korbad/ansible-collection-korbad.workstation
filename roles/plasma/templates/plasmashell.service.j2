@@ -1,0 +1,9 @@
+[Unit]
+Description=KDE Plasma Shell
+
+[Service]
+ExecStart=/usr/bin/kstart5 --windowclass plasmashell --name plasmashell plasmashell
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

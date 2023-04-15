@@ -1,0 +1,29 @@
+# - name: Disable KWin compositing
+#   command:
+#     cmd: qdbus org.kde.KWin /KWin org.kde.KWin.setCompositingActive false
+
+# - name: Kill running plasmashell instances
+#   command:
+#     cmd: killall plasmashell
+#   ignore_errors: true
+
+- name: Find running plasmashell instances
+  ansible.builtin.pids:
+    name: plasmashell
+  register: plasmashell_pids
+
+- name: Terminate plasmashell instances
+  command:
+    cmd: kill -15 {{ item }}
+  loop: "{{ plasmashell_pids.pids }}"
+
+- name: Ensure the plasmashell service is enabled and started
+  ansible.builtin.systemd:
+    name: plasmashell.service
+    state: started
+    enabled: true
+    scope: user
+
+# - name: Re-enable KWin compositing
+#   command:
+#     cmd: qdbus org.kde.KWin /KWin org.kde.KWin.setCompositingActive true

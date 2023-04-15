@@ -1,0 +1,3 @@
+---
+- name: restart plasmashell
+  include_tasks: tasks/restart_plasmashell.yml
