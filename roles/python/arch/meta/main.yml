@@ -1,3 +1,5 @@
 ---
 dependencies:
 - name: aur
+- name: yay
+- name: base_devel

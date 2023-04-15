@@ -1,0 +1,5 @@
+---
+- name: Ensure base-devel is installed
+  community.general.pacman:
+    name: base-devel
+  become: true
