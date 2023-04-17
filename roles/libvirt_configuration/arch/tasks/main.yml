@@ -18,11 +18,9 @@
 - name: Install libvirt packages
   community.general.pacman:
     name: 
-      - libvirt
       - bridge-utils
       - dmidecode
       - python-lxml
-      - libvirt-python
     state:
       present
   become: true

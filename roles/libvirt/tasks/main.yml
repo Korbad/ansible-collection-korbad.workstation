@@ -1,48 +1,22 @@
 ---
-- name: libvirt for Archlinux
-  include_role:
-    name: libvirt/arch
+- name: Install libvirt packages
+  community.general.pacman:
+    name: 
+      - libvirt
+      - libvirt-python
+    state:
+      present
+  become: true
   when: ansible_distribution == 'Archlinux'
-
-# - name: libvirt for AlmaLinux
-#   include_role:
-#     name: libvirt/alma
-#   when: ansible_distribution == 'AlmaLinux'
-
-# - name: libvirt for Ubuntu
-#   include_role:
-#     name: libvirt/ubuntu
-#   when: ansible_distribution == 'Ubuntu'
-
-- name: Ensure the libvirt group exists.
-  ansible.builtin.group:
-    name: libvirt
+  notify:
+    - reload libvirtd
+  
+- name: Install the 'Virtualization Host' environment group
+  dnf:
+    name: "@Virtualization Host"
     state: present
   become: true
-
-- name: Add user to the libvirt group.
-  ansible.builtin.user:
-    name: "{{ ansible_user }}"
-    groups: libvirt
-    append: true
-  become: true
-
-- name: reload libvirtd
-  service:
-    name: libvirtd
-    state: reloaded
-  become: true
-
-- name: Start and enable libvirtd service
-  systemd:
-    name: libvirtd.service
-    state: started
-    enabled: true
-  become: true
-
-- name: Start and enable virtlogd service
-  systemd:
-    name: virtlogd.service
-    state: started
-    enabled: true
-  become: true
+  when: ansible_distribution == 'AlmaLinux'
+  notify:
+    - reload libvirtd
+  

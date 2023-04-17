@@ -1,0 +1,37 @@
+- name: Perform Arch-specific Configuration
+  include_role:
+    name: libvirt_configuration/arch
+  when: ansible_distribution == 'Archlinux'
+
+- name: Ensure the libvirt group exists.
+  ansible.builtin.group:
+    name: libvirt
+    state: present
+  become: true
+
+- name: Add user to the libvirt group.
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: libvirt
+    append: true
+  become: true
+
+- name: reload libvirtd
+  service:
+    name: libvirtd
+    state: reloaded
+  become: true
+
+- name: Start and enable libvirtd service
+  systemd:
+    name: libvirtd.service
+    state: started
+    enabled: true
+  become: true
+
+- name: Start and enable virtlogd service
+  systemd:
+    name: virtlogd.service
+    state: started
+    enabled: true
+  become: true

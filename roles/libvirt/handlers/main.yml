@@ -1,6 +1,4 @@
 ---
-# handlers file for libvirt
-
 - name: reload libvirtd
   service:
     name: libvirtd
