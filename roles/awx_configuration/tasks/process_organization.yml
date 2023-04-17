@@ -1,0 +1,59 @@
+- debug:
+    var: org_item
+    
+- name: set org item defaults
+  set_fact:
+    org_item_defaults:
+      value: "{{ awx_configuration.organization_defaults }}"
+
+- name: org_item_combined
+  set_fact:
+    org_item_combined: "{{ org_item | combine(org_item_defaults, list_merge='keep', recursive=True) }}"
+  
+# - name: org item combined
+#   set_fact:
+#     org_item_combined: "{{ org_item | combine(org_item_val_wrapped, list_merge='keep') }}"
+
+# - set_fact:
+#     org_item_val2: "{{  }}"
+
+
+# - set_fact:
+#     org_item: "{{ }}"
+# - set_fact:
+#     org_item
+# - name: org item after defautls applied
+#   debug:
+#     var: org_item
+#   vars:
+#     org_item: "{{ org_item.value | combine(awx_configuration.organization_defaults, list_merge='keep')}}"
+
+# - name: Organization config
+#   awx.awx.organization:
+#     name: "{{ org_item.key }}"
+#     description: "{{ org_item.value.description }}"
+#     controller_username: "{{ controller_username }}"
+#     controller_password: "{{ controller_password }}"
+#     controller_host: "{{ controller_host }}"
+#     state: present
+#     validate_certs: false
+#   vars:
+#     org_item: "{{ org_item | combine(awx_configuration.organization_defaults, list_merge='keep')}}"
+
+
+# - name: Ensure projects are present in AWX
+#   include_tasks: process_project.yml
+#   loop: "{{ org_item.value.projects | dict2items }}"
+#   loop_control:
+#     loop_var: project_item
+#     label: "{{ org_item.key }}/{{ project_item.key }}"
+#   register: awx_projects
+#   vars:
+#     defaults:
+#       project:
+#         scm_type: git
+#         credential: 
+
+
+
+

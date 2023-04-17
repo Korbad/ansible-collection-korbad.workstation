@@ -1,0 +1,14 @@
+# awx_configuration_role/tasks/process_elements.yml
+- name: Initialize the result dictionary
+  set_fact:
+    processed_awx_configuration: "{{ processed_awx_configuration | default({}) }}"
+
+- name: Iterate over elements and apply defaults
+  set_fact:
+    processed_awx_configuration: "{{ processed_awx_configuration | combine(new_item , recursive=True, list_merge='keep') }}"
+  vars:
+    defaults: "{{ lookup('vars', element.parent_key)[element.level]._default | default({}) }}"
+    current_items: "{{ awx_configuration[element.level] if element.child_key == '' else awx_configuration[element.parent_key.split('.')[1]] | subelements(element.child_key) }}"
+    new_item: "{{ {item.key: item.value | combine(defaults, recursive=True)} }}"
+  loop: "{{ current_items | dict2items }}"
+  when: item.key != '_default'

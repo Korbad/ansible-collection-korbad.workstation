@@ -1,0 +1,12 @@
+- name: Ensure projects are present in AWX
+  awx.awx.project:
+    name: "{{ project_item.key }}"
+    organization: "{{ org_item.key }}"
+    description: "{{ project_item.value.description }}"
+    scm_type: "{{ project_item.value.scm_type | default(defaults.project.scm_type) }}"
+    scm_url: "{{ project_item.value.scm_url }}"
+    credential: "{{ project_item.value.credential | default(defaults.project.credential) }}"
+    controller_username: "{{ controller_username }}"
+    controller_password: "{{ controller_password }}"
+    controller_host: "{{ controller_host }}"
+    state: present

@@ -1,0 +1,14 @@
+---
+- name: Apply global defaults
+  set_fact:
+    awx_configuration_merged: "{{ awx_configuration | combine()}}"
+
+
+
+- name: Process each organization
+  include_tasks: process_organization.yml
+  loop: "{{ awx_configuration.organizations | dict2items }}"
+  loop_control:
+    loop_var: org_item
+    label: "{{ org_item.key }}"
+  register: awx_organizations
