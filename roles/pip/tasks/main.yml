@@ -2,13 +2,14 @@
   community.general.pacman:
     name: python-pip
   become: true
+  when: ansible_distribution == 'Archlinux'
 
 - name: Ensure setuptools is installed
   shell: pip list | grep setuptools
   register: check_setuptools
   failed_when: "'command not found' in check_setuptools.stderr"
 
-- name: Insall setuptools
+- name: Install setuptools
   shell: pip install setuptools
   when: check_setuptools.rc != 0
 
