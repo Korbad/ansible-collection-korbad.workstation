@@ -1,0 +1,7 @@
+---
+- name: authorize_local_ssh
+  hosts: localhost
+  vars:
+    ansible_user: "{{ lookup('env','USER') }}"
+  roles:
+  - name: korbad.workstation.authorize_local_ssh
