@@ -1,0 +1,21 @@
+---
+- hosts: localhost
+  vars_prompt:
+  - name: ansible_become_pass
+    prompt: become password?
+    private: yes
+  vars:
+    current_user: "{{ lookup('env','USER') }}"
+  tasks:
+  - name: Manage /etc/sudoers.d directory
+    file:
+      path: /etc/sudoers.d
+      state: directory
+
+  - name: Manage sudoers file
+    community.general.sudoers:
+      name: "{{ current_user }}"
+      user: "{{ current_user }}"
+      commands: ALL
+      state: present
+    become: yes
