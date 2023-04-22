@@ -1,0 +1,4 @@
+- name: Install Cloudflared
+  pacman:
+    name: cloudflared
+    state: present

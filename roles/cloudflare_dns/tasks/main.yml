@@ -1,0 +1,14 @@
+- name: Execute install cloudflared
+  include_tasks: install_cloudflare.yml
+
+- name: Create config.yml
+  template:
+    src: config.yml.j2
+    dest: /root/.cloudflared/config.yml
+  become: true
+
+- name: Validate cloudflare ingress rule
+  shell: cloudflared tunnel ingress validate
+
+- name: Run cloudflare as service
+  include_tasks: run_as_service.yml

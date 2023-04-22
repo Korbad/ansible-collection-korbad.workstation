@@ -1,0 +1,9 @@
+cloudflare_tunnel: test1
+cloudflare_creds: test2
+dns:
+  # Remotely
+  - hostname: testhostname
+    service: testservice
+  # Traggo
+  - hostname: testhostname2
+    service: testservice2
