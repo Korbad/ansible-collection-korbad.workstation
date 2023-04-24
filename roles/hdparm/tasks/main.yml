@@ -1,0 +1,5 @@
+---
+- name: Ensure hdparm is installed
+  pacman:
+    name: hdparm
+  become: true
