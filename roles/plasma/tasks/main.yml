@@ -1,7 +1,9 @@
 ---
 - name: Ensure user systemd config directory exists
   file:
-    path: "{{ ansible_env.HOME }}/.config/systemd/user/"
+    path: "{{ ansible_env.HOME }}/.config/systemd/user"
+    recurse: true
+    state: directory
 
 - name: Copy the plasmashell systemd service file
   template:
