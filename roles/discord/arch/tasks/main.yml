@@ -12,3 +12,7 @@
     update_cache: true
     state: latest
     executable: yay
+  register: discord_install_result
+  until: discord_install_result is success
+  retries: 3
+  delay: 10
