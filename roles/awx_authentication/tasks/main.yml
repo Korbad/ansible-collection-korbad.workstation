@@ -1,0 +1,18 @@
+- name: "Get the Authentication Token for the future requests"
+  ansible.builtin.uri:
+    url: "https://{{ controller_hostname }}/api/v2/tokens/"
+    user: "{{ controller_username }}"
+    password: "{{ controller_password }}"
+    method: POST
+    force_basic_auth: true
+    validate_certs: "{{ controller_validate_certs }}"
+    status_code: 201
+  register: authtoken_res
+  notify:
+  - delete temporary awx authentication token
+
+- name: Set the temporary awx oauth token facts
+  ansible.builtin.set_fact:
+    controller_oauthtoken: "{{ authtoken_res.json.token }}"
+    controller_oauthtoken_url: "{{ authtoken_res.json.url }}"
+    
