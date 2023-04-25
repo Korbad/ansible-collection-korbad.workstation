@@ -1,4 +1,5 @@
 ---
 - name: Ensure podman-desktop-companion-appimage is installed
-  kewlfft.aur.aur:
+  community.general.pacman:
     name: podman-desktop-companion-appimage
+    executable: yay

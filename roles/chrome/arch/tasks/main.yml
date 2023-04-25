@@ -1,4 +1,5 @@
 ---
 - name: Ensure chrome is installed
-  kewlfft.aur.aur:
+  community.general.pacman:
     name: google-chrome
+    executable: yay

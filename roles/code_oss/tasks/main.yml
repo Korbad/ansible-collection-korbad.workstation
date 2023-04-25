@@ -6,12 +6,14 @@
   become: true
 
 - name: Enable code_oss marketplace in Code OSS
-  kewlfft.aur.aur:
+  community.general.pacman:
     name: code-marketplace
+    executable: yay
 
 - name: Unblock features in Code OSS
-  kewlfft.aur.aur:
+  community.general.pacman:
     name: code-features
+    executable: yay
 
 - name: Manage code_oss extensions if list of extension is defined
   include_tasks: extensions.yml

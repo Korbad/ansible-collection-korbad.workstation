@@ -1,4 +1,5 @@
 ---
 - name: Ensure openshift-client-bin is installed
-  kewlfft.aur.aur:
+  community.general.pacman:
     name: openshift-client-bin
+    executable: yay

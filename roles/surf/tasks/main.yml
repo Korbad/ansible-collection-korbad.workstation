@@ -1,5 +1,6 @@
 ---
 # https://wiki.archlinux.org/title/Surf
 - name: Ensure Surf is installed
-  kewlfft.aur.aur:
+  community.general.pacman:
     name: surf
+    executable: yay
