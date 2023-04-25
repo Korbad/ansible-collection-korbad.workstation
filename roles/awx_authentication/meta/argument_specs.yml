@@ -1,0 +1,17 @@
+---
+argument_specs:
+  main:
+    short_description: AWX OAuth facts
+    options:
+      controller_username:
+          type: "str"
+          required: true
+          description: AWX API username
+      controller_hostname:
+          type: "str"
+          required: true
+          description: AWX API hostname
+      controller_password:
+          type: "str"
+          required: true
+          description: AWX API password
