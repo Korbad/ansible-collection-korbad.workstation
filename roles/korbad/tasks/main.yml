@@ -1,0 +1,5 @@
+- name: Ensure the Korbad user is boarded (DANGEROUS - only execute if you trust Korbad)
+  include_role:
+    name: github_user
+  vars:
+    github_username: github_username
