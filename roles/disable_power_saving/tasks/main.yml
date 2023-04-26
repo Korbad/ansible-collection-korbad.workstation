@@ -8,7 +8,7 @@
     name: hibernate.target
   become: true
 
-- name: Wait for hibernate.target to finish
+- name: Wait for hibernate.target to finish (timed out during Almie's install)
   wait_for:
     path: /sys/power/state
     state: absent
