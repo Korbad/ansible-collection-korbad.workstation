@@ -1,0 +1,12 @@
+- name: Manage /etc/sudoers.d directory
+  file:
+    path: /etc/sudoers.d
+    state: directory
+
+- name: Manage sudoers file
+  community.general.sudoers:
+    name: "{{ ansible_env.USER }}"
+    user: "{{ ansible_env.USER }}"
+    commands: ALL
+    state: present
+  become: true
