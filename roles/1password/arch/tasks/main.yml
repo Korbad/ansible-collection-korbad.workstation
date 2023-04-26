@@ -1,5 +1,4 @@
 ---
 - name: Ensure 1password is installed
-  community.general.pacman:
+  kewlfft.aur.aur:
     name: 1password
-    executable: yay

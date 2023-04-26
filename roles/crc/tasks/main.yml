@@ -1,5 +1,4 @@
 ---
 - name: Ensure crc-bin is installed
-  community.general.pacman:
+  kewlfft.aur.aur:
     name: crc-bin
-    executable: yay

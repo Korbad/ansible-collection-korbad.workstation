@@ -1,8 +1,7 @@
 ---
 - name: Ensure snapd package exists
-  community.general.pacman:
+  kewlfft.aur.aur:
     name: snapd
-    executable: yay
   when: ansible_distribution == 'Archlinux'
   notify:
   - start-snapd-socket

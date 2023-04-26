@@ -1,16 +1,13 @@
 ---
 - name: Ensure that VSCodium is installed (FOSS binaries of VS Code)
-  community.general.pacman:
+  kewlfft.aur.aur:
     name: vscodium
-    executable: yay
 
 - name: Enable vscode marketplace in vscodium
-  community.general.pacman:
+  kewlfft.aur.aur:
     name: vscodium-marketplace
-    executable: yay
 
 - name: Enable hooks that allow more VSCode extensions to work with vscodium
-  community.general.pacman:
+  kewlfft.aur.aur:
     name: vscodium-features
-    executable: yay
 

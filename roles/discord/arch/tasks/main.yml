@@ -7,12 +7,7 @@
 #   become: true
 
 - name: Install nightly Discord from AUR
-  community.general.pacman:
+  kewlfft.aur.aur:
     name: discord-canary
     update_cache: true
     state: latest
-    executable: yay
-  register: discord_install_result
-  until: discord_install_result is success
-  retries: 3
-  delay: 10

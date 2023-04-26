@@ -1,5 +1,6 @@
 
 - name: Ensure archlinux-keyring is installed (uses YAY)
-  community.general.pacman:
-    name: archlinux-keyring
-    executable: yay
+  kewlfft.aur.aur:
+    name:
+    - archlinux-keyring
+    - docker-machine-driver-kvm2

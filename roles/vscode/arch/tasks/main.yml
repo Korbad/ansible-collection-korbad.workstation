@@ -1,5 +1,4 @@
 ---
 - name: Ensure that Visual Studio Code is installed (Microsoft, contains proprietary code)
-  community.general.pacman:
+  kewlfft.aur.aur:
     name: visual-studio-code-bin
-    executable: yay

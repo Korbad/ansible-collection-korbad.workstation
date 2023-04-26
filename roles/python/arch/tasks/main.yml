@@ -4,11 +4,11 @@
     cmd: gpg --keyserver keyserver.ubuntu.com --recv-keys E3FF2839C048B25C084DEBE9B26995E310250568
 
 - name: Install Python 3.8
-  community.general.pacman:
+  kewlfft.aur.aur:
     name: python38
-    executable: yay
+  # become: true
 
 - name: Install Python 3.9
-  community.general.pacman:
+  kewlfft.aur.aur:
     name: python39
-    executable: yay
+  # become: true
