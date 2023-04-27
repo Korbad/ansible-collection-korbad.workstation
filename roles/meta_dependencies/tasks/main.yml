@@ -3,6 +3,6 @@
   include_role:
     name: korbad.project_management.managed_ansible_collection
   vars:
-    git_url: git@github.com:kewlfft/ansible-aur.git
+    git_url: https://github.com/kewlfft/ansible-aur.git
     collection_namespace: kewlfft
     collection_name: aur
