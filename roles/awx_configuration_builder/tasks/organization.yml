@@ -1,0 +1,31 @@
+# - name: Organization config - create or update before processing projects
+#   awx.awx.organization:
+#     name: "{{ org_item_with_defaults.key }}"
+#     description: "{{ org_item_with_defaults.value.description }}"
+#     controller_username: "{{ controller_username }}"
+#     controller_password: "{{ controller_password }}"
+#     controller_host: "{{ controller_host }}"
+#     state: present
+#     validate_certs: false
+- debug:
+    var: org_item
+- debug:
+    var: org_item_with_defaults
+
+- name: Add org item with defaults to static awx_configuration
+  set_fact:
+    awx_configuration_static: "{{ awx_configuration_static | default({}) | combine(thing, recursive=True) }}"
+  vars:
+    static_combine:
+      organizations:
+    thing: "{{ static_combine | combine(org_item_with_defaults, recursive=True)}}"
+
+- debug:
+    var: awx_configuration_static
+# - name: Process each project within this org
+#   include_tasks: project_defaults.yml
+#   loop: "{{ org_item_with_defaults.value.projects | dict2items }}"
+#   loop_control:
+#     loop_var: project_item
+#     label: "{{ project_item.key }}"
+#   register: awx_projects

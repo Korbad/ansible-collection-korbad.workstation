@@ -1,0 +1,20 @@
+# awx_configuration_role/tasks/apply_defaults.yml
+- name: Iterate over elements and apply defaults
+  include_tasks: apply_defaults.yml
+  loop: "{{ current_dict | dict2items }}"
+  vars:
+    current_dict: "{{ item.value }}"
+    parent_key: "{{ parent_key | trim != '' and (parent_key ~ '.' ~ item.key) or item.key }}"
+  when: item.value is mapping and '_default' in item.value
+  loop_control:
+    loop_var: item
+
+- name: Apply default settings to elements
+  set_fact:
+    processed_awx_configuration: "{{ processed_awx_configuration | combine({parent_key: (current_dict | combine(current_dict._default, recursive=True, list_merge='keep'))}, recursive=True) }}"
+  when: "'_default' in current_dict"
+
+- name: Remove _default from the result
+  set_fact:
+    processed_awx_configuration: "{{ processed_awx_configuration | combine({parent_key: (current_dict | select('match', '^[^_].*$') | list | items2dict)}, recursive=True) }}"
+  when: "'_default' in current_dict"

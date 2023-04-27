@@ -1,0 +1,13 @@
+- name: Ensure projects are present in AWX
+  awx.awx.project:
+    name: "{{ project_item_with_defaults.key }}"
+    organization: "{{ org_item_with_defaults.key }}"
+    description: "{{ project_item_with_defaults.value.description }}"
+    scm_type: "{{ project_item_with_defaults.value.scm_type }}"
+    scm_url: "{{ project_item_with_defaults.value.scm_url }}"
+    scm_branch: "{{ project_item_with_defaults.value.scm_branch }}"
+    credential: "{{ project_item_with_defaults.value.credential }}"
+    controller_username: "{{ controller_username }}"
+    controller_password: "{{ controller_password }}"
+    controller_host: "{{ controller_host }}"
+    validate_certs: false

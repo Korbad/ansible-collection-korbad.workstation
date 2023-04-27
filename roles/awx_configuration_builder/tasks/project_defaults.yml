@@ -1,0 +1,6 @@
+- name: Apply project defaults
+  include_tasks: project.yml
+  vars:
+    project_item_defaults:
+      value: "{{ org_item_with_defaults.value.project_defaults }}"
+    project_item_with_defaults: "{{ project_item | combine(project_item_defaults, list_merge='keep', recursive=True) }}"

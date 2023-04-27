@@ -1,0 +1,35 @@
+- name: Debug awx_configuration
+  debug:
+    var: awx_configuration
+
+- name: Apply organization_defaults and project_defaults to the awx_configuration
+  set_fact:
+    updated_organization: "{{ organization_defaults | combine(awx_configuration[item.key], recursive=True) }}"
+    updated_projects: "{{ {} }}"
+  with_dict: "{{ awx_configuration }}"
+  register: org_results
+
+- name: Apply project_defaults to projects
+  set_fact:
+    updated_projects: "{{ updated_projects | combine({project.key: updated_organization.project_defaults | combine(project.value, recursive=True)}, recursive=True) }}"
+  with_dict: "{{ item.ansible_facts.updated_organization.projects }}"
+  register: project_results
+  loop: "{{ org_results.results }}"
+
+- name: Create final awx_configuration
+  set_fact:
+    final_awx_configuration: "{{ final_awx_configuration | default({}) | combine({item.item.item.key: {'description': item.item.ansible_facts.updated_organization.description, 'credentials': item.item.ansible_facts.updated_organization.credentials, 'projects': item.ansible_facts.updated_projects}}) }}"
+  loop: "{{ project_results.results }}"
+
+- debug:
+    var: final_awx_configuration
+
+
+
+# - name: Apply organization_defaults and project_defaults to the awx_configuration
+#   set_fact:
+#     updated_awx_configuration: "{{ lookup('template', 'apply_defaults.j2') | from_yaml }}"
+
+# - name: Debug updated_awx_configuration
+#   debug:
+#     var: updated_awx_configuration

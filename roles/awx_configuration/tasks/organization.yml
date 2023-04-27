@@ -1,0 +1,17 @@
+- name: Organization config - create or update before processing projects
+  awx.awx.organization:
+    name: "{{ org_item_with_defaults.key }}"
+    description: "{{ org_item_with_defaults.value.description }}"
+    controller_username: "{{ controller_username }}"
+    controller_password: "{{ controller_password }}"
+    controller_host: "{{ controller_host }}"
+    state: present
+    validate_certs: false
+
+- name: Process each project within this org
+  include_tasks: project_defaults.yml
+  loop: "{{ org_item_with_defaults.value.projects | dict2items }}"
+  loop_control:
+    loop_var: project_item
+    label: "{{ project_item.key }}"
+  register: awx_projects

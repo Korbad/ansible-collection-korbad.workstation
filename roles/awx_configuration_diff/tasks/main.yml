@@ -1,0 +1,49 @@
+
+- name: Load .yml content from version 1
+  set_fact:
+    vars_version_1: "{{ file_content_1.content | from_yaml }}"
+  when: vars_version_1 is undefined and file_content_1 is defined
+
+- name: Load .yml content from version 2
+  set_fact:
+    vars_version_2: "{{ file_content_2.content | from_yaml }}"
+  when: vars_version_2 is undefined and file_content_2 is defined
+
+
+
+- ansible.utils.fact_diff:
+    before: "{{ vars_version_1|to_nice_yaml }}"
+    after: "{{ vars_version_2|to_nice_yaml }}"
+  register: diff_result
+
+- debug:
+    var: diff_result
+
+- name: Compute deep diff
+  set_fact:
+    deep_diff_result: "{{ (vars_version_1 | korbad.workstation.deep_diff(vars_version_2)) }}"
+
+- name: Display deep diff results
+  debug:
+    var: deep_diff_result
+
+# - name: Display deep diff results
+#   debug:
+#     var: deep_diff_result.dictionary_item_added
+
+# - name: Identify removed items
+#   set_fact:
+#     removed_items: "{{ removed_items | default({}) | combine({item.key: item.value}) }}"
+#   loop: "{{ vars_version_1[dictionary_key] | dict2items }}"
+#   when: "item.key not in vars_version_2[dictionary_key]"
+
+# - name: Identify changed or added items
+#   set_fact:
+#     changed_or_added_items: "{{ changed_or_added_items | default({}) | combine({item.key: item.value}) }}"
+#   loop: "{{ vars_version_2[dictionary_key] | dict2items }}"
+#   when: "item.key not in vars_version_1[dictionary_key] or vars_version_1[dictionary_key][item.key] | default(None) != item.value"
+
+# - name: Wrap results with dictionary_key
+#   set_fact:
+#     awx_configuration_removed: "{{ {dictionary_key: removed_items} }}"
+#     awx_configuration_changed: "{{ {dictionary_key: changed_or_added_items} }}"

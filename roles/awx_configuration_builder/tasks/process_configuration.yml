@@ -1,0 +1,28 @@
+# awx_configuration_role/tasks/process_configuration.yml
+- name: Initialize the result dictionary
+  set_fact:
+    processed_awx_configuration: {}
+
+- name: Iterate over organizations and apply defaults
+  set_fact:
+    processed_awx_configuration: "{{ processed_awx_configuration | combine({item.key: item.value | combine(org_defaults, recursive=True)}) }}"
+  loop: "{{ awx_configuration.organizations | dict2items }}"
+  vars:
+    org_defaults: "{{ awx_configuration.organizations._default | default({}) }}"
+  when: item.key != '_default'
+
+- name: Iterate over projects and apply defaults for each organization
+  set_fact:
+    processed_awx_configuration: "{{ processed_awx_configuration | combine({org_key: {'projects': {item.key: item.value | combine(proj_defaults, recursive=True)}}}, recursive=True) }}"
+  loop: "{{ org_data.projects | dict2items }}"
+  vars:
+    org_key: "{{ item0 }}"
+    org_data: "{{ item1 }}"
+    proj_defaults: "{{ org_data.projects._default | default({}) }}"
+  when: item.key != '_default'
+  with_together:
+    - "{{ processed_awx_configuration | dict2items }}"
+
+- name: Display the processed AWX configuration
+  debug:
+    var: processed_awx_configuration

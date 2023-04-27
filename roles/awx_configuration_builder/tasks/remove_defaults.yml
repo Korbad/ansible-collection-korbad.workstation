@@ -1,0 +1,9 @@
+- name: Remove _default element from projects
+  set_fact:
+    org_item.value.projects: "{{ org_item.value.projects | default({}) | difference([{'_default': {}}]) }}"
+  when: org_item.value.projects is defined and '_default' in org_item.value.projects
+
+- name: Remove _default element from organization
+  set_fact:
+    awx_configuration.organizations: "{{ awx_configuration.organizations | default({}) | difference([{'_default': {}}]) }}"
+  when: '_default' in awx_configuration.organizations

@@ -1,0 +1,88 @@
+- debug:
+    var: awx_configuration_static
+- debug:
+    var: org_name
+- debug:
+    var: org_item
+- debug:
+    var: org_item_defaults
+
+
+# - set_fact:
+#     org_item_with_defaults: "{{ org_value |   }}"
+#   loop: "{{org_item | dict2items}}"
+#   loop_control:
+#     loop_var: org_value
+
+
+# - debug:
+#     var: org_item_with_defaults
+
+# - set_fact:
+#     awx_configuration_update: "{{ {} | combine(config_update) }}"
+#   vars:
+#     org_update: "{{ {org_name: org_item_with_defaults} }}"
+#     config_update:
+#       organizations: "{{ org_update }}"
+    
+
+# - debug:
+#     var: awx_configuration_update
+# - debug:
+#     var: awx_configuration_static  
+
+
+# - set_fact:
+#     awx_configuration_static: "{{ awx_configuration_static |default({}) | combine(awx_configuration_update, list_merge='keep', recursive=True) }}"
+
+# - debug:
+#     var: awx_configuration_static       
+
+# - meta: end_play
+# - ansible.utils.update_fact:
+#     updates:
+#     - path: "awx_configuration_static.organizations"
+#       value: "{{ org_item.key }}"
+#   vars:
+#     org_name: org_item.key
+
+# - name: Update static config with orgs
+#   set_fact:
+#     update_list: "{{ update_list + update }}"
+#   loop: "{{ awx_configuration_static.organizations | dict2items }}"
+#   loop_control:
+#     loop_var: org_item
+#     label: "{{ org_name }}"
+#   vars:
+#     update_list: []
+#     org_name: "{{ org_item.key }}"
+#     org_item_defaults:
+#       value: "{{ awx_configuration_static.organization_defaults }}"
+#     org_item_with_defaults: "{{ org_item | combine(org_item_defaults, list_merge='keep', recursive=True) }}"
+#     update:
+#     - path: awx_configuration_static.organizations.{{ org_name }}
+#       value: "{{ org_item_with_defaults }}"
+# - debug:
+#     var: update_list
+# - ansible.utils.update_fact:
+#     updates: "{{ update_list }}"
+#   register: awx_configuration_updated
+
+# - debug:
+#     var: awx_configuration_updated.awx_configuration_static
+
+# - name: Remove organization_defaults key
+#   set_fact:
+#     awx_configuration_static2: "{{ awx_configuration_updated.awx_configuration_static | ansible.utils.remove_keys(target='organization_defaults') }}"
+#   when: "'organization_defaults' in awx_configuration_updated.awx_configuration_static"
+
+# - debug:
+#     var: awx_configuration_static2
+
+# - name: Process each project within this org
+#   include_tasks: project_defaults.yml
+#   loop: "{{ org_item_with_defaults.value.projects | dict2items }}"
+#   loop_control:
+#     loop_var: project_item
+#     label: "{{ project_item.key }}"
+#   register: awx_projects

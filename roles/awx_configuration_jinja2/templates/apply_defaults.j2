@@ -1,0 +1,12 @@
+{% set ns = namespace(updated_awx_configuration={'organizations': {}}) %}
+{% for org_name, org_data in awx_configuration.organizations.items() %}
+  {% set updated_org_data = awx_configuration.organization_defaults | combine(org_data, recursive=True) %}
+  {% set updated_projects = {} %}
+  {% for project_name, project_data in org_data.projects.items() %}
+    {% set updated_project_data = awx_configuration.organization_defaults.project_defaults | combine(project_data, recursive=True) %}
+    {% set _ = updated_projects.update({project_name: updated_project_data}) %}
+  {% endfor %}
+  {% set updated_org_data = updated_org_data.update({'projects': updated_projects}) %}
+  {% set _ = ns.updated_awx_configuration['organizations'].update({org_name: updated_org_data}) %}
+{% endfor %}
+{{ ns.updated_awx_configuration | to_yaml }}

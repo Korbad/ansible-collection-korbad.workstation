@@ -1,0 +1,7 @@
+- name: Apply org defaults
+  include_tasks: organization.yml
+  vars:
+    org_item_defaults:
+      value: "{{ awx_configuration.organization_defaults }}"
+    org_item_with_defaults: "{{ org_item | combine(org_item_defaults, list_merge='keep', recursive=True) }}"
+    
