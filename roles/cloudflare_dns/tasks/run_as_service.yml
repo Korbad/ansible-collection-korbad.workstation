@@ -1,8 +1,0 @@
-- name: Install cloudflared service
-  shell: cloudflared service install
-
-- name: Start cloudflared service
-  systemd:
-    name: cloudflared.service
-    state: started
-    enabled: true

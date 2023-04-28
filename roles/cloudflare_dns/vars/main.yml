@@ -1,9 +1,13 @@
-cloudflare_tunnel: test1
-cloudflare_creds: test2
+account_identifier: a46d205651ef638d27958d0c194c4275
+tunnel_id: b3fb940a-34b3-40eb-9d60-2a05b4899f3d
+api_token: #API token from cloudflare
+zone_name: korbad.org
+team_name: korbad
 dns:
   # Remotely
-  - hostname: testhostname
-    service: testservice
-  # Traggo
-  - hostname: testhostname2
-    service: testservice2
+  - hostname: remotely
+    service: http://192.168.1.10:5000
+  # Portainer
+  - hostname: portainer
+    service: https://192.168.1.10:9443
+    no_tls_verify: true

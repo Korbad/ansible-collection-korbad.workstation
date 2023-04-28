@@ -1,9 +1,0 @@
-tunnel: {{ cloudflare_tunnel }}
-credentials_file: {{ cloudflare_creds }}
-
-ingress:
-{% for host in dns %}
-    - hostname: {{ host.hostname }}
-    - service: {{ host.service }}
-{% endfor %}
-    - service: http_status:404

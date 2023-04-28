@@ -1,0 +1,17 @@
+- name: Put Cloudflare Tunnel configuration
+  uri:
+    url: "https://api.cloudflare.com/client/v4/accounts/{{account_identifier}}/cfd_tunnel/{{tunnel_id}}/configurations"
+    method: PUT
+    headers:
+      Authorization: "Bearer {{api_token}}"
+      Content-Type: application/json
+    body: "{{ lookup('ansible.builtin.file','dns_record.json') }}"
+    body_format: json
+- name: Put Cloudflare DNS record
+  cloudflare_dns: 
+    zone: "{{zone_name}}"
+    record: "{{item.hostname}}"
+    type: CNAME
+    proxied: true
+    value: "{{tunnel_id}}.cfargotunnel.com"
+    api_token: "{{api_token}}"

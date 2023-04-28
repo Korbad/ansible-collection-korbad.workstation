@@ -1,0 +1,25 @@
+{
+    "config": {
+        "ingress": [
+{% for host in dns %}
+            {
+                "service": "{{host.service}}",
+                "hostname": "{{host.hostname}}.{{zone_name}}",
+                "originRequest": {
+                  "access": {
+                    "audTag": [],
+                    "required": false,
+                    "teamName": "{{team_name}}"
+                  }{% if host.no_tls_verify is defined %},
+                  "noTLSVerify": true
+                  {% else %}
+                
+                {% endif %}}
+            },
+{% endfor %}
+            {
+                "service": "http_status:404"
+            }
+        ]
+    }
+}

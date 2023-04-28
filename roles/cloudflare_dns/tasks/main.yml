@@ -1,14 +1,7 @@
-- name: Execute install cloudflared
-  include_tasks: install_cloudflare.yml
-
-- name: Create config.yml
-  template:
-    src: config.yml.j2
-    dest: /root/.cloudflared/config.yml
-  become: true
-
-- name: Validate cloudflare ingress rule
-  shell: cloudflared tunnel ingress validate
-
-- name: Run cloudflare as service
-  include_tasks: run_as_service.yml
+- name: Ensure dns_record.json exist
+  template: 
+    src: dns_record.json.j2
+    dest: dns_record.json
+- name: Add DNS record to Cloudflare tunnel
+  include_tasks: add_dns_record.yml
+  loop: "{{ dns }}"
