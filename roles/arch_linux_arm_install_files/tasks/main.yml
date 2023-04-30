@@ -1,0 +1,32 @@
+---
+# - name: Install required packages
+#   package:
+#     name:
+#       - wget
+#       - bsdtar
+#       - gawk
+#     state: present
+
+- name: Create download directory
+  file:
+    path: "{{ download_directory }}"
+    state: directory
+    mode: '0755'
+
+- name: Get Arch Linux ARM latest release URL
+  uri:
+    url: "https://archlinuxarm.org/platforms/{{ arch_platform }}"
+    follow_redirects: all
+    return_content: yes
+  register: arch_linux_arm_url
+
+- name: Extract download URL for the latest release
+  set_fact:
+    latest_release_url: "{{ arch_linux_arm_url.content | regex_search('http[^ ]+tar.gz') }}"
+
+- name: Download Arch Linux ARM latest release
+  get_url:
+    url: "{{ latest_release_url }}"
+    dest: "{{ download_directory }}"
+    checksum: "{{ latest_release_checksum }}"
+    force: "{{ force_download | default(false) }}"

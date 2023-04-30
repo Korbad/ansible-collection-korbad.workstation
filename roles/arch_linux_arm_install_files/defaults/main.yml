@@ -1,0 +1,4 @@
+download_directory: "~/arch-linux-arm"
+arch_platform: "armv7"  # Can be changed to the desired platform, e.g., "armv8", "armv6"
+latest_release_checksum: "sha256:SKIP"  # Replace "SKIP" with the actual checksum or use "sha256:SKIP" to skip checksum validation
+force_download: false  # Set to true to force download even if the file already exists
