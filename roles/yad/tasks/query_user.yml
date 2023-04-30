@@ -1,0 +1,4 @@
+- name: Execute yad to query user
+  command:
+    cmd: yad --entry --title "{{ yad_title }}" --text "{{ yad_text }}"
+  register: yad_result
