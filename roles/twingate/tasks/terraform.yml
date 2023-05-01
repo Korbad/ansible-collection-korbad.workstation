@@ -1,0 +1,10 @@
+- name: Terraform Plan
+  terraform:
+    project_path: "{{ terraform_dir }}"
+    state: planned
+    force_init: true
+
+- name: Terraform Apply
+  terraform:
+    project_path: "{{ terraform_dir }}"
+    state: present
