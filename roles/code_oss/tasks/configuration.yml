@@ -1,4 +1,21 @@
 ---
+- name: Check if settings.json exists
+  stat:
+    path: "{{ code_oss_config_path }}"
+  register: settings_json_stat
+
+- name: Launch code if settings.json does not exist
+  command: code
+  args:
+    creates: "{{ code_oss_config_path }}"
+  when: not settings_json_stat.stat.exists
+
+- name: Wait for settings.json to be created
+  wait_for:
+    path: "{{ code_oss_config_path }}"
+    state: present
+  when: not settings_json_stat.stat.exists
+
 - name: slurp settings.json
   slurp:
     path: "{{ code_oss_config_path }}"
