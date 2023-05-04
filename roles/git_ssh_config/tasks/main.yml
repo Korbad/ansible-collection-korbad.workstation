@@ -1,4 +1,9 @@
 ---
-- name: Set up Git URL substitution
+- name: Remove git config url rules for github (https)
+  ansible.builtin.command:
+    cmd: git config --global --remove-section url."https://github.com/"
+  ignore_errors: true
+
+- name: et up Git URL substitution (https -> ssh)
   ansible.builtin.command:
     cmd: git config --global url."git@github.com:".insteadOf "https://github.com/"
