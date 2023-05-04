@@ -1,4 +1,0 @@
----
-- name: Set up Git URL substitution
-  ansible.builtin.command:
-    cmd: git config --global url."git@github.com:".insteadOf "https://github.com/"
