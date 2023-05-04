@@ -1,7 +1,7 @@
   - name: Generate an SSH key for the current user
     ansible.builtin.user:
       generate_ssh_key: yes
-      name: "{{ current_user }}"
+      name: "{{ current_user | default(ansible_user, true) }}"
     register: keygen
     notify:
     - restart sshd
