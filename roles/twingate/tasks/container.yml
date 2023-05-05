@@ -1,0 +1,17 @@
+- name: Pull twingate Docker image
+  podman_image:
+    name: twingate/connector:1
+
+- name: Run Twingate container
+  containers.podman.podman_container:
+    name: twingate-charming-angelfish
+    image: twingate/connector:1
+    sysctl: net.ipv4.ping_group_range="0 2147483647"
+    env:
+      TENANT_URL: https://korbad.twingate.com
+      ACCESS_TOKEN: "TWINGATE_TOKEN"
+      TWINGATE_LABEL_HOSTNAME: hostname
+  become: true
+
+    
+# podman run -d --sysctl net.ipv4.ping_group_range="0 2147483647" --env TENANT_URL="https://korbad.twingate.com" --env ACCESS_TOKEN="eyJhbGciOiJFUzI1NiIsImtpZCI6IjNOSWpkTVRvNllPd2VxSHdSN29BcWxXaHN6RS1ka2FDQkVCT0tuelRCcVkiLCJ0eXAiOiJEQVQifQ.eyJudCI6IkFOIiwiYWlkIjoiNTI0MTIiLCJkaWQiOiI1MTMxMTciLCJqdGkiOiI4YjA1NDk4Mi1hMWE3LTRkYjctOTk1NC02NTg1MTNmMGU4NWUiLCJpc3MiOiJ0d2luZ2F0ZSIsImF1ZCI6ImtvcmJhZCIsImV4cCI6MTY4Mjg0NzgxNCwiaWF0IjoxNjgyODQ0MjE0LCJ2ZXIiOiI0IiwidGlkIjoiMTgzMjIiLCJybnciOjE2ODI4NDQ1MTQsInJuZXRpZCI6IjI1NzUzIn0.sjNBc3wwKtmaY-6HhogB-CTMLjUyx2ZY5JByAtIxai5fIwDCdQWT5NLg3N1kDgbEMHQ7BGAMTzndBJBBgJE7fA" --env REFRESH_TOKEN="LlnxgP-oEQjzCnZyOx_xKL_QBND-Vocvg0Qku9MooWYBSdEJJIyPtDE6mtuTbj62V48O9-EcaWTrnzrnx58b78X6qBvPTNp-Mi24izWJLO1vZC5Q1KC7UQaFceNzQAcV981bYQ"  --env TWINGATE_LABEL_HOSTNAME="`hostname`" --name "twingate-charming-angelfish" --restart=unless-stopped $(docker run --help | grep -- --pull >/dev/null && echo "--pull=always") twingate/connector:1

@@ -1,4 +1,11 @@
 terraform {
+  cloud {
+    organization = "korbad-test"
+
+    workspaces {
+      name = "test"
+    }
+  }
   required_providers {
     twingate = {
       source = "Twingate/twingate"

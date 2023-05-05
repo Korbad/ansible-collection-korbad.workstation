@@ -1,0 +1,8 @@
+- name: Implement Twingate container
+  include_tasks: container.yml
+- name: Copy terraform modules
+  copy:
+    src: terraform
+    dest: "{{ terraform_dir }}"
+- name: Terraform
+  include_tasks: terraform.yml
