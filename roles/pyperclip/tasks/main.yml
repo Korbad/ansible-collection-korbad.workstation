@@ -1,0 +1,4 @@
+- name: Install pyperclip using pip
+  ansible.builtin.pip:
+    name: pyperclip
+    state: present
