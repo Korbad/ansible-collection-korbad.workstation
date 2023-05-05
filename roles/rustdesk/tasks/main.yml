@@ -1,0 +1,6 @@
+---
+# https://aur.archlinux.org/packages/rustdesk-bin
+- name: Ensure Rustdesk is installed
+  kewlfft.aur.aur:
+    name: rustdesk
+    update_cache: true
