@@ -1,0 +1,17 @@
+- name: Ensure multilib is enabled in pacman.conf
+  lineinfile:
+    name: /etc/pacman.conf
+    search_string: "{{ item.search }}"
+    line: "{{ item.line }}"
+  loop:
+    - search: "#[multilib]"
+      line: "[multilib]"
+    - search: "#SigLevel = PackageRequired"
+      line: "SigLevel = PackageRequired"
+    - search: "#Include = /etc/pacman.d/mirrorlist"
+      line: "Include = /etc/pacman.d/mirrorlist"
+  become: true
+
+- name: Ensure Steam is installed
+  package:
+    name: steam
