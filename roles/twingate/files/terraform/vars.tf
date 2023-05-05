@@ -7,5 +7,5 @@ variable "remote_network" {
 }
 
 variable "twingate_token" {
-  default = "QifA2JcaqUCL-JB8qNprCQSnBPU_q4QgkD0B7W4kA3B6c_Dhz1_xvukvtgos60L2nt_L2lahHEbsiwxaJV0wPxImkE1-lpzlEaEJ8LB-QrRwq6Uj1uzfTk7LapZOFoNA7beOnA"
+  default = ""
 }
