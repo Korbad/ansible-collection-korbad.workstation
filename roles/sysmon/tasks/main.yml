@@ -1,0 +1,40 @@
+---
+- name: Install sysstat
+  pacman:
+    name: sysstat
+    state: present
+
+- name: Install glances
+  pacman:
+    name: glances
+    state: present
+
+- name: Install btop
+  pacman:
+    name: btop
+    state: present
+
+- name: Install htop
+  pacman:
+    name: htop
+    state: present
+
+- name: Install lsof
+  pacman:
+    name: lsof
+    state: present
+
+- name: Install strace
+  pacman:
+    name: strace
+    state: present
+
+- name: Install smartmontools
+  pacman:
+    name: smartmontools
+    state: present
+
+- name: Install progress
+  pacman:
+    name: progress
+    state: present
