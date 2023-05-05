@@ -1,0 +1,2 @@
+---
+plasma_user_local_app_dir: "{{ (ansible_env.HOME, '.local', 'share', 'applications') | path_join }}"

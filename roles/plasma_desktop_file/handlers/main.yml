@@ -1,0 +1,5 @@
+---
+# https://wiki.archlinux.org/title/desktop_entries#Application_entry
+- name: update desktop database
+  command:
+    cmd: update-desktop-database {{ plasma_user_local_app_dir }}

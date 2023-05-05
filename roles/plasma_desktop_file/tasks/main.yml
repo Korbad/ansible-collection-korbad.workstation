@@ -1,0 +1,15 @@
+---
+# https://develop.kde.org/docs/use/desktop-file/
+- name: Template .desktop file to host 
+  template:
+    src: .desktop.j2
+    dest: "{{ plasma_user_local_app_dir }}/{{ app_name }}.desktop"
+  notify:
+  - update desktop database
+
+
+# - name: Desktop files installed
+#   command:
+#     cmd: desktop-file-install --dir={{ plasma_user_local_app_dir }} ~/app.desktop
+  
+
