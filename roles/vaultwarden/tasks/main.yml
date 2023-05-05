@@ -1,0 +1,25 @@
+---
+- name: install vaultwarden
+  community.general.pacman:
+    name: vaultwarden
+    state: present 
+
+- name: install vaultwarden-web
+  community.general.pacman:
+    name: vaultwarden-web
+    state: present
+
+- name: Add contents to vaultwardenenv
+  become: true
+  blockinfile:
+    path: /etc/vaultwarden.env
+    block: |
+      WEB_VAULT_FOLDER=/usr/share/webapps/vaultwarden-web
+      WEB_VAULT_ENABLED=true
+
+- name: Enabled system control 
+  become: true
+  ansible.builtin.systemd:
+    name: vaultwarden
+    enabled: yes
+    state: started
