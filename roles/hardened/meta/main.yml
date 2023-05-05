@@ -1,0 +1,5 @@
+---
+dependencies:
+  - { role: package_repos }
+  - { role: grub }
+  - { role: sysctl }
