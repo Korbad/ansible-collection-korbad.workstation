@@ -1,0 +1,7 @@
+---
+- name: Configure GRUB
+  grub2:
+    config_file: /etc/default/grub
+    state: present
+    update_grub: true
+    default_entry: 0
