@@ -1,0 +1,5 @@
+---
+- pacman:
+    name: python-setuptools
+  become: true
+  when: ansible_distribution == 'Archlinux'
