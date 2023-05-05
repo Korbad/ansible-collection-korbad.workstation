@@ -1,0 +1,43 @@
+apiVersion: awx.ansible.com/v1beta1
+kind: AWX
+metadata: 
+    name: awx
+    namespace: awx
+spec: 
+    tower_admin_user: 
+        admin tower_admin_password_secret: awx-admin-password 
+        tower_create_preload_data: true 
+        tower_garbage_collect_secrets: false 
+        tower_hostname: {{ awx_hostname }} 
+        tower_image_pull_policy: IfNotPresent 
+        tower_ingress_annotations: ‘{‘‘cert-manager.io/cluster-issuer’’: ‘’letsencrypt’’}’ 
+        tower_ingress_tls_secret: awx-cert 
+        tower_ingress_type: Ingress 
+        tower_loadbalancer_port: 80 
+        tower_loadbalancer_protocol: http 
+        tower_postgres_storage_class: nfs-client 
+        tower_projects_persistence: false 
+        tower_projects_storage_access_mode: ReadWriteMany 
+        tower_projects_storage_size: 8Gi 
+        tower_replicas: 1 
+        tower_route_tls_termination_mechanism: Edge 
+        tower_task_privileged: false 
+apiVersion: v1
+kind: Secret
+metadata:
+    name: awx-postgres-configuration
+    namespace: awx
+     stringData: 
+     host: awx-postgresql 
+     port: “5432”
+      database:
+       awx username: {{ awx_postgres_user }}
+        password: {{ awx_postgres_pw }} 
+        type: Opaque 
+apiVersion: v1 
+kind: Secret
+metadata: 
+    name: awx-admin-password 
+    namespace: awx 
+stringData: 
+password: {{ awx_admin_pw }}

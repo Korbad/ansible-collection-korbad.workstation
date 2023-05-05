@@ -1,0 +1,23 @@
+---
+- name: Get AWX Operator definition from Github
+  get_url:
+    url: "https://raw.githubusercontent.com/ansible/awx-operator/{{ awx_operator_version }}/deploy/awx-operator.yaml"
+    dest: /tmp/awx-operator-{{ awx_operator_version }}.yaml
+- name: Upgrade or Install AWX Operator
+  k8s: 
+   state: present
+   namespace: default
+   kubeconfig: "{{ kube_config }}"
+   context: "{{ kube_context }}"
+   src: /tmp/awx-operator-{{ awx_operator_version }}.yaml
+   wait: true  
+- name: Deploy AWX Manifest
+  k8s:
+   state: present
+   kubeconfig: "{{ kube_config }}"
+   context: "{{ kube_context }}"
+   namespace: awx
+   definition: "{{ lookup('template', 'manifests/awx-deployment.yaml') }}"
+   validate:
+      fail_on_error: yes
+   wait: true
