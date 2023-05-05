@@ -1,8 +1,13 @@
----
+- name: Check if settings.json exists
+  stat:
+    path: "{{ code_oss_config_path }}"
+  register: settings_json_stat
+
 - name: slurp settings.json
   slurp:
     path: "{{ code_oss_config_path }}"
   register: slurp_json
+  when: settings_json_stat.stat.exists
 
 - name: update code_oss settings.json
   copy:
@@ -10,6 +15,6 @@
     content: "{{ code_oss_configuration | to_nice_json }}"
     remote_src: true
   vars:
-    code_oss_current_config: "{{ slurp_json.content | b64decode | from_json }}"
+    code_oss_current_config: "{{ (slurp_json.content | b64decode | from_json) if settings_json_stat.stat.exists else {} }}"
     code_oss_configuration: "{{ code_oss_current_config | default({}, true) | combine(managed_code_oss_settings_dict)}}"
   when: managed_code_oss_settings_dict is defined

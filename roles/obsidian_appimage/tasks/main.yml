@@ -1,0 +1,4 @@
+---
+- name: Ensure obsidian-appimage is installed
+  kewlfft.aur.aur:
+    name: obsidian-appimage
