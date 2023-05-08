@@ -1,0 +1,6 @@
+- name: Install pamac
+  pacman:
+    name: pamac
+    state: present
+  become: true
+
