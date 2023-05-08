@@ -1,0 +1,6 @@
+---
+- name: Install {{ package_name_on_pamac }} using pamac
+  command:
+    cmd: pamac install {{ package_name_on_pamac }} --no-confirm
+    creates: /usr/bin/gh
+  become: true
