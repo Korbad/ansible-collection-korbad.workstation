@@ -1,0 +1,5 @@
+- name: Ensure github-cli is installed using pamac
+  include_role:
+    name: pamac_helper
+  vars:
+    package_name_on_pamac: github-cli

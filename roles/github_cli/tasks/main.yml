@@ -2,14 +2,14 @@
 - name: Archlinux
   include_role:
     name: github_cli/arch
-  when: ansible_distribution == 'Archlinux'
-
-- name: AlmaLinux
-  include_role:
-    name: github_cli/alma
-  when: ansible_distribution == 'AlmaLinux'
+  when: ansible_distribution == 'Archlinux' and not ansible_lsb.id == 'ManjaroLinux'
 
 - name: Ubuntu
   include_role:
     name: github_cli/ubuntu
   when: ansible_distribution == 'Ubuntu'
+
+- name: ManjaroLinux
+  include_role:
+    name: github_cli/manjaro
+  when: ansible_distribution == 'Archlinux' and ansible_lsb.id == 'ManjaroLinux'

@@ -1,0 +1,4 @@
+- name: Ensure github-cli is installed
+  pacman:
+    name: github-cli
+  become: true
