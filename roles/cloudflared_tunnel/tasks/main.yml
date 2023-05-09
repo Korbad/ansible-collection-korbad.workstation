@@ -1,0 +1,42 @@
+- name: Ensure cloudflared directory exists
+  file:
+    path: "{{ cloudflare_cert_directory }}"
+    state: directory
+    mode: '0755'
+
+- name: Run cloudflared tunnel login
+  command: cloudflared tunnel login
+  args:
+    creates: "{{ cloudflare_cert_directory }}/cert.pem"
+  register: cloudflare_login
+  environment:
+    DISPLAY: :0
+
+- name: Check if tunnel already exists
+  command: cloudflared tunnel list
+  register: tunnel_list
+  changed_when: false
+
+- name: Set tunnel UUID if tunnel already exists
+  set_fact:
+    cloudflare_tunnel_uuid: "{{ item.split()[0] }}"
+  loop: "{{ tunnel_list.stdout_lines }}"
+  when: cloudflare_tunnel_name in item
+
+- name: Set cloudflare_tunnel_exists to true if tunnel name found in tunnel_list
+  set_fact:
+    cloudflare_tunnel_exists: true
+  when: cloudflare_tunnel_name in tunnel_list.stdout
+
+- name: Create Cloudflare tunnel
+  command: cloudflared tunnel create {{ cloudflare_tunnel_name }}
+  args:
+    chdir: "{{ cloudflare_cert_directory }}"
+  register: cloudflare_tunnel_creation
+  when: not cloudflare_tunnel_exists
+
+- name: Set tunnel UUID if tunnel already exists
+  set_fact:
+    cloudflare_tunnel_uuid: "{{ item.split()[0] }}"
+  loop: "{{ tunnel_list.stdout_lines }}"
+  when: cloudflare_tunnel_name in item and cloudflare_tunnel_creation is changed

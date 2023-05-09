@@ -1,0 +1,4 @@
+cloudflare_tunnel_name: "{{ ansible_hostname }}"
+cloudflare_cert_directory: "{{ ansible_env.HOME }}/.cloudflared"
+cloudflare_tunnel_uuid: ""
+cloudflare_tunnel_credentials_file_path: ""
