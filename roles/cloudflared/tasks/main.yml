@@ -1,0 +1,4 @@
+---
+- name: Ensure cloudflared is installed
+  kewlfft.aur.aur:
+    name: cloudflared
