@@ -1,0 +1,17 @@
+---
+- name: Pull Zenmap image
+  containers.podman.podman_image:
+    name: alexandreoda/zenmap
+
+- name: Create Zenmap container
+  containers.podman.podman_container:
+    name: zenmap
+    image: alexandreoda/zenmap
+    state: started
+    env:
+      DISPLAY: "{{ ansible_env.DISPLAY }}"
+      XAUTHORITY: '/xauthority'
+    volumes:
+      - "{{ ansible_env.HOME }}:/home/zenmap"
+      - "/tmp/.X11-unix/:/tmp/.X11-unix/"
+      - "{{ ansible_env.XAUTHORITY }}:/xauthority:ro"
