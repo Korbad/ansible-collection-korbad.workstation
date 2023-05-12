@@ -1,0 +1,5 @@
+- name: Install openssh-server
+  pacman:
+    name: openssh
+    state: present
+  become: true
