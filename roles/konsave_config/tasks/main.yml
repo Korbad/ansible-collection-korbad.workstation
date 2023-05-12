@@ -1,0 +1,21 @@
+---
+- name: Launch Konsave to generate the initial configuration file
+  command: konsave -s initial
+  args:
+    creates: ~/.config/konsave/conf.yaml
+
+# - name: Template out the Konsave configuration file
+#   template:
+#     src: conf.yaml.j2
+#     dest: ~/.config/konsave/conf.yaml
+#     owner: "{{ ansible_user }}"
+#     group: "{{ ansible_user }}"
+#     mode: '0644'
+
+- name: Apply konsave profile by name
+  command:
+    cmd: konsave -a {{ selected_konsave_profile_name }}
+  register: konsave_apply
+  # notify:
+  # - restart sddm to refresh user session
+...

@@ -1,0 +1,16 @@
+---
+save:
+  {{ name }}:
+    location: "{{ location }}"
+    entries: 
+      {% for entry in save_entries %}
+        - {{ entry }}
+      {% endfor %}
+export:
+  {{ export_name }}:
+    location: "{{ export_location }}"
+    entries: 
+      {% for entry in export_entries %}
+        - {{ entry }}
+      {% endfor %}
+...

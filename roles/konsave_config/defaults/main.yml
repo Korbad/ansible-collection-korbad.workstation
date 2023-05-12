@@ -1,0 +1,12 @@
+---
+name: profile1
+location: "/path/to/parent/directory"
+save_entries:
+  - file1
+  - file2
+export_name: profile1
+export_location: "/another/path/to/parent/directory"
+export_entries:
+  - file3
+  - file4
+...
