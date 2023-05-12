@@ -1,0 +1,6 @@
+- name: Install packer
+  pacman:
+    name: packer
+    state: present
+  become: true
+
