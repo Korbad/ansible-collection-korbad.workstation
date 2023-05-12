@@ -1,0 +1,5 @@
+- name: restart sddm to refresh user session
+  systemd:
+    name: sddm
+    state: restarted
+  become: true
