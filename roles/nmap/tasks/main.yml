@@ -1,0 +1,5 @@
+---
+- name: Ensure nmap is installed
+  pacman:
+    name: nmap
+  become: true
