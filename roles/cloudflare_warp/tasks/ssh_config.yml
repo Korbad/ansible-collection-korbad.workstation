@@ -1,0 +1,35 @@
+- name: Generate a Gateway SSH proxy CA
+  uri:
+    url: "https://api.cloudflare.com/client/v4/accounts/{{account_identifier}}/access/gateway_ca"
+    method: POST
+    headers:
+      X-Auth-Key: "{{api_key}}"
+      X-Auth-Email: "{{email_address}}"
+    return_content: true
+  register: ssh_ca
+
+- name: Create a ssh cloudflare public key
+  copy:
+    dest: /etc/ssh/cloudflare.pub
+    content: "{{ssh_ca.content}}"
+  become: true
+
+- name: Modify SSHD config for public cloudflare key
+  lineinfile:
+    name: /etc/ssh/sshd_config
+    search_string: "# PubkeyAuthentication yes"
+    line: " PubkeyAuthentication yes"
+  become: true
+
+- name: Modify SSHD config for public cloudflare key
+  lineinfile:
+    name: /etc/ssh/sshd_config
+    insertafter: "PubkeyAuthentication yes"
+    line: "TrustedUserCAKeys /etc/ssh/cloudflare.pub"
+  become: true
+
+- name: Restart SSHD service
+  systemd:
+    name: sshd.service
+    state: restarted
+  become: true

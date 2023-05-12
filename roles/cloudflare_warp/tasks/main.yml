@@ -43,6 +43,9 @@
 
   - debug: msg="{{register_device.stdout}}"
 
+- name: Configure SSH proxy for Cloudflare
+  include_tasks: ssh_config.yml
+
 # Run "warp-cli teams-enroll kor-team"
 # After the authentication, run "warp-cli connect"
 # To check the status, run "warp-cli status"
