@@ -2,4 +2,9 @@
 - name: Ensure patch package is available
   package:
     name: patch
+    update_cache: true
   become: true
+
+- name: Ensure aur is upgraded
+  kewlfft.aur.aur:
+    upgrade: true
