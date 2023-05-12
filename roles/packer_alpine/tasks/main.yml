@@ -1,0 +1,8 @@
+---
+- name: Validate Packer template
+  command:
+    cmd: packer validate {{ packer_template_path }}
+
+- name: Build Packer image
+  command:
+    cmd: packer build {{ packer_template_path }}

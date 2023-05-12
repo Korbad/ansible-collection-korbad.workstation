@@ -1,0 +1,21 @@
+{
+  "builders": [{
+    "type": "qemu",
+    "iso_url": "http://dl-cdn.alpinelinux.org/alpine/v3.14/releases/x86_64/alpine-standard-3.14.0-x86_64.iso",
+    "iso_checksum": "sha256:6a68c202a8fae8ef1ef46217967673371f80085394c0a407445f80e32c30da0a",
+    "shutdown_command": "echo 'packer' | sudo -S poweroff",
+    "disk_size": 10240,
+    "http_directory": "http",
+    "boot_command": [
+      "<enter><wait>",
+      "alpine-setup<enter><wait>"
+    ],
+    "ssh_username": "root",
+    "ssh_password": "password",
+    "ssh_wait_timeout": "300s"
+  }],
+  "provisioners": [{
+    "type": "ansible",
+    "playbook_file": "./playbook.yml"
+  }]
+}
