@@ -1,0 +1,18 @@
+- name: Enable and start sshd service
+  systemd:
+    name: sshd
+    state: started
+    enabled: true
+  become: true
+
+- name: Check if sshd is listening on port 22
+  wait_for:
+    port: 22
+    timeout: 5
+  register: sshd_check
+  ignore_errors: true
+
+- name: Fail if sshd is not listening on port 22
+  fail:
+    msg: "sshd is not running or not listening on port 22"
+  when: sshd_check.failed
