@@ -1,0 +1,14 @@
+---
+- name: Allow user to manage service {{ service_name }}
+  community.general.sudoers:
+    name: "{{ ansible_user }} {{ service_name }}"
+    user: "{{ ansible_user }}"
+    nopassword: true
+    commands:
+    - /usr/bin/systemctl start {{ service_name }}
+    - /usr/bin/systemctl stop {{ service_name }}
+    - /usr/bin/systemctl restart {{ service_name }}
+    setenv: true
+    runas: "{{ ansible_user }}"
+    state: present
+  become: true
