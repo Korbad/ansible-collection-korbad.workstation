@@ -1,0 +1,9 @@
+---
+- name: Ensure tunnel is running
+  command:
+    cmd: cloudflared tunnel run {{ cloudflare_tunnel_uuid }}
+
+- name: Check if tunnel is running
+  command:
+    cmd: cloudflared tunnel info {{ cloudflare_tunnel_uuid }}
+  register: tunnel_info

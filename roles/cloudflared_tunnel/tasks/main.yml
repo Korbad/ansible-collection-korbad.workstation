@@ -1,42 +1,37 @@
 ---
 - name: Ensure cloudflared directory exists
   file:
-    path: "{{ cloudflare_cert_directory }}"
+    path: "{{ cloudflared_config_directory }}"
     state: directory
     mode: '0755'
 
 - name: Run cloudflared tunnel login
   command: cloudflared tunnel login
   args:
-    creates: "{{ cloudflare_cert_directory }}/cert.pem"
+    creates: "{{ cloudflared_config_directory }}/cert.pem"
   environment:
     DISPLAY: :0
 
-- name: Get existing tunnels
-  command: cloudflared tunnel list --output yaml
-  register: tunnel_list
-  changed_when: false
-
-- name: Check if tunnel already exists
-  set_fact:
-    cloudflare_tunnel_uuid: "{{ (tunnel_list.stdout | from_yaml | selectattr('name', 'equalto', cloudflare_tunnel_name) | list | first).id if cloudflare_tunnel_exists else '' }}"
-  vars:
-    cloudflare_tunnel_exists: "{{ tunnel_list.stdout | from_yaml | selectattr('name', 'equalto', cloudflare_tunnel_name) | list | length > 0 }}"
+- name: Check for existing tunnel
+  include_tasks: check_for_existing_tunnel.yml
 
 - name: Create tunnel if not exists
-  command: cloudflared tunnel create {{ cloudflare_tunnel_name }}
+  command: cloudflared tunnel create {{ cloudflared_tunnel_name }}
   when: cloudflare_tunnel_uuid is undefined or cloudflare_tunnel_uuid|length == 0
   register: cloudflared_tunnel_create
 
-- name: Get existing tunnels
-  command: cloudflared tunnel list --output yaml
-  register: tunnel_list
-  changed_when: false
+- name: Check for existing tunnel
+  include_tasks: check_for_existing_tunnel.yml
   when: cloudflared_tunnel_create is not skipped
 
-- name: Check if tunnel already exists
-  set_fact:
-    cloudflare_tunnel_uuid: "{{ (tunnel_list.stdout | from_yaml | selectattr('name', 'equalto', cloudflare_tunnel_name) | list | first).id if cloudflare_tunnel_exists else '' }}"
-  vars:
-    cloudflare_tunnel_exists: "{{ tunnel_list.stdout | from_yaml | selectattr('name', 'equalto', cloudflare_tunnel_name) | list | length > 0 }}"
-  when: cloudflared_tunnel_create is not skipped
+- name: Ensure cloudflared config file is templated
+  include_tasks: configuration_file.yml
+
+- name: Ensure cloudflared service exists
+  include_tasks: service.yml
+
+- name: Ensure DNS routing is set up
+  include_tasks: dns_routing.yml
+  
+# - name: Ensure tunnel is running
+#   include_tasks: run.yml

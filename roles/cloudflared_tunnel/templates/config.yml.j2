@@ -1,0 +1,14 @@
+---
+tunnel: {{ cloudflare_tunnel_uuid }}
+credentials-file: {{ cloudflared_config_directory }}/{{ cloudflare_tunnel_uuid }}.json
+{% if cloudflared_warp_routing_enabled %}
+warp-routing:
+    enabled: true
+{% endif %}
+
+ingress:
+{% for rule in cloudflared_ingress_rules %}
+  - hostname: "{{ rule.hostname }}"
+    service: "{{ rule.service }}"
+{% endfor %}
+  - service: http_status:404

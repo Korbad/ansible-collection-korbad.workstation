@@ -1,0 +1,11 @@
+---
+- name: Get existing tunnels
+  command: cloudflared tunnel list --output yaml
+  register: tunnel_list
+  changed_when: false
+
+- name: Check if tunnel already exists
+  set_fact:
+    cloudflare_tunnel_uuid: "{{ (tunnel_list.stdout | from_yaml | selectattr('name', 'equalto', cloudflared_tunnel_name) | list | first).id if cloudflare_tunnel_exists else '' }}"
+  vars:
+    cloudflare_tunnel_exists: "{{ tunnel_list.stdout | from_yaml | selectattr('name', 'equalto', cloudflared_tunnel_name) | list | length > 0 }}"

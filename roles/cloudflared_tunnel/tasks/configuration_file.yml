@@ -1,0 +1,8 @@
+---
+- name: Ensure config file is templated
+  template:
+    src: config.yml.j2
+    dest: "{{ cloudflared_service_config_file }}"
+  become: true
+  notify:
+  - restart cloudflared service

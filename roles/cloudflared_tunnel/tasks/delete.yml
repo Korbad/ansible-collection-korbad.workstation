@@ -1,0 +1,13 @@
+---
+- name: Ensure cloudflared service is started
+  systemd:
+    name: cloudflared
+    state: stopped
+    enabled: yes
+  become: true
+
+- name: Delete tunnel
+  command:
+    cmd: cloudflared tunnel delete {{ cloudflared_tunnel_name }}
+  notify:
+  - restart cloudflared service

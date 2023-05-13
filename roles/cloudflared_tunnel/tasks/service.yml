@@ -1,0 +1,12 @@
+- name: Install cloudflared as a service
+  command:
+    cmd: cloudflared service install
+    creates: /etc/systemd/system/cloudflared.service
+  become: true
+
+- name: Ensure cloudflared service is started
+  systemd:
+    name: cloudflared
+    state: started
+    enabled: yes
+  become: true
