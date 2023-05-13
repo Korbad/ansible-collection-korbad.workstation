@@ -1,3 +1,4 @@
+---
 - name: Ensure cloudflared directory exists
   file:
     path: "{{ cloudflare_cert_directory }}"
@@ -8,35 +9,34 @@
   command: cloudflared tunnel login
   args:
     creates: "{{ cloudflare_cert_directory }}/cert.pem"
-  register: cloudflare_login
   environment:
     DISPLAY: :0
 
-- name: Check if tunnel already exists
-  command: cloudflared tunnel list
+- name: Get existing tunnels
+  command: cloudflared tunnel list --output yaml
   register: tunnel_list
   changed_when: false
 
-- name: Set tunnel UUID if tunnel already exists
+- name: Check if tunnel already exists
   set_fact:
-    cloudflare_tunnel_uuid: "{{ item.split()[0] }}"
-  loop: "{{ tunnel_list.stdout_lines }}"
-  when: cloudflare_tunnel_name in item
+    cloudflare_tunnel_uuid: "{{ (tunnel_list.stdout | from_yaml | selectattr('name', 'equalto', cloudflare_tunnel_name) | list | first).id if cloudflare_tunnel_exists else '' }}"
+  vars:
+    cloudflare_tunnel_exists: "{{ tunnel_list.stdout | from_yaml | selectattr('name', 'equalto', cloudflare_tunnel_name) | list | length > 0 }}"
 
-- name: Set cloudflare_tunnel_exists to true if tunnel name found in tunnel_list
-  set_fact:
-    cloudflare_tunnel_exists: true
-  when: cloudflare_tunnel_name in tunnel_list.stdout
-
-- name: Create Cloudflare tunnel
+- name: Create tunnel if not exists
   command: cloudflared tunnel create {{ cloudflare_tunnel_name }}
-  args:
-    chdir: "{{ cloudflare_cert_directory }}"
-  register: cloudflare_tunnel_creation
-  when: not cloudflare_tunnel_exists
+  when: cloudflare_tunnel_uuid is undefined or cloudflare_tunnel_uuid|length == 0
+  register: cloudflared_tunnel_create
 
-- name: Set tunnel UUID if tunnel already exists
+- name: Get existing tunnels
+  command: cloudflared tunnel list --output yaml
+  register: tunnel_list
+  changed_when: false
+  when: cloudflared_tunnel_create is not skipped
+
+- name: Check if tunnel already exists
   set_fact:
-    cloudflare_tunnel_uuid: "{{ item.split()[0] }}"
-  loop: "{{ tunnel_list.stdout_lines }}"
-  when: cloudflare_tunnel_name in item and cloudflare_tunnel_creation is changed
+    cloudflare_tunnel_uuid: "{{ (tunnel_list.stdout | from_yaml | selectattr('name', 'equalto', cloudflare_tunnel_name) | list | first).id if cloudflare_tunnel_exists else '' }}"
+  vars:
+    cloudflare_tunnel_exists: "{{ tunnel_list.stdout | from_yaml | selectattr('name', 'equalto', cloudflare_tunnel_name) | list | length > 0 }}"
+  when: cloudflared_tunnel_create is not skipped
