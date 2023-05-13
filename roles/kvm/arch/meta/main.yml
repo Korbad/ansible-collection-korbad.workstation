@@ -1,0 +1,4 @@
+---
+dependencies:
+- docker_machine_driver_kvm2
+- archlinux_keyring
