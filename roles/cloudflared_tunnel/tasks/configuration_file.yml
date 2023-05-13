@@ -4,6 +4,7 @@
     state: directory
     path: "{{ cloudflared_service_config_file | dirname }}"
 
+# https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup//tunnel-guide/local/local-management/configuration-file/
 - name: Ensure config file is templated
   template:
     src: config.yml.j2
