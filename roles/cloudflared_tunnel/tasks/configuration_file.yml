@@ -1,4 +1,10 @@
 ---
+- name: Ensure the config file target directory exists
+  file:
+    state: directory
+    path: "{{ cloudflared_service_config_file | dirname }}"
+  become: true
+
 - name: Ensure config file is templated
   template:
     src: config.yml.j2
