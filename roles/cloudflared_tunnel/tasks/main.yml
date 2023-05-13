@@ -27,11 +27,11 @@
 - name: Ensure cloudflared config file is templated
   include_tasks: configuration_file.yml
 
-- name: Ensure cloudflared service exists
-  include_tasks: service.yml
+# - name: Ensure the tunnel is running
+#   include_tasks: run.yml
 
 - name: Ensure DNS routing is set up
   include_tasks: dns_routing.yml
-  
-# - name: Ensure tunnel is running
-#   include_tasks: run.yml
+
+- name: Ensure cloudflared service exists
+  include_tasks: service.yml

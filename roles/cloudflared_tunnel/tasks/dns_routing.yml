@@ -1,3 +1,7 @@
+
 - name: Route DNS for application
-  command: cloudflared tunnel route --overwrite-dns dns {{ cloudflare_tunnel_uuid }} {{ cloudflared_hostname }} 
-  
+  command: cloudflared tunnel route dns {{ cloudflare_tunnel_uuid }} {{ cloudflared_hostname }}
+  register: dns_route_result
+  failed_when: >
+    dns_route_result.rc != 0 and
+    "An A, AAAA, or CNAME record with that host already exists" not in dns_route_result.stderr

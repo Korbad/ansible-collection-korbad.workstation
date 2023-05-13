@@ -1,7 +1,7 @@
 ---
-- name: Ensure tunnel is running
+- name: Run the tunnel
   command:
-    cmd: cloudflared tunnel run {{ cloudflare_tunnel_uuid }}
+    cmd: cloudflared tunnel run --url=ssh://localhost:22 {{ cloudflared_tunnel_name }}
 
 - name: Check if tunnel is running
   command:
