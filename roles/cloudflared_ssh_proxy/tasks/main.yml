@@ -1,0 +1,13 @@
+- name: Configure SSH to use cloudflared
+  community.general.ssh_config:
+    user: "{{ ansible_user }}"
+    host: "{{ cloudflared_hostname }}"
+    proxycommand: /usr/bin/cloudflared access ssh --hostname %h
+    state: present
+  loop: "{{ cloudflared_hostnames }}"
+  loop_control:
+    loop_var: cloudflared_hostname
+  vars:
+    cloudflared_hostnames:
+    - redbeard.korbad.org
+    - bluebeard.korbad.org
