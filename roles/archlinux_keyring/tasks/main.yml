@@ -1,0 +1,4 @@
+- name: Ensure archlinux-keyring is installed (uses YAY)
+  kewlfft.aur.aur:
+    name:
+    - archlinux-keyring
