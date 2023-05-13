@@ -1,0 +1,19 @@
+---
+- name: Gather facts
+  ansible.builtin.setup:
+    filter: ansible_env
+
+- debug:
+    msg: "DISPLAY environment variable is: {{ ansible_env.DISPLAY | default('Not found') }}"
+
+- name: Get the contents of the sshd_config file
+  slurp:
+    src: /etc/ssh/sshd_config
+  register: sshd_config_content
+
+- name: Convert sshd_config content from base64
+  set_fact:
+    sshd_config: "{{ sshd_config_content['content'] | b64decode | regex_findall('^X11Forwarding\\s+yes', multiline=True) | length > 0 }}"
+
+- debug:
+    msg: "X11Forwarding is: {{ sshd_config | ternary('yes', 'no') }}"
