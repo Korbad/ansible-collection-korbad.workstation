@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 User={{ webcam_user }}
-Environment=DISPLAY=:0
+Environment=DISPLAY={{ ansible_env.DISPLAY | default(':0', true) }}
 ExecStartPre=/usr/bin/xhost +SI:localuser:{{ webcam_user }}
 ExecStart=/usr/bin/gst-launch-1.0 udpsrc port={{ remote_port }} ! application/x-rtp,media=video,encoding-name=VP8,payload=96 ! rtpvp8depay ! vp8dec ! videoconvert ! autovideosink
 Restart=on-failure

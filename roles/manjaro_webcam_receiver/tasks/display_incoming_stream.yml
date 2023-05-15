@@ -29,4 +29,4 @@
   ansible.builtin.command:
     cmd: xdg-open "{{ lookup('env', 'HOME') }}/webcam_stream.html"
   environment:
-    DISPLAY: ":0.0"
+    DISPLAY: "{{ ansible_env.DISPLAY | default(':0', true) }}"

@@ -9,7 +9,7 @@
     image: alexandreoda/zenmap
     state: started
     env:
-      DISPLAY: "{{ ansible_env.DISPLAY }}"
+      DISPLAY: "{{ ansible_env.DISPLAY | default(':0', true) }}"
       XAUTHORITY: '/xauthority'
     volumes:
       - "{{ ansible_env.HOME }}:/home/zenmap"

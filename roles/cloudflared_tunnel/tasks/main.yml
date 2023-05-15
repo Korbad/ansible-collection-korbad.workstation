@@ -10,7 +10,7 @@
   args:
     creates: "{{ cloudflared_config_directory }}/cert.pem"
   environment:
-    DISPLAY: :0
+    DISPLAY: "{{ ansible_env.DISPLAY | default(':0', true) }}"
 
 - name: Check for existing tunnel
   include_tasks: check_for_existing_tunnel.yml
