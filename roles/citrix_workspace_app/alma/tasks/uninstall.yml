@@ -1,0 +1,16 @@
+- name: Verify if CA certs folder is a symbolic link
+  stat:
+    path: /opt/Citrix/ICAClient/keystore/cacerts
+  register: link
+
+- name: Remove symlink before uninstallation
+  file:
+    path: /opt/Citrix/ICAClient/keystore/cacerts
+    follow: no
+    state: absent
+  when: link.stat.islnk is defined and link.stat.islnk
+
+- name: Uninstall Citrix client (Workspace App)
+  package:
+    name: icaclient
+    state: absent

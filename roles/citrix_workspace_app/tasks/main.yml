@@ -1,0 +1,10 @@
+---
+- name: Archlinux
+  include_role:
+    name: citrix/arch
+  when: ansible_distribution == 'Archlinux'
+
+- name: AlmaLinux
+  include_role:
+    name: citrix/alma
+  when: ansible_distribution == 'AlmaLinux'
