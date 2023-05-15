@@ -1,7 +1,6 @@
 ---
 tunnel: {{ cloudflare_tunnel_uuid }}
 credentials-file: {{ cloudflared_config_directory }}/{{ cloudflare_tunnel_uuid }}.json
-url: ssh://localhost:22
 {% if cloudflared_warp_routing_enabled %}
 warp-routing:
     enabled: true
