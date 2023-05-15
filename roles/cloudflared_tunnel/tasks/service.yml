@@ -3,10 +3,12 @@
     cmd: sudo cloudflared --config {{ cloudflared_service_config_file }} service install
     creates: /etc/systemd/system/cloudflared.service
   become: true
+  notify:
+  - restart cloudflared service
 
-- name: Ensure cloudflared service is started
-  systemd:
-    name: cloudflared
-    state: started
-    enabled: yes
-  become: true
+# - name: Ensure cloudflared service is started
+#   systemd:
+#     name: cloudflared
+#     state: started
+#     enabled: yes
+#   become: true
