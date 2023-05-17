@@ -1,51 +1,43 @@
----
-  - name: Create certs directory
-    file:
-      path: /certs
-      state: directory
-    become: true
+- name: Create certs directory
+  file:
+    path: /certs
+    state: directory
+  become: true
 
-  - name: Check if Cloudflare.crt exists
-    stat:
-      path: /certs/Cloudflare_CA.crt
-    register: crt_exists
+- name: Check if Cloudflare.crt exists
+  stat:
+    path: /certs/Cloudflare_CA.crt
+  register: crt_exists
   
-  - name: Check if Cloudflare.pem exists
-    stat:
-      path: /certs/Cloudflare_CA.pem
-    register: pem_exists
+- name: Check if Cloudflare.pem exists
+  stat:
+    path: /certs/Cloudflare_CA.pem
+  register: pem_exists
 
-  - name: Install Cloudflare certificate
-    shell: |
-      cd /certs/
-      wget -q https://developers.cloudflare.com/cloudflare-one/static/documentation/connections/Cloudflare_CA.crt 
-      wget -q https://developers.cloudflare.com/cloudflare-one/static/documentation/connections/Cloudflare_CA.pem
-      trust anchor --store Cloudflare_CA.crt
-      trust anchor --store Cloudflare_CA.pem
-      update-ca-trust
-    become: true
-    when: not (crt_exists.stat.exists) and (pem_exists.stat.exists)
+- name: Install Cloudflare certificate
+  shell: |
+    cd /certs/
+    wget -q https://developers.cloudflare.com/cloudflare-one/static/documentation/connections/Cloudflare_CA.crt 
+    wget -q https://developers.cloudflare.com/cloudflare-one/static/documentation/connections/Cloudflare_CA.pem
+    trust anchor --store Cloudflare_CA.crt
+    trust anchor --store Cloudflare_CA.pem
+    update-ca-trust
+  become: true
+  when: not (crt_exists.stat.exists) and (pem_exists.stat.exists)
 
-  - name: Install Cloudflare WARP
-    shell: |
-      yay -S cloudflare-warp-bin --noconfirm
+- name: Install Cloudflare WARP
+  shell: |
+    yay -S cloudflare-warp-bin --noconfirm
 
-  - name: Start Warp service
-    systemd:
-      name: warp-svc
-      state: started
-      enabled: yes
-    become: true
+- name: Create mdm.xml file 
+  template: 
+    src: mdm.xml.j2
+    dest: /var/lib/cloudflare-warp/mdm.xml
+  become: true
 
-  - name: Register Device to Cloudflare Warp
-    script: "{{ansible_env.PWD}}/roles/cloudflare_warp/files/team-enroll.sh"
-    register: register_device
-
-  - debug: msg="{{register_device.stdout}}"
-
-- name: Configure SSH proxy for Cloudflare
-  include_tasks: ssh_config.yml
-
-# Run "warp-cli teams-enroll kor-team"
-# After the authentication, run "warp-cli connect"
-# To check the status, run "warp-cli status"
+- name: Start Warp service
+  systemd:
+    name: warp-svc
+    state: started
+    enabled: yes
+  become: true
