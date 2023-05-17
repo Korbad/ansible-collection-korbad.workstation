@@ -1,13 +1,8 @@
 ---
-# - name: Install Discord
-#   community.general.pacman:
-#     name: discord
-#     state: latest
-#     update_cache: true
-#   become: true
-
-- name: Install nightly Discord from AUR
-  kewlfft.aur.aur:
-    name: discord-canary
-    update_cache: true
+- name: Install Discord
+  community.general.pacman:
+    name: discord
     state: latest
+    update_cache: true
+  become: true
+
