@@ -1,0 +1,14 @@
+- name: Get Access Application details
+  uri:
+    url: "https://api.cloudflare.com/client/v4/zones/{{cloudflare_account_identifier}}/access/apps/{{cloudflare_application_id}}"
+    method: GET
+    headers:
+      X-Auth-Email: "{{ cloudflare_email }}"
+      X-Auth-Key: "{{ cloudflare_api_key }}"
+      Content-Type: application/json
+    return_content: true
+  register: access_application
+
+- name: Check Access Application details
+  debug:
+    msg: access_application.result
