@@ -1,0 +1,15 @@
+- name: Install Gamemode from AUR
+  kewlfft.aur.aur:
+    name:
+      - gamemode
+      - lib32-gamemode
+    update_cache: true
+    state: latest
+
+- name: Get GPU device
+  shell: glxinfo | grep "Device"
+  register: gpu_device
+
+- name: Check GPU device
+  debug:
+    msg: "{{gpu_device}}"
