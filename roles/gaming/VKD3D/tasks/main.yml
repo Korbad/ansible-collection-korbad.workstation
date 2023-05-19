@@ -1,0 +1,10 @@
+---
+- name: VKD3D for Archlinux
+  include_role:
+    name: gaming/VKD3D/arch
+  when: ansible_distribution == 'Archlinux'
+
+- name: VKD3D for AlmaLinux
+  include_role:
+    name: gaming/VKD3D/alma
+  when: ansible_distribution == 'AlmaLinux'

@@ -1,0 +1,5 @@
+- name: Install VKD3D from AUR
+  kewlfft.aur.aur:
+    name: vkd3d
+    update_cache: true
+    state: latest
