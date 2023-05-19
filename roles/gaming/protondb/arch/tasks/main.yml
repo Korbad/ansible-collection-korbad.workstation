@@ -1,0 +1,5 @@
+- name: Install Proton from AUR
+  kewlfft.aur.aur:
+    name: proton
+    update_cache: true
+    state: latest
