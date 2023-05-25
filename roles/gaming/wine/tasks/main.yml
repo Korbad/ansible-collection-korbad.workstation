@@ -1,0 +1,10 @@
+---
+- name: Lutris for Archlinux
+  include_role:
+    name: gaming/lutris/arch
+  when: ansible_distribution == 'Archlinux'
+
+- name: Lutris for AlmaLinux
+  include_role:
+    name: gaming/lutris/alma
+  when: ansible_distribution == 'AlmaLinux'
