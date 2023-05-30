@@ -1,0 +1,37 @@
+---
+- name: Ensure nodocker file is present
+  include_tasks: nodocker.yml
+
+- name: Migrate to rootless podman
+  include_tasks: rootless_podman_system_migrate.yml
+
+- name: Ensure user has sufficient subuid and subgid maps
+  include_tasks: user_subuid_subgid.yml
+
+- name: Ensure podman.service is started and enabled
+  ansible.builtin.service:
+    name: podman.service
+    state: started
+    enabled: true
+  become: true
+
+- name: Enable podman.socket
+  systemd:
+    name: podman.socket
+    enabled: true
+    scope: user
+    state: started
+
+- name: Ensure the docker socket file doesn't exist
+  file:
+    path: /var/run/docker.sock
+    state: absent
+  become: true
+
+# https://k3d.io/v5.4.1/usage/advanced/podman/
+- name: Create symlink for Podman socket to be used in place for Docker socket
+  file:
+    src: "/run/user/{{ ansible_user_uid }}/podman/podman.sock"
+    dest: /var/run/docker.sock
+    state: link
+  become: true
