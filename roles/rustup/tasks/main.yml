@@ -2,3 +2,33 @@
   ansible.builtin.shell: "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
   args:
     creates: "~/.cargo/bin/rustup"
+
+- name: Ensure ~/bin directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/bin"
+    state: directory
+
+- name: Create symlinks for rust executables
+  file:
+    src: "{{ ansible_env.HOME }}/.cargo/bin/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/bin/{{ item }}"
+    state: link
+  with_items:
+    - rustup
+    - rustc
+    - cargo
+
+- name: Ensure toolchain is installed
+  command:
+    cmd: "{{ ansible_env.HOME }}/bin/rustup default stable"
+  register: rustup_default_stable
+
+- name: Ensure rustup is updated
+  command:
+    cmd: "{{ ansible_env.HOME }}/bin/rustup self update"
+  register: rustup_self_update
+
+- name: Ensure rust is updated
+  command:
+    cmd: "{{ ansible_env.HOME }}/bin/rustup update"
+  register: rustup_update
