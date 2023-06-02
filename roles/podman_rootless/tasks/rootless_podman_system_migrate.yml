@@ -1,5 +1,0 @@
----
-- name: Rootless podman system update
-  ansible.builtin.command:
-    cmd: podman system migrate
-  

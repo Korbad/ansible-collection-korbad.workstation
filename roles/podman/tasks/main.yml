@@ -9,6 +9,12 @@
     name: podman/alma
   when: ansible_distribution == 'AlmaLinux'
 
+- name: Ensure nodocker file is present
+  include_tasks: nodocker.yml
+
+# - name: Update containers.conf file
+#   include_tasks: containers_conf.yml
+
 - name: Ensure podman.service is started and enabled
   ansible.builtin.service:
     name: podman.service
