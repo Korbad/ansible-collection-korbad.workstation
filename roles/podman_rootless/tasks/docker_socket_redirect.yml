@@ -38,3 +38,4 @@
     state: link
     force: true
   become: true
+  when: not docker_socket.stat.islnk
