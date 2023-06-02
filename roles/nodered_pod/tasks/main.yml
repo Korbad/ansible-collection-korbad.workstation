@@ -1,0 +1,32 @@
+
+- name: Ensure nodered_pod exists
+  containers.podman.podman_pod:
+    name: nodered_pod
+    state: started
+    ports:
+    - "{{ nodered_exposed_http_port }}:{{ nodered_internal_http_port }}"
+
+- name: Pull an nodered container image
+  containers.podman.podman_image:
+    name: "{{ nodered_image_name }}"
+
+- name: Ensure volume exists for nodered config
+  containers.podman.podman_volume:
+    name: nodered_data_volume
+  when: nodered_data_volume is undefined
+
+- name: Ensure nodered container is running
+  containers.podman.podman_container:
+    name: nodered
+    image: "{{ nodered_image_name }}"
+    pod: nodered_pod
+    state: started
+    volumes:
+    - nodered_data_volume:/data
+  
+- name: Launch GUI if warranted
+  include_role:
+    name: korbad.tools.launch_gui
+  vars:
+    http_port: "{{ nodered_exposed_http_port }}"
+  when: nodered_launch_gui | bool

@@ -1,0 +1,17 @@
+- name: Ensure wiki.js pod is destroyed
+  containers.podman.podman_pod:
+    name: nodered_pod
+    state: absent
+
+- name: Ensure database container is destroyed
+  containers.podman.podman_container:
+    name: nodered_mariadb
+    pod: nodered_pod
+    state: absent
+
+- name: Ensure nodered container is destroyed
+  containers.podman.podman_container:
+    name: nodered
+    requires: nodered_mariadb
+    pod: nodered_pod
+    state: absent
