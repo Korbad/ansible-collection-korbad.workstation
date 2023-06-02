@@ -2,3 +2,7 @@
   file:
     path: "{{ (ansible_env.HOME, '.local/share/containers/storage') | path_join }}"
     state: absent
+
+- name: Execute podman system prune
+  command:
+    cmd: podman system prune -a -f

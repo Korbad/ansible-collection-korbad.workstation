@@ -1,4 +1,0 @@
----
-- name: Execute podman system prune
-  command:
-    cmd: podman system prune -a -f
