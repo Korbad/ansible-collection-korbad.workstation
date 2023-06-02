@@ -1,4 +1,0 @@
----
-- name: Ensure receptor image exists
-  containers.podman.podman_image:
-    name: quay.io/ansible/receptor
