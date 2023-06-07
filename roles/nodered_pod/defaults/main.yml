@@ -1,4 +1,0 @@
-nodered_exposed_http_port: 1880
-nodered_internal_http_port: 1880 #nodered default
-nodered_image_name: docker.io/nodered/node-red
-nodered_launch_gui: true
