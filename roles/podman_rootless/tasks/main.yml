@@ -2,9 +2,6 @@
 - name: Ensure nodocker file is present
   include_tasks: nodocker.yml
 
-- name: Migrate to rootless podman
-  include_tasks: rootless_podman_system_migrate.yml
-
 - name: Ensure user has sufficient subuid and subgid maps
   include_tasks: user_subuid_subgid.yml
 
