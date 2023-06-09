@@ -38,4 +38,5 @@
     state: link
     force: true
   become: true
-  when: not docker_socket.stat.islnk
+  when: 
+    - not docker_socket.stat.exists or not docker_socket.stat.islnk
