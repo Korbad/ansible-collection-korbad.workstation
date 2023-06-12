@@ -1,0 +1,7 @@
+- name: Install 32-bit support packages for NVIDIA gpu
+  pacman:
+    name: 
+      - lib32-nvidia-utils 
+      - lib32-opencl-nvidia
+    state: present
+  become: true

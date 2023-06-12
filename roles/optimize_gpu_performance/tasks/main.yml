@@ -1,0 +1,5 @@
+---
+- name: Optimize performance for Archlinux
+  include_role:
+    name: optimize_gpu_performance/arch
+  when: ansible_distribution == 'Archlinux'

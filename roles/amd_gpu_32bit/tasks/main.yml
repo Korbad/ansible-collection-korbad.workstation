@@ -1,0 +1,9 @@
+- name: Install 32-bit support packages for AMD gpu
+  pacman:
+    name: 
+      - lib32-mesa 
+      - lib32-mesa-vdpau 
+      - lib32-vulkan-radeon 
+      - lib32-glu 
+    state: present
+  become: true

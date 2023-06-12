@@ -1,0 +1,15 @@
+- name: Ensure pciutils is installed for lspci
+  pacman:
+    name: pciutils
+    state: present
+  become: true
+
+- name: Get PCI devices
+  command: lspci
+  changed_when: false
+  register: pci_devices
+
+- name: Determine GPU vendor
+  set_fact:
+    is_amd: "{{ 'AMD' in pci_devices.stdout }}"
+    is_nvidia: "{{ 'NVIDIA' in pci_devices.stdout }}"

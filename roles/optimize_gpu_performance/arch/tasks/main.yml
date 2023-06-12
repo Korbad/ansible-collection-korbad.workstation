@@ -1,0 +1,10 @@
+---
+- name: Include packages for AMD gpu
+  include_role:
+    name: amd_gpu
+  when: is_amd|bool
+
+- name: Include packages for NVIDIA gpu
+  include_role:
+    name: nvidia_gpu
+  when: is_nvidia|bool

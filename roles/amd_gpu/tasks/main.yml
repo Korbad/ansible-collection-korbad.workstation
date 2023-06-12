@@ -1,0 +1,19 @@
+# Common packages for AMD GPU
+- name: Install common packages for AMD gpu
+  pacman:
+    name: 
+      - mesa 
+      - mesa-vdpau 
+      - vulkan-radeon 
+      - glu 
+    state: present
+
+# Vulkan loader packages for AMD GPU
+- name: Install Vulkan loader packages for AMD gpu
+  pacman:
+    name: 
+      - vulkan-icd-loader 
+      - lib32-vulkan-icd-loader
+    state: present
+  become: true
+
