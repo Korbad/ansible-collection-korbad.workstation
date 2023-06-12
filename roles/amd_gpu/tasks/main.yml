@@ -7,6 +7,7 @@
       - vulkan-radeon 
       - glu 
     state: present
+  become: true
 
 # Vulkan loader packages for AMD GPU
 - name: Install Vulkan loader packages for AMD gpu
