@@ -9,7 +9,7 @@
   ansible.builtin.lineinfile:
     path: /etc/pacman.conf
     line: "SigLevel = PackageRequired"
-    insertafter: "\[multilib\]"
+    insertafter: "[multilib]"
   become: true
 
 - name: Ensure Include = /etc/pacman.d/mirrorlist is in pacman.conf
