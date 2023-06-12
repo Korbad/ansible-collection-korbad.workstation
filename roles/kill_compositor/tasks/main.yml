@@ -1,0 +1,6 @@
+- name: Get compositor
+  shell: inxi -Gxx | grep compositor | cut -d ':' -f5 | cut -d ' ' -f2
+  register: compositor
+
+- name: Kill compositor
+  shell: "pkill {{compositor.stdout}}"
