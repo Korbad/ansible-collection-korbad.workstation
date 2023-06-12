@@ -1,0 +1,20 @@
+- name: Ensure [multilib] is in pacman.conf
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    line: "[multilib]"
+    insertafter: EOF
+  become: true
+
+- name: Ensure SigLevel = PackageRequired is in pacman.conf
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    line: "SigLevel = PackageRequired"
+    insertafter: "\[multilib\]"
+  become: true
+
+- name: Ensure Include = /etc/pacman.d/mirrorlist is in pacman.conf
+  ansible.builtin.lineinfile:
+    path: /etc/pacman.conf
+    line: "Include = /etc/pacman.d/mirrorlist"
+    insertafter: "SigLevel = PackageRequired"
+  become: true

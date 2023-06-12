@@ -1,0 +1,4 @@
+---
+dependencies:
+  - aur
+  - cargo_git_cli

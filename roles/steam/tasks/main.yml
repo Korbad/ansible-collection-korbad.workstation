@@ -1,0 +1,10 @@
+---
+- name: Steam for Archlinux
+  include_role:
+    name: steam/arch
+  when: ansible_distribution == 'Archlinux'
+
+- name: Steam for AlmaLinux
+  include_role:
+    name: steam/alma
+  when: ansible_distribution == 'AlmaLinux'

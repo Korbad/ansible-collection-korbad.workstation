@@ -1,0 +1,5 @@
+---
+- name: Lutris for Archlinux
+  include_role:
+    name: lutris/arch
+  when: ansible_distribution == 'Archlinux'

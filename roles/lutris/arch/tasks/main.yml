@@ -1,0 +1,4 @@
+- name: Ensure Lutris is installed
+  package:
+    name: lutris
+  become: true

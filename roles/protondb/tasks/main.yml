@@ -1,0 +1,5 @@
+---
+- name: ProtonDB for Archlinux
+  include_role:
+    name: protondb/arch
+  when: ansible_distribution == 'Archlinux'

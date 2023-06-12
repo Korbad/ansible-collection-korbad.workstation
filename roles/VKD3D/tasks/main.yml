@@ -1,0 +1,5 @@
+---
+- name: VKD3D for Archlinux
+  include_role:
+    name: VKD3D/arch
+  when: ansible_distribution == 'Archlinux'

@@ -1,0 +1,7 @@
+- name: Install Gamemode from AUR
+  kewlfft.aur.aur:
+    name:
+      - gamemode
+      - lib32-gamemode
+    update_cache: true
+    state: latest

@@ -1,0 +1,8 @@
+- name: Ensure Wine and prerequistes is installed
+  package:
+    name: 
+      - wine 
+      - winetricks 
+      - wine-mono 
+      - wine_gecko
+  become: true

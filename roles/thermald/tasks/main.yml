@@ -1,0 +1,11 @@
+- name: Ensure thermald service exist
+  package:
+    name: thermald
+  become: true
+
+- name: Start and Enable thermald service
+  systemd:
+    name: thermald
+    state: started
+    enabled: true
+  become: true

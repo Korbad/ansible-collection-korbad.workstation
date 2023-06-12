@@ -1,0 +1,5 @@
+---
+- name: Gamemode for Archlinux
+  include_role:
+    name: gamemode/arch
+  when: ansible_distribution == 'Archlinux'

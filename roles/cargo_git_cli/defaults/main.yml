@@ -1,0 +1,1 @@
+cargo_config_file_path: "{{ ansible_env.HOME }}/.cargo/config"

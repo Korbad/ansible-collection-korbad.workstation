@@ -1,0 +1,4 @@
+- name: Ensure Steam is installed
+  package:
+    name: steam
+  become: true
