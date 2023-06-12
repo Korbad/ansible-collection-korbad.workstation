@@ -2,7 +2,7 @@ dependencies:
 - gamemode
 - lutris
 - optimize_gpu_performance
-- protondb
+# - protondb
 - steam
 - VKD3D
 - wine
