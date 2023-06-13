@@ -1,0 +1,8 @@
+
+---
+- name: Ensure that the marhkb Pods flatpak is installed
+  community.general.flatpak:
+    name: com.github.marhkb.Pods
+    state: present
+    remote: flathub
+    method: user
