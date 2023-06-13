@@ -2,3 +2,12 @@
 - name: Ensure podman-desktop-companion-appimage is installed
   kewlfft.aur.aur:
     name: podman-desktop-companion-appimage
+  when: ansible_distribution == 'Archlinux'
+
+- name: Ensure that the podman desktop flatpak is installed
+  community.general.flatpak:
+    name: io.podman_desktop.PodmanDesktop
+    state: present
+    remote: flathub
+    method: user
+  when: ansible_distribution == 'AlmaLinux'
