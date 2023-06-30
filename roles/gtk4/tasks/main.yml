@@ -1,0 +1,5 @@
+- name: Ensure gtk4 is installed
+  pacman:
+    name: gtk4
+  become: true
+  when: ansible_distribution == 'Archlinux'
