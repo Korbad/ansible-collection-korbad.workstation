@@ -1,0 +1,4 @@
+- include_roles:
+    name: korbad.project_management.managed_rust_crates
+  vars:
+    rust_crate_name: korbad_ui
