@@ -1,0 +1,9 @@
+- name: Install rustfmt
+  ansible.builtin.command:
+    cmd: rustup component add rustfmt
+  register: rustup_component_add_rustfmt
+
+# - name: Install clippy
+#   ansible.builtin.command:
+#     cmd: rustup component add clippy
+#   register: rustup_component_add_clippy

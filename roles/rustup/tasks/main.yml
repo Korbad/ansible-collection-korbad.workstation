@@ -32,3 +32,6 @@
   command:
     cmd: "{{ ansible_env.HOME }}/bin/rustup update"
   register: rustup_update
+
+- name: Ensure components are added
+  include_tasks: components.yml
