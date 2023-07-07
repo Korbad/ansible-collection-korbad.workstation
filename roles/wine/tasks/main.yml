@@ -1,5 +1,5 @@
 ---
-- name: Lutris for Archlinux
+- name: Wine for Archlinux
   include_role:
-    name: lutris/arch
+    name: wine/arch
   when: ansible_distribution == 'Archlinux'
