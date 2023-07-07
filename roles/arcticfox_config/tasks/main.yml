@@ -1,0 +1,4 @@
+---
+- name: Ensure arcticfox-config-bin is installed
+  kewlfft.aur.aur:
+    name: arcticfox-config-bin
