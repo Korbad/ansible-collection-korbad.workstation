@@ -1,0 +1,40 @@
+---
+# based on https://youtu.be/ifaLk5v3W90
+- name: NVIM
+
+- name: AstroNVIM
+
+- name: Neovide
+
+- name: Rust Analyzer 
+
+- name: EVCXR REPL kernel
+
+- name: BACON test runner
+
+- name: LAZYGIT
+
+- name: Essential crate tokio
+
+- name: EYRE crate 
+
+- name: COLOR-EYRE
+
+- name: Tracing crate
+
+- name: Reqwest crate
+
+- name: Rayon crate
+
+- name: Clap (command-line arg parsing)
+
+- name: SQLX
+
+- name: CHRONO date-time
+
+- name: EGUI
+
+- name: YEW.RS
+
+- name: Clippy
+
