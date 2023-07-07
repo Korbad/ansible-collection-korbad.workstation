@@ -1,0 +1,5 @@
+---
+- name: Install cython package
+  pacman:
+    name: cython
+  become: true
