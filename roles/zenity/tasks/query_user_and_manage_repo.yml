@@ -1,0 +1,21 @@
+---
+- name: Fetch git_url from user
+  command:
+    cmd: zenity --entry --title "Git repo manager" --text "enter git_url (ssh):"
+  register: zenity_result2
+
+- set_fact:
+    git_url: "{{ zenity_result2.stdout }}"
+
+- name: Extract organization and repository name (BAD, USES STRING MANIPULATION)
+  set_fact:
+    github_org: "{{ git_url.split(':')[1].split('/')[0] }}"
+    github_repo_name: "{{ git_url.split(':')[1].split('/')[1].split('.')[0] }}"
+
+- name: Manage repo
+  include_role:
+    name: korbad.alma_workstation.github_repos
+    tasks_from: status.yml
+
+- name: Include this task file itself (thus creating an infinite loop)
+  include_tasks: query_user_and_manage_repo.yml
