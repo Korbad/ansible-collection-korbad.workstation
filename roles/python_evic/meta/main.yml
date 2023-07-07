@@ -1,0 +1,10 @@
+---
+dependencies:
+  - role: cython
+  - role: libusb
+  - role: hidapi
+  - role: korbad.project_management.managed_git_repos
+    vars:
+      managed_git_repos:
+        python_evic:
+          git_url: git://github.com/Ban3/python-evic.git

@@ -1,0 +1,2 @@
+python_evic_dirname: python_evic
+python_evic_path: "{{ (managed_git_repos_path, python_evic_dirname) | path_join }}"
