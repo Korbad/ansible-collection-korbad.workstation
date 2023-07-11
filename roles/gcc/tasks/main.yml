@@ -1,0 +1,7 @@
+- name: Install gcc
+  ansible.builtin.yum:
+    name: gcc
+    state: present
+    update_cache: yes
+  become: yes
+  when: ansible_distribution == 'AlmaLinux'
