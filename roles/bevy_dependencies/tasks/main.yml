@@ -1,0 +1,11 @@
+- name: Install bevy dependencies for AlmaLinux
+  ansible.builtin.yum:
+    name:
+      - gcc-c++
+      - libX11-devel
+      - alsa-lib-devel
+      - systemd-devel
+    state: present
+    update_cache: yes
+  become: yes
+  when: ansible_distribution == 'AlmaLinux'
