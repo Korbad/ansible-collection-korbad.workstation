@@ -1,3 +1,4 @@
 ---
 dependencies:
-- openssh
+- role: openssh
+  when: ansible_distribution == 'Archlinux'
