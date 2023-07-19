@@ -1,0 +1,5 @@
+---
+- name: Ensure timeshift is installed
+  kewlfft.aur.aur:
+    name: timeshift
+

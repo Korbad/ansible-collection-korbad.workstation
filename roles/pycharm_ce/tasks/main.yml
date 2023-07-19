@@ -1,0 +1,5 @@
+---
+- name: Ensure pycharm community edition is installed
+  community.general.pacman:
+    name: pycharm-community-edition
+  become: true

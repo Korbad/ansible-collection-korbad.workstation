@@ -1,0 +1,5 @@
+---
+- name: Ensure xplr is installed
+  community.general.pacman:
+    name: xplr
+  become: true

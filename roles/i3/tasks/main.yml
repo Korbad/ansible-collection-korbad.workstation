@@ -1,0 +1,6 @@
+---
+- name: Ensure i3 Window Manager is installed
+  community.general.pacman:
+    name: i3
+  become: true
+
