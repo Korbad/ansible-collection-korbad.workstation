@@ -1,0 +1,15 @@
+---
+- name: Ensure Xorg-server is installed
+  community.general.pacman:
+    name: xorg-server
+  become: true
+
+- name: Ensure Xorg fonts are installed
+  community.general.pacman:
+    name: xorg-fonts
+  become: true
+
+- name: Ensure Xorg xinit is installed
+  community.general.pacman:
+    name: xorg-xinit
+  become: true
