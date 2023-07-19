@@ -4,3 +4,14 @@
     name: i3
   become: true
 
+- name: Ensure that the i3 config dir exists
+  file:
+    path: "{{ ansible_env.HOME }}/.config/i3"
+    state: directory
+
+- name: Set i3 to require click to focus
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/i3/config"
+    line: 'focus_follows_mouse no'
+    create: true
+  notify: restart i3
