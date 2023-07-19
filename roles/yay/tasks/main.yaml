@@ -3,7 +3,6 @@
   kewlfft.aur.aur:
     name: yay
     state: present
-  become: true
 
 - name: Update cache
   community.general.pacman:
