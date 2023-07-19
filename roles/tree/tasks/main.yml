@@ -1,0 +1,6 @@
+---
+- name: Ensure tree is installed
+  community.general.pacman:
+    name: tree
+  become: true
+  when: ansible_distribution == 'Archlinux'
