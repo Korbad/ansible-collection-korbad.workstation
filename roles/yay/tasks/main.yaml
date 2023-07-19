@@ -1,6 +1,6 @@
 ---
 - name: Install yay package manager
-  pacman:
+  kewlfft.aur.aur:
     name: yay
     state: present
   become: true
