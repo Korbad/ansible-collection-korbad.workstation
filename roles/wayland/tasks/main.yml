@@ -1,0 +1,15 @@
+---
+- name: Ensure wayland is installed
+  community.general.pacman:
+    name: wayland
+  become: true
+
+- name: Ensure West (the Wayland compositor) is installed
+  community.general.pacman:
+    name: weston
+  become: true
+
+- name: Ensure XWayland (the X11 compatibility layer for Wayland) is installed
+  community.general.pacman:
+    name: xorg-server-xwayland
+  become: true
