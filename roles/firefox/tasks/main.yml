@@ -1,0 +1,5 @@
+---
+- name: Ensure firefox is installed
+  community.general.pacman:
+    name: firefox
+  become: true
