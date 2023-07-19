@@ -1,0 +1,5 @@
+---
+- name: Ensure Terminator is installed
+  community.general.pacman:
+    name: terminator
+  become: true
