@@ -1,15 +1,8 @@
 ---
-- name: Archlinux
-  include_role:
-    name: 1password/arch
+- name: Ensure 1password is installed on Arch
+  include_tasks: arch.yml
   when: ansible_distribution == 'Archlinux'
 
-- name: AlmaLinux
-  include_role:
-    name: 1password/alma
+- name: Ensure 1password is installed on AlmaLinux
+  include_tasks: alma.yml
   when: ansible_distribution == 'AlmaLinux'
-
-# - name: Ubuntu
-#   include_role:
-#     name: 1password/ubuntu
-#   when: ansible_distribution == 'Ubuntu'

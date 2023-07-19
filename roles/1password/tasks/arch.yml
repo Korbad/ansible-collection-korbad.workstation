@@ -1,0 +1,13 @@
+---
+- name: Ensure yay is installed
+  include_role:
+    name: yay
+
+- name: Import 1Password signing key
+  shell: curl -sS https://downloads.1password.com/linux/keys/1password.asc | gpg --import
+
+- name: Install 1Password
+  kewlfft.aur.aur:
+    name: 1password
+    use: yay
+...
