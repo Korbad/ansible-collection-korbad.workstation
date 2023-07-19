@@ -1,0 +1,11 @@
+---
+- name: Ensure bspwm is installed
+  community.general.pacman:
+    name: bspwm
+  become: true
+
+- name: Ensure bspwm is in xinitrc for user
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.xinitrc"
+    line: "exec bspwm"
+    create: true
