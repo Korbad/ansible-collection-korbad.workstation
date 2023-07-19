@@ -1,0 +1,5 @@
+---
+- name: Ensure chromium is installed
+  community.general.pacman:
+    name: chromium
+  become: true
