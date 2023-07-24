@@ -1,0 +1,4 @@
+- name: Ensure npcamixer is installed
+  pacman:
+    name: npcamixer
+  become: true
