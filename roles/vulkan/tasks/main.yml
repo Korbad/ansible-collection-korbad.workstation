@@ -1,0 +1,8 @@
+- name: Install Vulkan packages
+  pacman:
+    name:
+      - vulkan-icd-loader
+      - vulkan-validation-layers
+      - vulkan-tools
+    state: latest
+  become: true
