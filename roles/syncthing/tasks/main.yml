@@ -1,0 +1,5 @@
+---
+- name: Ensure syncthing is installed
+  community.general.pacman:
+    name: syncthing
+  become: true
