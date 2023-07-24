@@ -1,0 +1,9 @@
+- name: Ensure pkgfile is installed
+  community.general.pacman:
+    name: pkgfile
+  become: true
+
+- name: Ensure pkgfile database is updated
+  command:
+    cmd: pkgfile --update
+  become: true
