@@ -1,0 +1,4 @@
+- name: Ensure lsof is installed
+  community.general.pacman:
+    name: lsof
+  become: true
