@@ -1,0 +1,60 @@
+---
+- name: Check if swap file exists
+  stat:
+    path: /swapfile
+  register: swapfile_stat
+
+- name: Create swap file
+  command:
+    cmd: dd if=/dev/zero of=/swapfile bs=1M count=8k status=progress
+  when: not swapfile_stat.stat.exists
+  become: yes
+
+- name: Set correct permissions on swap file
+  file:
+    path: /swapfile
+    mode: '0600'
+  become: yes
+- name: Check if swap file is a swap file
+  command:
+    cmd: file /swapfile
+  register: swapfile_type
+  changed_when: false
+  become: yes
+
+- name: Format the swap file
+  command:
+    cmd: mkswap -U clear /swapfile
+  when: "'swap file' not in swapfile_type.stdout"
+  become: yes
+
+- name: Activate the swap file
+  command:
+    cmd: swapon /swapfile
+  register: swapfile_on
+  changed_when: false
+  become: yes
+
+- name: Check if swap is already on
+  command:
+    cmd: swapon --show=NAME
+  register: swap_on
+  changed_when: false
+  become: yes
+
+- name: Activate the swap file
+  command:
+    cmd: swapon /swapfile
+  when: "/swapfile not in swap_on.stdout"
+  become: yes
+
+- name: Add swap file to fstab
+  mount:
+    path: none
+    src: /swapfile
+    fstype: swap
+    opts: defaults
+    dump: '0'
+    passno: '0'
+    state: present
+  become: yes
