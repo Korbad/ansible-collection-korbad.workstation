@@ -1,29 +1,37 @@
-# Common packages for NVIDIA GPU
+- name: Remove nouveau driver
+  pacman:
+    name:
+    - xf86-video-nouveau
+    state: absent
+
 - name: Install common packages for NVIDIA gpu
   pacman:
     name: 
       - nvidia 
       - nvidia-settings 
-      - nvidia-utils 
-      - libvdpau 
-      - libxnvctrl 
-    state: present
+      - nvidia-utils
   become: true
+  changed_when: true
+  notify:
+    - modprobe nvidia
+    - generate nvidia xorg config
 
-# Vulkan loader packages for NVIDIA GPU
-- name: Install Vulkan loader packages for NVIDIA gpu
-  pacman:
-    name: 
-      - vulkan-icd-loader 
-      - lib32-vulkan-icd-loader
-    state: present
+- name: Create blacklist file in /etc/modprobe.d/
+  copy:
+    dest: /etc/modprobe.d/nouveau_blacklist.conf
+    content: blacklist nouveau
+    owner: root
+    group: root
+    mode: 0644
   become: true
+  notify:
+    - rebuild initramfs
 
-# OpenCL packages for NVIDIA GPU
-- name: Install OpenCL packages for NVIDIA gpu
-  pacman:
-    name: 
-      - opencl-nvidia
-    state: present
-  become: true
-
+## OpenCL packages for NVIDIA GPU
+#- name: Install OpenCL packages for NVIDIA gpu
+#  pacman:
+#    name:
+#      - opencl-nvidia
+#    state: present
+#  become: true
+#
