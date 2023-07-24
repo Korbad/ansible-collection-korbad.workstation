@@ -1,0 +1,8 @@
+- name: Ensure video codecs are installed
+  community.general.pacman:
+    name:
+    - gst-plugins-base
+    - gst-plugins-good
+    - gst-plugins-bad
+    - gst-plugins-ugly
+  become: true
