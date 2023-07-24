@@ -1,0 +1,4 @@
+- name: Ensure distrobox is installed
+  ansible.builtin.package:
+    name: distrobox
+  become: true
