@@ -1,0 +1,4 @@
+---
+- name: Ensure the jostuto TUI file browser is installed
+  kewlfft.aur.aur:
+    name: joshuto
