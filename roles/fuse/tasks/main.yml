@@ -1,0 +1,10 @@
+---
+- name: Ensure FUSE is installed
+  community.general.pacman:
+    name: fuse2
+  become: true
+
+- modprobe:
+    name: fuse
+    state: present
+  become: true
