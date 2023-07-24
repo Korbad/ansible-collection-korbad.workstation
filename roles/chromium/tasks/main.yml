@@ -3,3 +3,7 @@
   community.general.pacman:
     name: chromium
   become: true
+
+- name: Ensure chromium-widevine is available for DRM video streaming (Netflix, Amazon, etc)
+  kewlfft.aur.aur:
+    name: chromium-widevine
