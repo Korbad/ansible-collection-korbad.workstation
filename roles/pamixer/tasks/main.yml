@@ -1,0 +1,4 @@
+- name: Ensure pamixer is installed
+  pacman:
+    name: pamixer
+  become: true
