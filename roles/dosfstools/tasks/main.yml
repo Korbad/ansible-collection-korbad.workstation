@@ -1,0 +1,5 @@
+- name: Ensure dosfstools is installed
+  ansible.builtin.package:
+    name: dosfstools
+    state: present
+  become: true
