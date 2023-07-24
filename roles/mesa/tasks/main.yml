@@ -1,0 +1,7 @@
+- name: Ensure mesa, mesa-utils, and mesa-demos is installed
+  community.general.pacman:
+    name:
+    - mesa
+    - mesa-utils
+    - mesa-demos
+  become: true
