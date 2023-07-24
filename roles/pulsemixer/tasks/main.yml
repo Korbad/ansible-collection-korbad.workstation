@@ -1,0 +1,4 @@
+- name : Ensure pulsemixer is installed
+  pacman:
+    name: pulsemixer
+  become: true
