@@ -1,0 +1,4 @@
+---
+- name: Ensure the evince package is installed
+  kewlfft.aur.aur:
+    name:  evince-no-gnome
