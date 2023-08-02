@@ -1,0 +1,12 @@
+- name: Check if dbus session exists
+  ansible.builtin.command: loginctl show-user --property=Sessions --value "{{ ansible_user }}"
+  register: dbus_session
+  changed_when: false
+
+- name: Print dbus session
+  ansible.builtin.debug:
+    var: dbus_session.stdout
+
+- name: Start user dbus instance
+  ansible.builtin.shell: dbus-daemon --session --fork
+  when: dbus_session.stdout == ""
