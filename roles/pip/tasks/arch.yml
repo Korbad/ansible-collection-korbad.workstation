@@ -1,0 +1,8 @@
+- name: Install pip python bindings
+  community.general.pacman:
+    name: python-pip
+  become: true
+
+- name: Install pipx Arch package which managed Python venvs on Arch
+  include_role:
+    name: python_pipx

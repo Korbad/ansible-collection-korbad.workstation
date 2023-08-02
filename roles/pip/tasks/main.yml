@@ -1,7 +1,5 @@
-- name: Install pip python bindings
-  community.general.pacman:
-    name: python-pip
-  become: true
+- name: Install pip requiremetns for Arch
+  include_tasks: arch.yml
   when: ansible_distribution == 'Archlinux'
 
 - name: Ensure setuptools is installed
@@ -13,14 +11,14 @@
   shell: pip install setuptools
   when: check_setuptools.rc != 0
 
-- name: Upgrade pip for current interpreter
-  pip:
-    name: pip
-    state: latest
-
-- name: Upgrade setuptools and wheel
-  pip:
-    name:
-    - setuptools
-    - wheel
-    state: latest
+#- name: Upgrade pip for current interpreter
+#  pip:
+#    name: pip
+#    state: latest
+#
+#- name: Upgrade setuptools and wheel
+#  pip:
+#    name:
+#    - setuptools
+#    - wheel
+#    state: latest
