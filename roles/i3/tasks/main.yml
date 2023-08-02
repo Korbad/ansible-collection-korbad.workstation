@@ -9,6 +9,10 @@
     path: "{{ ansible_env.HOME }}/.config/i3"
     state: directory
 
+- name: Apply i3 configuration
+  include_tasks: configuration.yml
+  when: i3_configuration is defined
+
 - name: Set i3 to require click to focus
   lineinfile:
     path: "{{ ansible_env.HOME }}/.config/i3/config"
