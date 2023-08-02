@@ -1,0 +1,6 @@
+---
+- name: Install reflector
+  pacman:
+    name: reflector
+    state: present
+  become: true

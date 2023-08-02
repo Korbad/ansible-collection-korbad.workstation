@@ -1,0 +1,4 @@
+---
+- name: Ensure that dust (du-rust) is installed
+  community.general.cargo:
+    name: du-dust

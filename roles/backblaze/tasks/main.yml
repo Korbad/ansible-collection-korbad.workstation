@@ -1,0 +1,4 @@
+---
+- name: Ensure that the backblaze cli is installed
+  kewlfft.aur.aur:
+    name: backblaze-b2

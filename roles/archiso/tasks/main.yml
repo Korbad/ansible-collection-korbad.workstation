@@ -1,0 +1,5 @@
+---
+- name: Ensure archiso is installed
+  community.general.pacman:
+    name: archiso
+  become: true

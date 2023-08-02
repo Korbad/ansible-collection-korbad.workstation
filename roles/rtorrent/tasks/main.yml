@@ -1,0 +1,5 @@
+---
+- name: Ensure rTorrent is installed
+  community.general.pacman:
+    name: rtorrent
+  become: true

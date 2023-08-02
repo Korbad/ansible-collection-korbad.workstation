@@ -1,0 +1,4 @@
+---
+- name: Ensure git-grab is installed
+  community.general.cargo:
+    name: git-grab

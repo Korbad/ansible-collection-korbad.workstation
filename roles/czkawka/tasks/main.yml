@@ -1,0 +1,6 @@
+---
+- name: Ensure the czkawka packages are installed
+  community.general.cargo:
+    name:
+      - czkawka_gui
+      - czkawka_cli

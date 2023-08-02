@@ -1,0 +1,15 @@
+---
+- name: Ensure krusader (file manager) is installed
+  community.general.pacman:
+    name: krusader
+  become: true
+
+- name: Ensure a diff util exists for krusader
+  community.general.pacman:
+    name: kdiff3
+  become: true
+
+- name: Ensure a rename util exists for krusader
+  community.general.pacman:
+    name: krename
+  become: true

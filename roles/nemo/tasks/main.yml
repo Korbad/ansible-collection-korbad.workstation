@@ -1,0 +1,5 @@
+---
+- name: Ensure nemo is installed
+  community.general.pacman:
+    name: nemo
+  become: true
