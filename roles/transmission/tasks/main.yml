@@ -1,0 +1,11 @@
+---
+- name: Ensure that transmission is installed
+  pacman:
+    name:
+    - transmission-cli
+    - transmission-remote-gtk
+  become: true
+
+- name: Ensure that the transmission daemon is running
+  command:
+    cmd: transmission-daemon
