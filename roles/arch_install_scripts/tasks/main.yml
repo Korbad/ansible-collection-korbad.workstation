@@ -1,0 +1,5 @@
+---
+- name: Ensure the Arch install scripts are installed
+  community.general.pacman:
+    name: arch-install-scripts
+  become : true
