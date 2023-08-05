@@ -1,0 +1,9 @@
+---
+- name: Add hardened SSH config
+  template:
+    dest: /etc/ssh/sshd_config
+    src: sshd_config.j2
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart sshd
