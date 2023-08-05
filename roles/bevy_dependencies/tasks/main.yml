@@ -9,3 +9,7 @@
     update_cache: yes
   become: yes
   when: ansible_distribution == 'AlmaLinux'
+
+- name: Ensure bevy dependencies are met for Arch variants
+  include_tasks: arch.yml
+  when: ansible_distribution == 'Archlinux'
