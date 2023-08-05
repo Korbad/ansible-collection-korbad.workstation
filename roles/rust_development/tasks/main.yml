@@ -1,0 +1,5 @@
+---
+# https://bevyengine.org/learn/book/getting-started/setup/
+- name: Ensure that the lld linker is installed to speed up compile times
+  include_role:
+    name: lld
