@@ -1,0 +1,4 @@
+- name: Ensure that the ssh-audit package is installed
+  community.general.pacman:
+    name: ssh-audit
+  become: true
