@@ -1,0 +1,32 @@
+- name: Ensure that the nss-mdns package is installed
+  pacman:
+    name: nss-mdns
+  become: true
+  notify: restart avahi
+
+- set_fact:
+    alsa_config: 'mdns_minimal [NOTFOUND=return]'
+
+- name: Slurp /etc/nsswitch.conf
+  slurp:
+    src: /etc/nsswitch.conf
+  register: nsswitch_slurp
+
+- set_fact:
+    nsswitch_content: "{{ nsswitch_slurp['content'] | b64decode }}"
+
+- name: Check if /etc/nsswitch.conf needs updating to include local mdns
+  set_fact:
+    needs_update: "{{ 'hosts: mymachines ' + alsa_config not in nsswitch_content }}"
+
+- name: Update /etc/nsswitch.conf
+  ansible.builtin.lineinfile:
+    path: /etc/nsswitch.conf
+    regexp: '^(hosts: mymachines )(.*)$'
+    line: '\1{{ alsa_config }} \2'
+    backrefs: yes
+  become: true
+  when: needs_update
+  notify:
+  - restart cups
+  - restart avahi
