@@ -1,0 +1,15 @@
+---
+- name: Ensure that CUPS is installed
+  pacman:
+    name:
+    - cups
+    - cups-pdf
+  become: true
+
+- name: Ensure that the cups service is enabled and started
+  service:
+    name: cups
+    state: started
+    enabled: yes
+  become: true
+
