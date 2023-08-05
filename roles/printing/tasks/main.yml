@@ -1,0 +1,7 @@
+---
+- include_role:
+    name: avahi
+- include_role:
+    name: cups
+- include_role:
+    name: nss_mdns
