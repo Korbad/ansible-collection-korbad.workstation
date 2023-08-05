@@ -3,6 +3,7 @@
   community.general.pacman:
     name: alsa-utils
   become: true
+
 - name: Ensure the pulse-audio codecs and the pulseaudio-alsa interface is installed
   community.general.pacman:
     name:
