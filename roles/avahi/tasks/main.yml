@@ -1,0 +1,12 @@
+---
+- name: Ensure avahi is installed
+  pacman:
+    name: avahi
+  become: true
+
+- name: Ensure that the avahi-daemon is started and enabled
+  service:
+    name: avahi-daemon
+    state: started
+    enabled: true
+  become: true
