@@ -1,4 +1,9 @@
 ---
+- name: Ensure that the Xorg clock is installed
+  community.general.pacman:
+    name: xorg-xclock
+  become: true
+
 - name: Ensure Xorg-server is installed
   community.general.pacman:
     name: xorg-server
@@ -12,4 +17,19 @@
 - name: Ensure Xorg xinit is installed
   community.general.pacman:
     name: xorg-xinit
+  become: true
+
+- name: Ensure twm is installed (Fallback window manager)
+  community.general.pacman:
+    name: xorg-twm
+  become: true
+
+- name: Ensure Xorg basic apps are installed
+  community.general.pacman:
+    name: xorg-apps
+  become: true
+
+- name: Ensure miscellaneous Xorg fonts are installed
+  community.general.pacman:
+    name: xorg-fonts-misc
   become: true
