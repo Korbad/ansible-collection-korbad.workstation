@@ -1,0 +1,21 @@
+---
+- name: Ensure hw-probe is installed
+  kewlfft.aur.aur:
+    name: hw-probe
+
+- name: Ensure that the optional software smartmontools is installed
+  include_role:
+    name: smartmontools
+
+- name: Execute hw-probe command, receive URL in return
+  command:
+    cmd: hw-probe -all -upload
+  register: hw_probe_response
+  become: true
+
+- name: Extract Probe URL and set as fact
+  set_fact:
+    probe_url: "{{ hw_probe_response.stdout | regex_search('https://linux-hardware\\.org/\\?probe=[a-zA-Z0-9]+') }}"
+
+- debug:
+    var: probe_url
