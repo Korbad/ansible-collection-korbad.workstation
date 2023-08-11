@@ -19,3 +19,10 @@
     line: 'focus_follows_mouse no'
     create: true
   notify: restart i3
+
+- name: Ensure .xinitrc exists and has correct configuration
+  template:
+    src: xinitrc.j2
+    dest: "{{ ansible_env.HOME }}/.xinitrc"
+    owner: "{{ ansible_user }}"
+    mode: '0744' # Ensures the file is executable

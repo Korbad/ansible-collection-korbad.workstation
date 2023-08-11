@@ -1,6 +1,4 @@
 ---
-
-
 - name: Configure i3 workspace
   template:
     src: i3config.j2
