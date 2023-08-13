@@ -1,6 +1,21 @@
-- name: modprobe nvidia
-  command: ls # modprobe nvidia
+# roles/nvidia_gpu/handlers/main.yml
+#- name: rebuild nvidia kernel module
+#  command: "dkms install -m nvidia -v {{ nvidia_driver_version }}"
+#  become: true
+#  notify:
+#    - reload kernel modules
+
+- name: reload kernel modules
+  command: depmod
   become: true
+  notify:
+    - modprobe nvidia
+
+- name: modprobe nvidia
+  command: modprobe nvidia
+  become: true
+  notify:
+    - generate nvidia xorg config
 
 - name: generate nvidia xorg config
   command: nvidia-xconfig

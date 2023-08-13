@@ -1,20 +1,15 @@
-- name: Remove nouveau driver
-  pacman:
-    name:
-    - xf86-video-nouveau
-    state: absent
-
+# roles/nvidia_gpu/tasks/main.yml
 - name: Install common packages for NVIDIA gpu
   pacman:
-    name: 
-      - nvidia 
-      - nvidia-settings 
+    name:
+      - nvidia
+      - nvidia-settings
       - nvidia-utils
+    state: latest
   become: true
   changed_when: true
-  notify:
-    - modprobe nvidia
-    - generate nvidia xorg config
+#  notify:
+#    - rebuild nvidia kernel module
 
 - name: Create blacklist file in /etc/modprobe.d/
   copy:
@@ -27,11 +22,6 @@
   notify:
     - rebuild initramfs
 
-## OpenCL packages for NVIDIA GPU
-#- name: Install OpenCL packages for NVIDIA gpu
-#  pacman:
-#    name:
-#      - opencl-nvidia
-#    state: present
-#  become: true
-#
+- name: Ensure that vulkan drivers are installed
+  include_role:
+    name: vulkan

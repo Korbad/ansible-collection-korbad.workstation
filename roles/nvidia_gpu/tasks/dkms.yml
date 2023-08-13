@@ -1,0 +1,5 @@
+---
+- name: Get NVIDIA driver version
+  command: dkms status nvidia
+  register: dkms_status_output
+  changed_when: false

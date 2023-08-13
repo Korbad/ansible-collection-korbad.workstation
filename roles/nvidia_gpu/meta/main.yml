@@ -1,0 +1,3 @@
+dependencies:
+  - dkms
+  - linux_headers

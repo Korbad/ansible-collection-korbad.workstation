@@ -1,0 +1,10 @@
+- name: Get NVIDIA driver version
+  shell: cat /proc/driver/nvidia/version
+  register: nvidia_driver_version_output
+  changed_when: false
+
+- set_fact:
+    nvidia_driver_versions: "{{ nvidia_driver_version_output.stdout | regex_search('NVIDIA UNIX x86_64 Kernel Module\\s+(\\S+)\\s', '\\1') }}"
+
+- set_fact:
+    nvidia_driver_version: "{{ nvidia_driver_versions | first }}"
