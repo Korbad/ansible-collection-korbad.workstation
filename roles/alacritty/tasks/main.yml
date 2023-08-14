@@ -1,0 +1,5 @@
+---
+- name: Ensure that Alacritty is installed
+  pacman:
+    name: alacritty
+  become: true
