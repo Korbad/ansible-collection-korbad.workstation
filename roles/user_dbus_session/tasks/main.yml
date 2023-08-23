@@ -1,5 +1,5 @@
 - name: Check if dbus session exists
-  ansible.builtin.command: loginctl show-user --property=Sessions --value "{{ ansible_user }}"
+  ansible.builtin.command: loginctl show-user --property=Sessions --value "{{ ansible_env.USER }}"
   register: dbus_session
   changed_when: false
 

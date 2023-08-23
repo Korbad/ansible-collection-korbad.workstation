@@ -8,8 +8,8 @@
 #   template:
 #     src: conf.yaml.j2
 #     dest: ~/.config/konsave/conf.yaml
-#     owner: "{{ ansible_user }}"
-#     group: "{{ ansible_user }}"
+#     owner: "{{ ansible_env.USER }}"
+#     group: "{{ ansible_env.USER }}"
 #     mode: '0644'
 
 - name: Apply konsave profile by name

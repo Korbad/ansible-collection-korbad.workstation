@@ -2,8 +2,8 @@
 - name: Set k3s.yml ownership to the current user
   ansible.builtin.file:
     path: "{{ rancher_k3s_kubeconfig_path }}"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
   become: true
 
 - name: Ensure user .kube directory exists for config file

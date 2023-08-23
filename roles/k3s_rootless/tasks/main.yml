@@ -10,8 +10,8 @@
     dest: "{{ user_kubeconfig_path }}"
     remote_src: true
     mode: 0600
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
   become: true
 
 - name: Override kubeconfig_path with user path

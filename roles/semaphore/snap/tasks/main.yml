@@ -25,7 +25,7 @@
 
 - name: Set semaphore credentials
   command:
-    cmd: semaphore user add --admin --name {{ ansible_user }} --login {{ ansible_user }} --email your-email@examaple.com --password {{ semaphore_password }}
+    cmd: semaphore user add --admin --name {{ ansible_env.USER }} --login {{ ansible_env.USER }} --email your-email@examaple.com --password {{ semaphore_password }}
   become: true
 
 - name: Ensure semaphore snap is enabled

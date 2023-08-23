@@ -2,7 +2,7 @@
 # https://orth.uk/ssh-over-cloudflare/
 - name: Configure SSH to use cloudflared
   community.general.ssh_config:
-    user: "{{ ansible_user }}"
+    user: "{{ ansible_env.USER }}"
     host: "{{ cloudflared_hostname }}"
     proxycommand: /usr/bin/cloudflared access ssh --hostname %h
     state: present

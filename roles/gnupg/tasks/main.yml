@@ -11,7 +11,7 @@
     enabled: yes
     state: started
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_env.USER }}"
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ ansible_user_id }}"
 
@@ -22,7 +22,7 @@
     enabled: yes
     state: started
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_env.USER }}"
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ ansible_user_id }}"
 
@@ -33,7 +33,7 @@
     enabled: yes
     state: started
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_env.USER }}"
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ ansible_user_id }}"
 

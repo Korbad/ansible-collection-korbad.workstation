@@ -1,7 +1,7 @@
 ---
 - name: Add local user's public SSH key to authorized keys
   ansible.builtin.authorized_key:
-    user: "{{ ansible_user }}"
+    user: "{{ ansible_env.USER }}"
     state: present
     key: "{{ lookup('file', pub_key_path) }}"
   vars:
