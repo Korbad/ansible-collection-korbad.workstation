@@ -1,0 +1,5 @@
+- name: Ensure xfsprogs is installed
+  ansible.builtin.package:
+    name: xfsprogs
+    state: present
+  become: true
