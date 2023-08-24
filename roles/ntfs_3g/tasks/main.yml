@@ -1,0 +1,5 @@
+---
+- name: Ensure that ntfs-3g is installed
+  pacman:
+    name: ntfs-3g
+  become: true
