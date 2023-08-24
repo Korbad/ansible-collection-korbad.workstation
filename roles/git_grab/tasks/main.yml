@@ -1,4 +1,5 @@
----
 - name: Ensure git-grab is installed
   community.general.cargo:
     name: git-grab
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"

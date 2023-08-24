@@ -2,3 +2,5 @@
 - name: Ensure that dust (du-rust) is installed
   community.general.cargo:
     name: du-dust
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"

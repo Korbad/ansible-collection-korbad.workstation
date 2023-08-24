@@ -2,3 +2,5 @@
 - name: Ensure git-global is installed
   community.general.cargo:
     name: git-global
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"

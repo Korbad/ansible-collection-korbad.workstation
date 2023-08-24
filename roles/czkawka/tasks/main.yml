@@ -4,3 +4,5 @@
     name:
       - czkawka_gui
       - czkawka_cli
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"

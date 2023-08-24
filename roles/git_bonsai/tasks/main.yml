@@ -2,3 +2,5 @@
 - name: Ensure git-bonsai is installed
   community.general.cargo:
     name: git-bonsai
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
