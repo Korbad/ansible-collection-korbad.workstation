@@ -1,0 +1,8 @@
+---
+# https://wiki.archlinux.org/title/WirePlumber
+- name: Ensure that WirePlumber is installed
+  pacman:
+    name: wireplumber
+  become: true
+
+# config file info at https://wiki.archlinux.org/title/WirePlumber
