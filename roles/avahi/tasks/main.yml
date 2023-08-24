@@ -4,6 +4,15 @@
     name: avahi
   become: true
 
+# https://wiki.archlinux.org/title/avahi
+# Note: systemd-resolved has a built-in mDNS service, make sure to disable systemd-resolved's multicast DNS resolver/responder (refer to resolved.conf(5)) or disable systemd-resolved.service entirely before using Avahi.
+- name: Ensure systemd-resolved is disabled
+  systemd:
+    name: systemd-resolved.service
+    state: stopped
+    enabled: no
+  become: true
+
 - name: Ensure that the avahi-daemon is started and enabled
   service:
     name: avahi-daemon
