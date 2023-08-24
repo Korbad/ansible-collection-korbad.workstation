@@ -1,0 +1,4 @@
+- name: Create .bash_profile with startx configuration using a template
+  template:
+    src: bash_profile.j2
+    dest: "{{ ansible_env.HOME }}/.bash_profile"
