@@ -33,3 +33,19 @@
   community.general.pacman:
     name: xorg-fonts-misc
   become: true
+
+#- name: Configure ~/.xserverrc for user using template
+#  ansible.builtin.template:
+#    src: xserverrc.j2
+
+#    dest: "{{ ansible_env.HOME }}/.xserverrc"
+#
+#- name: Allow any user to start the X server
+#  copy:
+#    dest: "/etc/X11/Xwrapper.config"
+#    content: |
+#      allowed_users=anybody
+#    mode: '0644'
+#  become: true
+
+
