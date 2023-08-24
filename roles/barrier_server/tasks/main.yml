@@ -1,0 +1,17 @@
+---
+
+- name: Ensure the Barrier configuration directory exists
+  file:
+    path: "{{ ansible_env.XDG_DATA_HOME }}/barrier"
+    state: directory
+#
+#- name: Create Barrier configuration file
+#  template:
+#    src: barrier_config.j2
+#    dest: "{{ ansible_env.XDG_DATA_HOME }}/barrier/.barrier.conf"
+
+# https://github.com/debauchee/barrier-wiki/blob/master/Command-Line.md
+# $XDG_DATA_HOME/barrier/.barrier.conf
+
+#- command:
+#    cmd: barrierc --enable-crypto --display :0 --debug INFO -f <server hostname or IP>

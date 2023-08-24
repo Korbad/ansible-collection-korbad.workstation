@@ -1,0 +1,11 @@
+---
+- name: Ensure barrier is installed
+  pacman:
+    name: barrier
+  become: true
+
+# https://github.com/debauchee/barrier-wiki/blob/master/Command-Line.md
+# $XDG_DATA_HOME/barrier/.barrier.conf
+
+#- command:
+#    cmd: barrierc --enable-crypto --display :0 --debug INFO -f <server hostname or IP>
