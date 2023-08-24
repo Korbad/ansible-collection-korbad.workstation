@@ -1,0 +1,6 @@
+---
+# https://wiki.archlinux.org/title/PipeWire
+- name: Ensure that PipeWire Graph Qt GUI Interface is installed
+  pacman:
+    name: qpwgraph
+  become: true
