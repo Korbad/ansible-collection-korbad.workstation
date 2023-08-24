@@ -1,0 +1,5 @@
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty --autologin korbad --noclear %I $TERM
+Type=simple
+Environment=XDG_SESSION_TYPE=x11
