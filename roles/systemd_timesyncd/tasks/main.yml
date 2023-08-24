@@ -1,0 +1,14 @@
+---
+- name: Enable and start the systemd-timesyncd service
+  ansible.builtin.systemd:
+    name: systemd-timesyncd
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  become: true
+
+- name: Check the status of systemd-timesyncd
+  ansible.builtin.command:
+    cmd: timedatectl status
+  register: timedatectl_output
+  changed_when: false
