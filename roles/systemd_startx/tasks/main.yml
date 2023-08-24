@@ -1,0 +1,31 @@
+---
+- name: Create startx-wrapper script
+  copy:
+    dest: "/usr/local/bin/startx-wrapper"
+    content: |
+      #!/bin/bash
+      exec startx
+    mode: '0755'
+  become: true
+
+- name: Ensure systemd user service directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.config/systemd/user"
+    state: directory
+
+- name: Create systemd user service for X server
+  template:
+    src: startx.service.j2
+    dest: "{{ ansible_env.HOME }}/.config/systemd/user/startx.service"
+
+- name: Reload systemd user daemon
+  command:
+    cmd: "systemctl --user daemon-reload"
+
+- name: Enable and start the user service
+  systemd:
+    name: startx.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+    scope: user
