@@ -1,0 +1,5 @@
+---
+- name: Ensure nano is installed
+  community.general.pacman:
+    name: nano
+  become: true
