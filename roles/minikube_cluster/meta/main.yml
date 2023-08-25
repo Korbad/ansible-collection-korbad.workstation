@@ -1,5 +1,5 @@
 ---
 dependencies:
   - minikube
-  - podman
+  - podman_rootless
   - crio
