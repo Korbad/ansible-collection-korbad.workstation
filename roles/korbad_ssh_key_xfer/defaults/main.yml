@@ -1,0 +1,3 @@
+# roles/korbad.workstation.korbad_ssh_key_xfer/defaults/main.yml
+---
+ansible_controller_ssh_dir_path: "/home/korbad/.ssh"

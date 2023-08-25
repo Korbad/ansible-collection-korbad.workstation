@@ -1,0 +1,10 @@
+---
+- name: Transfer ssh key pair to remote host
+  copy:
+    src: "{{ ansible_controller_ssh_dir_path }}/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.ssh/{{ item }}"
+    owner: "{{ ansible_env.USER }}"
+    mode: '0600'
+  loop:
+    - id_rsa.pub
+    - id_rsa
