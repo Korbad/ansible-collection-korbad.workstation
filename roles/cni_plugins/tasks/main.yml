@@ -2,3 +2,4 @@
 - name: Ensure CNI plugins are installed
   ansible.builtin.pacman:
     name: cni-plugins
+  become: true
