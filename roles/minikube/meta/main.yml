@@ -1,3 +1,5 @@
 ---
 dependencies:
-- pyyaml
+  - kubectl
+  - runc
+#- pyyaml
