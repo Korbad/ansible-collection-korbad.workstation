@@ -4,6 +4,13 @@
     state: present
   become: true
 
+- name: Ensure /var/lib/crio directory exists
+  file:
+    path: /var/lib/crio
+    state: directory
+    mode: '0755'
+  become: true
+
 - name: Enable and start CRI-O
   ansible.builtin.systemd:
     name: crio
