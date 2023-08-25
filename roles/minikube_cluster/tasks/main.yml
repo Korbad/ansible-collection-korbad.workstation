@@ -17,6 +17,19 @@
   register: set_container_runtime_result
   changed_when: "'These changes will take effect upon a minikube delete and then a minikube start' in set_container_runtime_result.stdout"
 
+- name: Check if Minikube is already started
+  ansible.builtin.command:
+    cmd: minikube status
+  register: minikube_status_result
+  changed_when: false
+  failed_when: false
+
+- debug:
+    var: minikube_status_result
+
+- meta: end_play
+
 - name: Start Minikube cluster
   shell: minikube start --cpus=4 --memory=6g --addons=ingress
   register: start_minikube_status
+  when: "'host: Running' not in minikube_status_result.stdout"
