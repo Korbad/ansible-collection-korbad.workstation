@@ -3,3 +3,9 @@
   include_role:
     name: git/ubuntu
   when: ansible_distribution == 'Ubuntu'
+
+- name: Ensure that git is installed
+  pacman:
+    name: git
+  become: true
+  when: ansible_distribution == 'Archlinux'
