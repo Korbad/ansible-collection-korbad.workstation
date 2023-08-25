@@ -1,0 +1,3 @@
+- name: Install Master PDF Editor - Free
+  kewlfft.aur.aur:
+    name: masterpdfeditor-free
