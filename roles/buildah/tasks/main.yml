@@ -1,0 +1,5 @@
+---
+- name: Ensure that buildah is installed
+  pacman:
+    name: buildah
+  become: true
