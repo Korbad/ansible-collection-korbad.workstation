@@ -1,0 +1,5 @@
+---
+- name: Ensure fuse-overlayfs is installed
+  pacman:
+    name: fuse-overlayfs
+  become: true
