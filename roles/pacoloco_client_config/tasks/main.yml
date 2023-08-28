@@ -1,0 +1,9 @@
+- name: Add pacoloco server at {{ pacoloco_server_url }} to pacman mirrorlist
+  lineinfile:
+    path: /etc/pacman.d/mirrorlist
+    line: "Server = {{ pacoloco_server_url }}/$repo/os/$arch"
+    insertbefore: BOF
+  vars:
+    pacoloco_server_url: "http://{{ pacoloco_host }}:{{ pacoloco_port_on_server }}"
+    pacoloco_port_on_server: "{{ hostvars[pacoloco_host]['pacoloco_port'] }}"
+  become: true
