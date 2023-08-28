@@ -1,0 +1,26 @@
+---
+- name: Create nspawn container for pacoloco
+  systemd_nspawn:
+    name: "{{ pacoloco_container_name }}"
+    state: started
+    enabled: yes
+    machine_directory: /var/lib/machines
+    bootstrap: arch
+
+- name: Install pacoloco in the container
+  systemd_nspawn:
+    name: "{{ pacoloco_container_name }}"
+    command: pacman -Syu --noconfirm pacoloco
+
+- name: Deploy pacoloco config
+  template:
+    src: pacoloco_config.j2
+    dest: "{{ pacoloco_config_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable and start pacoloco service in the container
+  systemd_nspawn:
+    name: "{{ pacoloco_container_name }}"
+    command: systemctl enable --now pacoloco
