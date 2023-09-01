@@ -1,0 +1,14 @@
+---
+- name: Ensure hwdetect is installed
+  pacman:
+    name: hwdetect
+  become: true
+
+- name: Execute hwdetect
+  command:
+    cmd: hwdetect --show-modules
+  register: hwdetect_response
+  become: true
+
+- debug:
+    var: hwdetect_response
