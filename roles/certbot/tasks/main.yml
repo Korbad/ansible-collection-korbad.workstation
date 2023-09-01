@@ -1,0 +1,13 @@
+---
+- name: Install certbot
+  package:
+    name: certbot
+    state: present
+  become: true
+
+- name: Generate Let's Encrypt certificate
+  command: certbot certonly --standalone -d {{ public_domain? }} --non-interactive --agree-tos -m {{ user_email }}
+  become: true
+  args:
+    creates: /etc/letsencrypt/live/{{ public_domain? }}/fullchain.pem
+
