@@ -1,0 +1,5 @@
+---
+- name: Ensure that the kubernetes python bindings are installed
+  pacman:
+    name: python-kubernetes
+  become: true
