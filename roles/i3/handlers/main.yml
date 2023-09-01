@@ -1,2 +1,5 @@
-- name: restart i3
-  command: i3-msg restart
+- name: reload i3
+  command: i3-msg reload
+  environment:
+    DISPLAY: ":0"
+    I3SOCK: "/tmp/i3-ipc.sock"
