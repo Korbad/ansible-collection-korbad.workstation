@@ -7,9 +7,11 @@
       - nvidia-utils
     state: latest
   become: true
-  changed_when: true
-#  notify:
-#    - rebuild nvidia kernel module
+  notify:
+    - rebuild nvidia kernel module
+
+- name: Fetch installed nvidia driver versions
+  include_tasks: driver_version.yml
 
 - name: Create blacklist file in /etc/modprobe.d/
   copy:

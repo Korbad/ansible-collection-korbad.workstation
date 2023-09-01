@@ -1,9 +1,9 @@
 # roles/nvidia_gpu/handlers/main.yml
-#- name: rebuild nvidia kernel module
-#  command: "dkms install -m nvidia -v {{ nvidia_driver_version }}"
-#  become: true
-#  notify:
-#    - reload kernel modules
+- name: rebuild nvidia kernel module
+  command: "dkms install -m nvidia -v {{ nvidia_driver_version }}"
+  become: true
+  notify:
+    - reload kernel modules
 
 - name: reload kernel modules
   command: depmod
