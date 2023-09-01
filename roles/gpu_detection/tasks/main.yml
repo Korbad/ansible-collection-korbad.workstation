@@ -11,5 +11,6 @@
 
 - name: Determine GPU vendor
   set_fact:
-    is_amd: "{{ 'AMD' in pci_devices.stdout }}"
-    is_nvidia: "{{ 'NVIDIA' in pci_devices.stdout }}"
+    is_amd_gpu: "{{ 'VGA compatible controller: AMD' in pci_devices.stdout }}"
+    is_nvidia_gpu: "{{ 'VGA compatible controller: NVIDIA' in pci_devices.stdout }}"
+    is_intel_gpu: "{{ 'VGA compatible controller: Intel Corporation HD Graphics' in pci_devices.stdout }}"

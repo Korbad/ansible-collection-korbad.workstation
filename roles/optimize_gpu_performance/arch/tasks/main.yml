@@ -2,9 +2,14 @@
 - name: Include packages for AMD gpu
   include_role:
     name: amd_gpu
-  when: is_amd|bool
+  when: is_amd_gpu|bool
 
 - name: Include packages for NVIDIA gpu
   include_role:
     name: nvidia_gpu
-  when: is_nvidia|bool
+  when: is_nvidia_gpu|bool
+
+- name: Include packages for INTEL gpu
+  include_role:
+    name: intel_gpu
+  when: is_intel_gpu|bool
