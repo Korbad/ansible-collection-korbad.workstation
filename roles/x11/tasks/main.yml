@@ -34,12 +34,26 @@
     name: xorg-fonts-misc
   become: true
 
-#- name: Configure ~/.xserverrc for user using template
-#  ansible.builtin.template:
-#    src: xserverrc.j2
+- name: Ensure xorg-xinput and xf86-input-libinput are installed
+  pacman:
+    name:
+    - xorg-xinput
+    - xf86-input-libinput
+    state: present
+  become: true
 
-#    dest: "{{ ansible_env.HOME }}/.xserverrc"
-#
+- name: Configure ~/.xserverrc for user using template
+  ansible.builtin.template:
+    src: xserverrc.j2
+    dest: "{{ ansible_env.HOME }}/.xserverrc"
+
+- name: Create symlink for libinput configuration
+  file:
+    src: /usr/share/X11/xorg.conf.d/40-libinput.conf
+    dest: /etc/X11/xorg.conf.d/40-libinput.conf
+    state: link
+  become: true
+
 #- name: Allow any user to start the X server
 #  copy:
 #    dest: "/etc/X11/Xwrapper.config"
