@@ -1,0 +1,5 @@
+---
+- name: Ensure that LightDM is installed
+  pacman:
+    name: lightdm
+  become: true
