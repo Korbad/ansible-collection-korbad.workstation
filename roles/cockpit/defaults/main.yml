@@ -1,9 +1,8 @@
 ---
-cockpit_exposed_http_port: 9090
+cockpit_exposed_http_port: 9091
 cockpit_plugins:
 - cockpit-machines
 - cockpit-podman
 - cockpit-pcp
 - cockpit-storaged
 - cockpit-packagekit
-

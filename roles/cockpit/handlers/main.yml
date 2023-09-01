@@ -1,7 +1,7 @@
 ---
-- name: reload cockpit.socket
+- name: restart cockpit.socket
   systemd:
     name: cockpit.socket
-    state: reloaded
+    state: restarted
     daemon_reload: yes
   become: true

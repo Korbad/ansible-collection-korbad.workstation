@@ -1,0 +1,18 @@
+
+- name: Backup original Cockpit certificate
+  command: mv /etc/cockpit/ws-certs.d/0-self-signed.cert /etc/cockpit/ws-certs.d/0-self-signed.cert.bak
+  become: true
+  ignore_errors: yes
+
+- name: Create new Cockpit certificate file
+  assemble:
+    src: /etc/letsencrypt/live/{{ ansible_fqdn }}/
+    dest: /etc/cockpit/ws-certs.d/01-certbot.cert
+    regexp: 'privkey.pem$|fullchain.pem$'
+  become: true
+
+- name: Reload Cockpit to apply new certificate
+  systemd:
+    name: cockpit
+    state: reloaded
+  become: true

@@ -1,0 +1,36 @@
+---
+- name: Stop cockpit.socket service if running
+  systemd:
+    name: cockpit.socket
+    state: stopped
+  become: true
+
+- name: Mask cockpit.socket to prevent it from starting
+  systemd:
+    name: cockpit.socket
+    enabled: no
+    masked: yes
+  become: true
+
+- name: Uninstall cockpit plugins
+  package:
+    name: "{{ cockpit_plugins }}"
+    state: absent
+  become: true
+
+- name: Uninstall Cockpit package
+  package:
+    name: cockpit
+    state: absent
+  become: true
+
+- name: Remove systemd unit override for cockpit.socket
+  file:
+    path: /etc/systemd/system/cockpit.socket.d/listen.conf
+    state: absent
+  become: true
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+  become: true

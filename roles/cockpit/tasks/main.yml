@@ -10,10 +10,20 @@
     name: cockpit.socket
     state: started
     enabled: yes
+    masked: no
   become: true
 
-- name: Update cockpit.socket configuration
-  include_tasks: firewall.yml
-
 - name: Ensure cockpit plugins are installed
-  include_tasks: plugins.yml
+  community.general.pacman:
+    name: "{{ cockpit_plugins }}"
+  become: true
+  when: ansible_distribution == 'Archlinux'
+
+- name: Update cockpit.socket port
+  lineinfile:
+    path: /usr/lib/systemd/system/cockpit.socket
+    regexp: '^ListenStream='
+    line: "ListenStream={{ cockpit_exposed_http_port }}"
+  become: true
+  notify:
+  - restart cockpit.socket

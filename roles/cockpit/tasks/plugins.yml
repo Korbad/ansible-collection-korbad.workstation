@@ -1,5 +1,0 @@
-- name: Ensure cockpit plugins are installed
-  community.general.pacman:
-    name: "{{ cockpit_plugins }}"
-  become: true
-  when: ansible_distribution == 'Archlinux'
