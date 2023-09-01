@@ -1,0 +1,6 @@
+{% set output_dict = {} %}
+{% for line in display_output.stdout_lines %}
+  {% set key, value = line.split('=') %}
+  {% set _ = output_dict.update({key: value}) %}
+{% endfor %}
+{{ output_dict | to_nice_yaml }}

@@ -1,0 +1,62 @@
+- debug:
+    var: active_graphical_session
+- name: Get DISPLAY for each session
+  command: "loginctl show-session {{ active_graphical_session.session }} --all --full --no-pager"
+  register: display_output
+  changed_when: false
+
+- debug:
+    var: display_output
+
+- name: Create a new fact from stdout using template
+  set_fact:
+    display_session: "{{ lookup('template', 'parse_display_output.j2') }}"
+
+- debug:
+    var: display_session
+- meta: end_play
+- name: Combine active_graphical_session and display_session
+  set_fact:
+    combined_session: "{{ active_graphical_session | combine(display_session) }}"
+- debug:
+    var: combined_session
+
+- meta: end_play
+
+- name: Create a structured fact from display_output
+  set_fact:
+    display_info_dict: >-
+      {% set result = {} %}
+      {% for display_info in display_output.results %}
+        {% set session_id = display_info.item.session %}
+        {% set lines = display_info.stdout.split('\n') %}
+        {% set key_value_pairs = lines | map('split', '=') | list %}
+        {% set display_dict = key_value_pairs | map('dict2items') | flatten | items2dict %}
+        {% set display_value = display_dict.Display | default('') %}
+        {% set _ = result.update({session_id: {'DISPLAY': display_value}}) %}
+      {% endfor %}
+      {{ result }}
+
+- debug:
+    var: active_graphical_sessions
+- debug:
+    var: display_info_dict
+
+- name: Combine active_graphical_sessions with display_info_dict
+  set_fact:
+    active_graphical_sessions_with_display: >-
+      {% set result = [] %}
+      {% for session in active_graphical_sessions %}
+        {% set session_id = session.session %}
+        {% set display_info = display_info_dict[session_id] | default({}) %}
+        {% set combined = session | combine(display_info) %}
+        {% set _ = result.append(combined) %}
+      {% endfor %}
+      {{ result }}
+
+- name: Execute i3-msg reload for each active graphical session
+  command: "i3-msg reload"
+  loop: "{{ active_graphical_sessions_with_display | wantlist=True }}"
+  environment:
+    DISPLAY: "{{ item.DISPLAY }}"
+  when: item.DISPLAY != ''

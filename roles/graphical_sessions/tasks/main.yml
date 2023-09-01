@@ -1,0 +1,22 @@
+- name: Check for active graphical sessions
+  command: loginctl list-sessions --output=json-pretty
+  register: session_list
+  changed_when: false
+
+- name: Convert JSON output to a list of dictionaries
+  set_fact:
+    list_of_sessions: "{{ session_list.stdout | from_json }}"
+
+- name: Extract active sessions
+  set_fact:
+    active_sessions: "{{ list_of_sessions | selectattr('state', 'equalto', 'active') | list }}"
+
+- name: Extract active sessions with defined and non-empty seat
+  set_fact:
+    active_graphical_sessions: "{{ active_sessions | selectattr('seat', 'defined') | selectattr('seat', '!=' , '') | list }}"
+
+- name: Configure each active graphical session
+  include_tasks: active_session.yml
+  loop: "{{ active_graphical_sessions }}"
+  loop_control:
+    loop_var: active_graphical_session
