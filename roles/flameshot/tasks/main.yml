@@ -1,0 +1,5 @@
+# https://github.com/flameshot-org/flameshot
+- name: Ensure that flameshot is installed
+  pacman:
+    name: flameshot
+  become: true
