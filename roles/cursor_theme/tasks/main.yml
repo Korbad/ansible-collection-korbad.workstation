@@ -1,0 +1,29 @@
+---
+- name: Ensure cursor themes are installed
+  pacman:
+    name:
+    - xcursor-comix
+    - xcursor-themes
+    - xcursor-vanilla-dmz
+    - xcursor-vanilla-dmz-aa
+  become: true
+
+- name: Ensure the cursor config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.icons/default"
+    state: directory
+
+- name: Configure cursor theme and size
+  template:
+    src: index.theme.j2
+    dest: "{{ ansible_env.HOME }}/.icons/default/index.theme"
+
+- name: Configure cursor size in Xresources
+  template:
+    src: Xresources.j2
+    dest: "{{ ansible_env.HOME }}/.Xresources"
+
+- set_fact:
+    xinitrc_include_xrdb: xrdb ~/.Xresources
+  notify: template user .xinitrc config file
+  changed_when: true
