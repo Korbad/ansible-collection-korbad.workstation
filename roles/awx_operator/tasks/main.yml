@@ -1,0 +1,27 @@
+---
+- name: Create AWX Namespace
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Namespace
+    name: awx
+    state: present
+
+https://github.com/ansible/awx-operator/releases/download/2.5.2/awx-operator-2.5.2.tgz
+
+- name: Add AWX Operator CRDs
+  kubernetes.core.k8s:
+    src: "https://raw.githubusercontent.com/ansible/awx-operator/{{ awx_operator_version }}/deploy/awx-operator.yaml"
+    state: present
+    namespace: awx
+
+- name: Wait for AWX Operator to be Running
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Pod
+    namespace: awx
+    label_selectors:
+      - control-plane = controller-manager
+  register: operator_pods
+  until: "'running' in (operator_pods | json_query('resources[].status.phase'))"
+  retries: 60
+  delay: 10

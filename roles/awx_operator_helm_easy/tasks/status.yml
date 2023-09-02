@@ -1,0 +1,13 @@
+---
+- name: Check AWX Operator Pod Status
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Pod
+    namespace: awx
+    label_selectors:
+      - "app=awx"
+  register: awx_pods
+
+- name: Set AWX Pod Status Variable
+  set_fact:
+    awx_pod_status: "{{ awx_pods.resources[0].status.phase }}"

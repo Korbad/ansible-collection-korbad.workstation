@@ -1,0 +1,15 @@
+- name: Create AWX Instance
+  k8s:
+    state: present
+    definition:
+      apiVersion: awx.ansible.com/v1beta1
+      kind: AWX
+      metadata:
+        name: my-awx
+        namespace: awx
+      spec:
+        tower_ingress_type: Ingress  # or use 'Route' for OpenShift
+  register: awx_instance
+
+- debug:
+    var: awx_instance
