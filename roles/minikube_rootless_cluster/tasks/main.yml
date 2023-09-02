@@ -1,0 +1,6 @@
+---
+- name: Set minikube rootless
+  ansible.builtin.command:
+    cmd: minikube config set rootless true
+  register: set_rootless_result
+  changed_when: "'These changes will take effect upon a minikube delete and then a minikube start' in set_rootless_result.stdout"

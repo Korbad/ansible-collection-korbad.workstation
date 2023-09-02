@@ -1,21 +1,9 @@
 ---
-- name: Set minikube rootless
-  ansible.builtin.command:
-    cmd: minikube config set rootless true
-  register: set_rootless_result
-  changed_when: "'These changes will take effect upon a minikube delete and then a minikube start' in set_rootless_result.stdout"
+- name: Ensure that container runtime is installed and enabled in minikube
+  include_tasks: container_driver/podman.yml
 
-- name: Set minikube driver
-  ansible.builtin.command:
-    cmd: minikube config set driver podman
-  register: set_driver_result
-  changed_when: "'These changes will take effect upon a minikube delete and then a minikube start' in set_driver_result.stdout"
-
-- name: Set container-runtime for Minikube
-  ansible.builtin.command:
-    cmd: minikube config set container-runtime cri-o
-  register: set_container_runtime_result
-  changed_when: "'These changes will take effect upon a minikube delete and then a minikube start' in set_container_runtime_result.stdout"
+- name: Ensure that a container runtime is installed and set
+  include_tasks: container_runtime/crio.yml
 
 - name: Check if Minikube is already started
   ansible.builtin.command:
@@ -26,8 +14,6 @@
 
 - debug:
     var: minikube_status_result
-
-- meta: end_play
 
 - name: Start Minikube cluster
   shell: minikube start --cpus=4 --memory=6g --addons=ingress

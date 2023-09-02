@@ -1,0 +1,9 @@
+- name: Ensure that the target container runtime is installed
+  include_role:
+    name: crio
+
+- name: Set container-runtime for Minikube to cri-o
+  ansible.builtin.command:
+    cmd: minikube config set container-runtime cri-o
+  register: set_container_runtime_result
+  changed_when: "'These changes will take effect upon a minikube delete and then a minikube start' in set_container_runtime_result.stdout"

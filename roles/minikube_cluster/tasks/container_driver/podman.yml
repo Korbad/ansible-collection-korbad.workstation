@@ -1,0 +1,9 @@
+- name: Ensure that the target container driver is installed
+  include_role:
+    name: podman
+
+- name: Set minikube driver to podman
+  ansible.builtin.command:
+    cmd: minikube config set driver podman
+  register: set_driver_result
+  changed_when: "'These changes will take effect upon a minikube delete and then a minikube start' in set_driver_result.stdout"
