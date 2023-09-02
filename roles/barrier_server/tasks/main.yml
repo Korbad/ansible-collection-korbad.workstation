@@ -1,17 +1,37 @@
 ---
+# we might want to look into this: https://github.com/input-leap/input-leap
 
 - name: Ensure the Barrier configuration directory exists
   file:
-    path: "{{ ansible_env.XDG_DATA_HOME }}/barrier"
+    path: "{{ ansible_env.HOME }}/.local/share/barrier/"
     state: directory
-#
-#- name: Create Barrier configuration file
-#  template:
-#    src: barrier_config.j2
-#    dest: "{{ ansible_env.XDG_DATA_HOME }}/barrier/.barrier.conf"
 
-# https://github.com/debauchee/barrier-wiki/blob/master/Command-Line.md
-# $XDG_DATA_HOME/barrier/.barrier.conf
+- name: Create Barrier configuration file
+  template:
+    src: barrier.conf.j2
+    dest: "{{ ansible_env.HOME }}/.local/share/barrier/.barrier.conf"
+  notify: reload systemd daemon
 
-#- command:
-#    cmd: barrierc --enable-crypto --display :0 --debug INFO -f <server hostname or IP>
+- name: Deploy barrier server systemd service file
+  template:
+    src: barrier_server.service.j2
+    dest: /etc/systemd/system/barrier_server.service
+  notify: reload systemd daemon
+  become: true
+
+- name: Enable and start barrier server service
+  systemd:
+    name: barrier_server
+    enabled: yes
+    state: started
+  become: true
+
+- name: Ensure there exists an SSL Cert for Barrier
+  include_tasks: ssl.yml
+
+- name: Restart Barrier server service
+  systemd:
+    name: barrier_server.service
+    state: restarted
+    daemon_reload: yes
+  become: true

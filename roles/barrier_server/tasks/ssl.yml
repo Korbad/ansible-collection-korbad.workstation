@@ -1,0 +1,38 @@
+---
+- name: Ensure the Barrier SSL directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.local/share/barrier/SSL/"
+    state: directory
+
+- name: Ensure the Barrier SSL Fingerprints directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.local/share/barrier/SSL/Fingerprints/"
+    state: directory
+
+- name: Generate self-signed certificate and private key for Barrier using OpenSSL
+  command:
+    cmd: openssl req -x509 -nodes -days 365 -subj /CN=Barrier -newkey rsa:4096 -keyout "{{ barrier_combined_pem_path }}" -out "{{ barrier_combined_pem_path }}"
+    creates: "{{ barrier_combined_pem_path }}"
+
+- name: Set permissions for the combined PEM file
+  file:
+    path: "{{ barrier_combined_pem_path }}"
+    mode: '0600'
+    owner: "{{ ansible_env.USER }}"
+    group: "{{ ansible_env.USER }}"
+
+- name: Gather information about the certificate
+  community.crypto.x509_certificate_info:
+    path: "{{ barrier_combined_pem_path }}"
+  register: cert_info
+
+- name: Write the fingerprint to Local.txt
+  copy:
+    content: "v2:sha256:{{ cert_info.fingerprints.sha256 }}"
+    dest: "{{ barrier_fingerprint_path }}"
+
+- name: Fetch the fingerprint to Ansible control node
+  fetch:
+    src: "{{ barrier_fingerprint_path }}"
+    dest: "/tmp/Local.txt"
+    flat: yes

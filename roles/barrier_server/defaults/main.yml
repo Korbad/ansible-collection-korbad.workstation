@@ -1,0 +1,6 @@
+barrier_server_user: "{{ ansible_env.USER }}"
+barrier_server_group: "{{ ansible_env.USER }}"
+barrier_ssl_dir: "{{ ansible_env.HOME }}/.local/share/barrier/SSL"
+barrier_fingerprints_dir: "{{ barrier_ssl_dir }}/Fingerprints"
+barrier_fingerprint_path: "{{ barrier_fingerprints_dir }}/Local.txt"
+barrier_combined_pem_path: "{{ barrier_ssl_dir }}/Barrier.pem"

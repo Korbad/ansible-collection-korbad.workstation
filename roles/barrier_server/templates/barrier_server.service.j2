@@ -1,0 +1,12 @@
+[Unit]
+Description=Barrier Server daemon
+After=network.target
+
+[Service]
+User={{ barrier_server_user }}
+Group={{ barrier_server_group }}
+ExecStart=barriers --disable-crypto --debug INFO -f -c {{ ansible_env.HOME }}/.local/share/barrier/.barrier.conf
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
