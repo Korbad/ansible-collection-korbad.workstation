@@ -1,0 +1,45 @@
+---
+- name: Resolve IP address from mDNS hostname
+  command: avahi-resolve -n {{ barrier_server_hostname }}
+  register: barrier_server_avahi_output
+
+- name: Extract IP address
+  set_fact:
+    barrier_server_ip: "{{ barrier_server_avahi_output.stdout.split('\t')[1] }}"
+
+- name: Deploy barrier client systemd service file
+  template:
+    src: barrier_client.service.j2
+    dest: /etc/systemd/system/barrier_client.service
+  notify: reload systemd daemon
+  become: true
+
+- name: Enable and start barrier client service
+  systemd:
+    name: barrier_client
+    enabled: yes
+    state: started
+  become: true
+
+- name: Ensure the Barrier SSL Fingerprints directory exists on clients
+  file:
+    path: "{{ ansible_env.HOME }}/.local/share/barrier/SSL/Fingerprints/"
+    state: directory
+
+- name: Copy the fingerprint to Barrier clients
+  copy:
+    src: "/tmp/Local.txt"
+    dest: "{{ ansible_env.HOME }}/.local/share/barrier/SSL/Fingerprints/Local.txt"
+
+- name: Restart Barrier client service
+  systemd:
+    name: barrier_client.service
+    state: restarted
+    daemon_reload: yes
+  become: true
+
+# https://github.com/debauchee/barrier-wiki/blob/master/Command-Line.md
+# $XDG_DATA_HOME/barrier/.barrier.conf
+
+#- command:
+#    cmd: barrierc --enable-crypto --display :0 --debug INFO -f <server hostname or IP>
