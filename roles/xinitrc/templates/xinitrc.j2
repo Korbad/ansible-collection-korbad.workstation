@@ -1,0 +1,7 @@
+#!/bin/sh
+
+{% if xinitrc_include_xrdb %}
+{{ xinitrc_include_xrdb }}
+{% endif %}
+
+exec i3

@@ -1,0 +1,4 @@
+- name: template user .xinitrc config file
+  template:
+    src: xinitrc.j2
+    dest: "{{ ansible_env.HOME }}/.xinitrc"

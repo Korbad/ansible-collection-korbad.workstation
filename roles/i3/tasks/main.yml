@@ -13,23 +13,6 @@
   template:
     src: i3config.j2
     dest: "{{ ansible_env.HOME }}/.config/i3/config"
-  notify: reload i3
-
-#- name: Set i3 to require click to focus
-#  lineinfile:
-#    path: "{{ ansible_env.HOME }}/.config/i3/config"
-#    line: 'focus_follows_mouse no'
-##  notify: restart i3
-#
-#- name: Set $mod to Windows key
-#  lineinfile:
-#    path: "{{ ansible_env.HOME }}/.config/i3/config"
-#    line: 'set $mod Mod4'
-##  notify: restart i3
-
-- name: Ensure .xinitrc exists and has correct configuration
-  template:
-    src: xinitrc.j2
-    dest: "{{ ansible_env.HOME }}/.xinitrc"
-    owner: "{{ ansible_env.USER }}"
-    mode: '0744' # Ensures the file is executable
+  notify:
+  - reload i3
+  - template user .xinitrc config file
