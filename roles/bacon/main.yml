@@ -1,3 +1,0 @@
-- name: Ensure bacon is installed
-  command:
-    cmd: cargo install --locked bacon

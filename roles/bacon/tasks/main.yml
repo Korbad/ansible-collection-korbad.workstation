@@ -1,0 +1,5 @@
+- name: Ensure bacon is installed
+  command:
+    cmd: cargo install --locked bacon
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
