@@ -1,14 +1,13 @@
 ---
 # we might want to look into this: https://github.com/input-leap/input-leap
-
 - name: Ensure the Barrier configuration directory exists
   file:
     path: "{{ ansible_env.HOME }}/.local/share/barrier/"
     state: directory
 
 - name: Create Barrier configuration file
-  template:
-    src: barrier.conf.j2
+  copy:
+    src: barrier_server_config
     dest: "{{ ansible_env.HOME }}/.local/share/barrier/.barrier.conf"
   notify: reload systemd daemon
 
