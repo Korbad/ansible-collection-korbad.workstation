@@ -1,0 +1,5 @@
+---
+- name: Ensure that arandr is installed (simple visual front end for XRandR)
+  pacman:
+    name: arandr
+  become: true
