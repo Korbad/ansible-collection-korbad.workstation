@@ -1,0 +1,5 @@
+---
+- name: Ensure that ethtool is installed
+  pacman:
+    name: ethtool
+  become: true
