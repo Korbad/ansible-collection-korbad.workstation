@@ -1,6 +1,6 @@
 ---
 - name: Resolve IP address from mDNS hostname
-  command: avahi-resolve -n {{ barrier_server_hostname }}
+  command: avahi-resolve -4 -n {{ barrier_server_hostname }}
   register: barrier_server_avahi_output
 
 - name: Extract IP address
@@ -24,8 +24,3 @@
     marker: "# {mark} ANSIBLE MANAGED BLOCK FOR barrierc"
     insertbefore: "^# BEGIN ANSIBLE MANAGED BLOCK FOR exec"
 
-# https://github.com/debauchee/barrier-wiki/blob/master/Command-Line.md
-# $XDG_DATA_HOME/barrier/.barrier.conf
-
-#- command:
-#    cmd: barrierc --enable-crypto --display :0 --debug INFO -f <server hostname or IP>
