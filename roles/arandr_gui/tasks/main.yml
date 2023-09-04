@@ -1,0 +1,12 @@
+---
+- name: Find existing layout files in ~/.screenlayout/
+  find:
+    paths: "{{ ansible_env.HOME }}/.screenlayout/"
+    patterns: "*.sh"
+  register: layout_files
+
+- name: Run arandr if no layout files are found
+  shell: nohup arandr > /dev/null 2>&1 & disown
+  environment:
+    DISPLAY: "{{ ansible_env.DISPLAY | default(':0', true) }}"
+  when: layout_files.files | length == 0
