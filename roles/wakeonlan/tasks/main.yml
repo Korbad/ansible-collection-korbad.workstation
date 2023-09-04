@@ -1,0 +1,6 @@
+---
+- name: Enable Wake-on-LAN on the interface
+  command:
+    cmd: "ethtool -s {{ ansible_default_ipv4.alias }} wol g"
+  become: yes
+
