@@ -1,0 +1,21 @@
+- name: Create /managed_user_data directory
+  file:
+    path: "{{ managed_user_data_path }}"
+    state: directory
+    mode: '1777'
+  become: true
+
+- name: Create user-specific directory
+  file:
+    path: "{{ managed_user_data_path }}/{{ ansible_env.USER }}"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    mode: '0750'
+
+- name: Create sshfs_office directory
+  file:
+    path: "{{ managed_user_data_path }}/{{ ansible_env.USER }}/sshfs_office"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    mode: '0750'
+  notify: restart sshd

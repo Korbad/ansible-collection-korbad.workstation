@@ -1,0 +1,26 @@
+---
+- name: Create /managed_user_data directory
+  file:
+    path: "{{ managed_user_data_path }}"
+    state: directory
+    mode: '1777'
+  become: true
+
+- name: Create local mount point
+  file:
+    path: "{{ local_mount_point }}"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    mode: '0750'
+
+- name: Add SSHFS to fstab
+  ansible.posix.mount:
+    path: "{{ local_mount_point }}"
+    src: "{{ ansible_env.USER }}@{{ data_host_ansible_host }}:{{ remote_path }}"
+    fstype: fuse.sshfs
+    opts: "defaults,_netdev"
+    state: mount
+  become: true
+  notify: reload systemd daemon
+  vars:
+    data_host_ansible_host: "{{ hostvars[data_host_machine]['ansible_host'] }}"
