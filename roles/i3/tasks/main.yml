@@ -14,5 +14,12 @@
     src: i3config.j2
     dest: "{{ ansible_env.HOME }}/.config/i3/config"
   notify:
-  - reload i3
-  - template user .xinitrc config file
+#  - reload i3
+
+- name: Ensure xinitrc includes exec i3
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.xinitrc"
+    block: "exec i3"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR exec"
+    insertafter: EOF
+

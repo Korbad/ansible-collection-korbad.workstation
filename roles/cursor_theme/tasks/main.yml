@@ -23,7 +23,11 @@
     src: Xresources.j2
     dest: "{{ ansible_env.HOME }}/.Xresources"
 
-- set_fact:
-    xinitrc_include_xrdb: xrdb ~/.Xresources
-  notify: template user .xinitrc config file
-  changed_when: true
+- name: Ensure xinitrc includes xrdb settings
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.xinitrc"
+    block: xrdb ~/.Xresources
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR xrdb"
+    insertbefore: "^# BEGIN ANSIBLE MANAGED BLOCK FOR exec"
+
+

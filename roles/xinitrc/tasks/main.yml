@@ -1,0 +1,6 @@
+- name: Ensure xinitrc has the shebang line
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.xinitrc"
+    line: "#!/bin/sh"
+    create: yes
+    insertbefore: BOF

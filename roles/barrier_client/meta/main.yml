@@ -1,3 +1,4 @@
 dependencies:
   - barrier
   - systemd
+  - xinitrc

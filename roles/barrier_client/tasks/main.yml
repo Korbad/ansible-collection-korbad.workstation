@@ -7,20 +7,6 @@
   set_fact:
     barrier_server_ip: "{{ barrier_server_avahi_output.stdout.split('\t')[1] }}"
 
-- name: Deploy barrier client systemd service file
-  template:
-    src: barrier_client.service.j2
-    dest: /etc/systemd/system/barrier_client.service
-  notify: reload systemd daemon
-  become: true
-
-- name: Enable and start barrier client service
-  systemd:
-    name: barrier_client
-    enabled: yes
-    state: started
-  become: true
-
 - name: Ensure the Barrier SSL Fingerprints directory exists on clients
   file:
     path: "{{ ansible_env.HOME }}/.local/share/barrier/SSL/Fingerprints/"
@@ -31,12 +17,12 @@
     src: "/tmp/Local.txt"
     dest: "{{ ansible_env.HOME }}/.local/share/barrier/SSL/Fingerprints/Local.txt"
 
-- name: Restart Barrier client service
-  systemd:
-    name: barrier_client.service
-    state: restarted
-    daemon_reload: yes
-  become: true
+- name: Ensure xinitrc includes barrierc settings
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.xinitrc"
+    block: barrierc --disable-crypto --display $DISPLAY --debug INFO -f {{ barrier_server_ip }} &
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR barrierc"
+    insertbefore: "^# BEGIN ANSIBLE MANAGED BLOCK FOR exec"
 
 # https://github.com/debauchee/barrier-wiki/blob/master/Command-Line.md
 # $XDG_DATA_HOME/barrier/.barrier.conf
