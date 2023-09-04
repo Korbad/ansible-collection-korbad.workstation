@@ -1,0 +1,5 @@
+---
+- name: Ensure that sshfs (ssh filesystem) is installed
+  pacman:
+    name: sshfs
+  become: true
