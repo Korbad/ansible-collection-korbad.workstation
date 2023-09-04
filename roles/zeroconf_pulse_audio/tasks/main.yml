@@ -1,0 +1,5 @@
+---
+- name: Ensure that the pulse audio zeroconf networking plugin is installed
+  pacman:
+    name: pulseaudio-zeroconf
+  become: true
