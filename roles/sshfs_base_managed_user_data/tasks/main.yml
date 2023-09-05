@@ -1,0 +1,18 @@
+---
+- name: Create {{ shared_sshfs_base_directory_path }} directory
+  file:
+    path: "{{ shared_sshfs_base_directory_path }}"
+    state: directory
+    mode: '1777'
+  become: true
+
+- name: Create user-specific directory
+  file:
+    path: "{{ shared_sshfs_base_directory_path }}/{{ ansible_env.USER }}"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    mode: '0750'
+
+- name: Register a fact for this machine for the managed user content path
+  set_fact:
+    managed_user_content_path: "{{ shared_sshfs_local_mount_point }}"

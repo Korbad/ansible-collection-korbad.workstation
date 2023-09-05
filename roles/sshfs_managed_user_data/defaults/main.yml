@@ -1,3 +1,0 @@
-managed_user_data_path: /managed_user_data
-remote_path: "{{ managed_user_data_path }}/{{ ansible_env.USER }}/sshfs_office"
-local_mount_point: "{{ managed_user_data_path }}/{{ ansible_env.USER }}/sshfs_office"

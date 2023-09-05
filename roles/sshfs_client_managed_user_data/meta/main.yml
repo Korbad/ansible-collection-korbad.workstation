@@ -1,0 +1,4 @@
+---
+dependencies:
+- sshfs
+- sshfs_base_managed_user_data

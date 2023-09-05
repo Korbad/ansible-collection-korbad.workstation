@@ -1,0 +1,8 @@
+
+- name: Create sshfs_office directory
+  file:
+    path: "{{ shared_sshfs_local_mount_point }}"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    mode: '0750'
+  notify: restart sshd

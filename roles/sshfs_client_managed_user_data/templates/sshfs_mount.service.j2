@@ -1,0 +1,12 @@
+[Unit]
+Description=SSHFS mount to {{ remote_path }}
+After=network.target
+
+[Mount]
+What={{ remote_path }}
+Where={{ local_path }}
+Options={{ sshfs_options }}
+Type=fuse.sshfs
+
+[Install]
+WantedBy=default.target
