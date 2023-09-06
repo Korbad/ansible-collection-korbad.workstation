@@ -1,11 +1,7 @@
 ---
-- name: Install libvirt packages
+- name: Install libvirt package
   community.general.pacman:
-    name: 
-      - libvirt
-      - libvirt-python
-    state:
-      present
+    name:  libvirt
   become: true
   when: ansible_distribution == 'Archlinux'
   notify:

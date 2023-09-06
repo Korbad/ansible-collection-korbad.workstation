@@ -1,0 +1,5 @@
+---
+- name: Install libvirt python bindigs
+  community.general.pacman:
+    name: libvirt-python
+  become: true
