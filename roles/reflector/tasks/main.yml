@@ -4,3 +4,8 @@
     name: reflector
     state: present
   become: true
+
+- name: Run reflector to update mirrorlist
+  ansible.builtin.command:
+    cmd: reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
+  become: true
