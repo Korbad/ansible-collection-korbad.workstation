@@ -1,5 +1,0 @@
----
-- name: Ensure vagrant has required plugins installed
-  command:
-    cmd: vagrant plugin install vagrant-libvirt
-  
