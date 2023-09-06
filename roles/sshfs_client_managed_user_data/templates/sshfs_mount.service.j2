@@ -1,12 +1,13 @@
 [Unit]
-Description=SSHFS mount to {{ remote_path }}
+Description=SSHFS to {{ remote_path }}
 After=network.target
 
-[Mount]
-What={{ remote_path }}
-Where={{ local_path }}
-Options={{ sshfs_options }}
-Type=fuse.sshfs
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/usr/bin/bash -c 'if ! mountpoint -q {{ local_path }}; then exit 0; else exit 1; fi'
+ExecStart=/usr/bin/sshfs {{ remote_path }} {{ local_path }}
+ExecStop=/usr/bin/fusermount -u {{ local_path }}
 
 [Install]
 WantedBy=default.target

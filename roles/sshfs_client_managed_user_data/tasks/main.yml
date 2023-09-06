@@ -1,22 +1,29 @@
+- name: Create sshfs shared directory {{ shared_sshfs_local_mount_point }}
+  file:
+    path: "{{ shared_sshfs_local_mount_point }}"
+    state: directory
+    owner: "{{ ansible_env.USER }}"
+    mode: '0750'
+
 - name: Create user-level systemd service directory for SSHFS
   ansible.builtin.file:
     path: "/home/{{ ansible_env.USER }}/.config/systemd/user"
     state: directory
 
-#- name: Deploy SSHFS systemd service
-#  ansible.builtin.template:
-#    src: sshfs_mount.service.j2
-#    dest: "/home/{{ ansible_env.USER }}/.config/systemd/user/sshfs_mount.service"
-#  vars:
-#    data_host_ansible_host: "{{ hostvars[data_host_machine]['ansible_host'] }}"
-#    remote_path: "{{ ansible_env.USER }}@{{ data_host_ansible_host }}:{{ shared_sshfs_local_mount_point }}"
-#    local_path: "{{ shared_sshfs_local_mount_point }}"
-#    sshfs_options: "defaults,_netdev,uid={{ ansible_user_uid }},gid={{ ansible_user_gid }}"
-#  notify: reload systemd daemon
-#
-#- name: Enable and start SSHFS mount
-#  ansible.builtin.systemd:
-#    name: sshfs_mount.service
-#    state: started
-#    enabled: yes
-#    scope: user
+- name: Deploy SSHFS systemd service
+  ansible.builtin.template:
+    src: sshfs_mount.service.j2
+    dest: "/home/{{ ansible_env.USER }}/.config/systemd/user/sshfs_mount.service"
+  vars:
+    data_host_ansible_host: "{{ hostvars[data_host_machine]['ansible_host'] }}"
+    remote_path: "{{ ansible_env.USER }}@{{ data_host_ansible_host }}:{{ shared_sshfs_local_mount_point }}"
+    local_path: "{{ shared_sshfs_local_mount_point }}"
+    sshfs_options: "defaults,_netdev,uid={{ ansible_user_uid }},gid={{ ansible_user_gid }}"
+  notify: reload systemd daemon
+
+- name: Enable and start SSHFS mount
+  ansible.builtin.systemd:
+    name: sshfs_mount.service
+    state: started
+    enabled: yes
+    scope: user
