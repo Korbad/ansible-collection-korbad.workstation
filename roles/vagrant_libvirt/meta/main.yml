@@ -1,0 +1,7 @@
+---
+dependencies:
+  - name: base_devel
+  - name: libvirt
+  - name: vagrant
+  - name: vagrant_plugin
+    vagrant_plugin_name: vagrant-libvirt
