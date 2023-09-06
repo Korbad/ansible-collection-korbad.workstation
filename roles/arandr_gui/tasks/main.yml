@@ -1,4 +1,9 @@
 ---
+- name: Ensure that user home .screenlayout config dir exists
+  file:
+    path: "{{ ansible_env.HOME }}/.screenlayout"
+    state: directory
+
 - name: Find existing layout files in ~/.screenlayout/
   find:
     paths: "{{ ansible_env.HOME }}/.screenlayout/"
@@ -10,3 +15,19 @@
   environment:
     DISPLAY: "{{ ansible_env.DISPLAY | default(':0', true) }}"
   when: layout_files.files | length == 0
+
+- name: Keep checking for existing layout files in ~/.screenlayout/
+  find:
+    paths: "{{ ansible_env.HOME }}/.screenlayout/"
+    patterns: "*.sh"
+  register: layout_files
+  until: layout_files.files | length == 1
+  retries: 12  # Number of retries before giving up; adjust as needed
+  delay: 10  # Delay in seconds between retries
+
+- name: Ensure xinitrc includes xrandr settings
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.xinitrc"
+    block: sh {{ layout_files.files[0].path }} &
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR xrandr"
+    insertbefore: "^# BEGIN ANSIBLE MANAGED BLOCK FOR exec"
