@@ -1,0 +1,5 @@
+---
+- name: Ensure that edk2-ovmf is installed
+  pacman:
+    name: edk2-ovmf
+  become: true
