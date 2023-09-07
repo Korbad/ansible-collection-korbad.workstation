@@ -1,0 +1,5 @@
+---
+- name: Ensure that openbsd-netcat is installed
+  pacman:
+    name: openbsd-netcat
+  become: true
