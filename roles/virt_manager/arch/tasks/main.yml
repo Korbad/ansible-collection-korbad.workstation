@@ -1,8 +1,0 @@
----
-# https://wiki.manjaro.org/index.php/Virt-manager
-- name: Ensure virt-manager is installed
-  community.general.pacman:
-    name: 
-    - virt-manager
-    - libguestfs
-  become: true

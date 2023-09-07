@@ -1,0 +1,3 @@
+---
+dependencies:
+  - name: libvirt_qemu
