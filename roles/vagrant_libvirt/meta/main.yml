@@ -2,6 +2,14 @@
 dependencies:
   - name: base_devel
   - name: libvirt
+  - name: libvirt_group
   - name: vagrant
+  - name: dnsmasq
   - name: vagrant_plugin
     vagrant_plugin_name: vagrant-libvirt
+  - name: vagrant_plugin
+    vagrant_plugin_name: vagrant-mutate
+  - name: vagrant_plugin
+    vagrant_plugin_name: vagrant-hostmanager
+  - name: vagrant_plugin
+    vagrant_plugin_name: vagrant-timezone
