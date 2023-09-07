@@ -1,0 +1,22 @@
+---
+- name: Get the list of Minikube addons
+  command:
+    cmd: minikube addons list --output=json
+  register: minikube_addons_output
+
+- name: Parse the JSON output into a dictionary
+  set_fact:
+    minikube_addons_dict: "{{ minikube_addons_output.stdout | from_json }}"
+
+- name: Ensure that minikube addon {{ minikube_addon_name }} is installed
+  command:
+    cmd: minikube addons enable {{ minikube_addon_name }}
+  loop:
+    - metrics-server
+    - fakekey
+    - ingress
+  loop_control:
+    loop_var: minikube_addon_name
+  when:
+    - minikube_addon_name in minikube_addons_dict.keys()
+    - not minikube_addons_dict[minikube_addon_name]['Status'] == "enabled"
