@@ -1,0 +1,5 @@
+---
+- name: Ensure that dmidecode is installed (Desktop Management Interface table utils)
+  pacman:
+    name: dmidecode
+  become: true
