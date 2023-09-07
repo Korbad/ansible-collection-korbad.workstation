@@ -1,0 +1,7 @@
+- name: Extract Virtualization information from transformed lscpu dict
+  set_fact:
+    virtualization_info: "{{ lscpu_dict['Virtualization:'] }}"
+
+- name: Determine if hardware supports virtualization
+  set_fact:
+    hardware_supports_virtualization_bool: "{{ virtualization_info in ['AMD-V', 'VT-x'] }}"
