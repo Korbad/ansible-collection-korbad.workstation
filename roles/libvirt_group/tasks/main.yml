@@ -1,0 +1,28 @@
+- name: Ensure the libvirt group exists.
+  ansible.builtin.group:
+    name: libvirt
+    state: present
+  become: true
+
+- name: Add user to the libvirt group.
+  ansible.builtin.user:
+    name: "{{ ansible_env.USER }}"
+    groups: libvirt
+    append: true
+  become: true
+
+- name: Ensure that the libvirt group has permission to utilize the socket
+  include_tasks: sock_permissions.yml
+
+- name: reload libvirtd
+  service:
+    name: libvirtd
+    state: reloaded
+  become: true
+
+- name: Start and enable libvirtd service
+  systemd:
+    name: libvirtd.service
+    state: started
+    enabled: true
+  become: true
