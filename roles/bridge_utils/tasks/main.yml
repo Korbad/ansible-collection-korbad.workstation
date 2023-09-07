@@ -1,0 +1,5 @@
+---
+- name: Ensure that bridge-utils are installed
+  pacman:
+    name: bridge-utils
+  become: true
