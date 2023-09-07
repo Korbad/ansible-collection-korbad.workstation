@@ -5,6 +5,13 @@
     state: reloaded
   become: true
 
+- name: start and enable libvirtd socket
+  systemd:
+    name: libvirtd.socket
+    state: started
+    enabled: true
+  become: true
+
 - name: Start and enable libvirtd service
   systemd:
     name: libvirtd.service

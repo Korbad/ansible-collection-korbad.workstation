@@ -1,7 +1,7 @@
 ---
 - name: Install libvirt package
   community.general.pacman:
-    name:  libvirt
+    name: libvirt
   become: true
   when: ansible_distribution == 'Archlinux'
   notify:
@@ -15,4 +15,28 @@
   when: ansible_distribution == 'AlmaLinux'
   notify:
     - reload libvirtd
-  
+
+- name: Ensure that the user libvirt configuration directory exists
+  file:
+    state: directory
+    path: "{{ (ansible_env.HOME, '.config', 'libvirt') | path_join }}"
+
+
+- name: Ensure that the user libvirt configuration exists
+  template:
+    src: libvirt.conf.j2
+    dest: "{{ (ansible_env.HOME, '.config', 'libvirt', 'libvirt.conf') | path_join }}"
+
+- name: Start and enable libvirtd service
+  systemd:
+    name: libvirtd.service
+    state: started
+    enabled: true
+  become: true
+
+- name: Ensure the virtlogd.service is started and enabled
+  systemd:
+    name: virtlogd.service
+    state: started
+    enabled: true
+  become: true
