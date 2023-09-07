@@ -1,8 +1,19 @@
 ---
-- name: kvm for Archlinux
-  include_role:
-    name: kvm/arch
-  when: ansible_distribution == 'Archlinux'
+- name: Check if kernel supports virtualization
+  include_tasks: check_kernel_virtualization_support.yml
+
+- set_fact:
+    is_kvm_kernel_module_loaded: "{{ 'kvm' in lsmod_dict.keys() }}"
+
+- assert:
+    that:
+      - is_kvm_kernel_module_loaded
+
+
+#- name: kvm for Archlinux
+#  include_role:
+#    name: kvm/arch
+#  when: ansible_distribution == 'Archlinux'
 
 # - name: kvm for AlmaLinux
 #   include_role:

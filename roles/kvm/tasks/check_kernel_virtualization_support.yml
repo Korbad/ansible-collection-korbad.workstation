@@ -1,0 +1,12 @@
+- name: Check if CONFIG_KVM is enabled in the kernel
+  command: "zgrep CONFIG_KVM= /proc/config.gz"
+  register: kvm_config_check
+  changed_when: false
+
+- name: Extract the value of CONFIG_KVM
+  set_fact:
+    config_kvm_value: "{{ kvm_config_check.stdout.split('=')[1] }}"
+
+- name: Check if CONFIG_KVM is either 'y' or 'm'
+  set_fact:
+    config_kvm_enabled: "{{ config_kvm_value == 'y' or config_kvm_value == 'm' }}"

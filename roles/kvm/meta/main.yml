@@ -1,0 +1,4 @@
+---
+dependencies:
+  - check_hardware_virtualization_support
+  - lsmod_dict
