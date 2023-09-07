@@ -1,3 +1,0 @@
-dnsmasq_package_state: absent
-dnsmasq_service_state: stopped
-dnsmasq_service_enabled: false

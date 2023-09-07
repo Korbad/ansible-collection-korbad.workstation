@@ -1,3 +1,0 @@
-dnsmasq_package_state: present
-dnsmasq_service_state: started
-dnsmasq_service_enabled: true
