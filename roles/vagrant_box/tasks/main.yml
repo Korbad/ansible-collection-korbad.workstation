@@ -1,0 +1,16 @@
+---
+- name: Get the list of currently installed Vagrant boxes
+  ansible.builtin.command:
+    cmd: vagrant box list
+  register: installed_boxes_output
+  changed_when: false
+
+- name: Parse installed boxes into a list of installed box names
+  set_fact:
+    installed_vagrant_boxes_list: >-
+      {{ installed_boxes_output.stdout_lines | map('split', ' ') | map('first') | list }}
+
+- name: Install target box if not installed
+  ansible.builtin.command:
+    cmd: vagrant box add {{ vagrant_box_name }}
+  when: vagrant_box_name not in installed_vagrant_boxes_list
