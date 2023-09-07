@@ -1,0 +1,12 @@
+- name: Ensure the wheel group exists.
+  ansible.builtin.group:
+    name: wheel
+    state: present
+  become: true
+
+- name: Add user to the wheel group.
+  ansible.builtin.user:
+    name: "{{ ansible_env.USER }}"
+    groups: wheel
+    append: true
+  become: true
