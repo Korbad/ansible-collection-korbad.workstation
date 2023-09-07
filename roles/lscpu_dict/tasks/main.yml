@@ -1,0 +1,13 @@
+- name: Run lscpu in JSON format
+  command:
+    cmd: lscpu --json
+  environment:
+    LC_ALL: C
+  register: lscpu_json_output
+  changed_when: false
+
+- name: Transform lscpu list to dictionary
+  set_fact:
+    lscpu_dict: "{{ lscpu_dict_list.lscpu | items2dict(key_name='field', value_name='data') }}"
+  vars:
+    lscpu_dict_list: "{{ lscpu_json_output.stdout | from_json }}"
