@@ -10,7 +10,7 @@
     installed_vagrant_plugins_list: >-
       {{ installed_plugins_output.stdout_lines | map('split', ' ') | map('first') | list }}
 
-- name: Install target plugin if not installed
+- name: Install {{ vagrant_plugin_name }} vagrant plugin if not installed
   ansible.builtin.command:
     cmd: vagrant plugin install {{ vagrant_plugin_name }}
   when: vagrant_plugin_name not in installed_vagrant_plugins_list
