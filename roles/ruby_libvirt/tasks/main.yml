@@ -1,0 +1,5 @@
+  - name: Install ruby-libvirt gem
+    command:
+      cmd: gem install ruby-libvirt
+    environment:
+      PATH: "{{ ansible_env.PATH }}:/{{ ansible_env.HOME }}/.local/share/gem/ruby/3.0.0/bin"
