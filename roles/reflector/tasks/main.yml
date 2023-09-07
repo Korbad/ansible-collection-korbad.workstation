@@ -7,5 +7,5 @@
 
 - name: Run reflector to update mirrorlist
   ansible.builtin.command:
-    cmd: reflector --latest 5 --sort rate --save /etc/pacman.d/mirrorlist
+    cmd: reflector -c "US" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
   become: true
