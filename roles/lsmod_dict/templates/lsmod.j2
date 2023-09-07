@@ -1,0 +1,11 @@
+{% set result = {} %}
+{% for line in lsmod_output.stdout.split('\n')[1:] %}
+{% if line %}
+  {% set parts = line.split() %}
+  {% set module = parts[0] %}
+  {% set size = parts[1] %}
+  {% set used_by = ' '.join(parts[3:]) %}
+  {% set _ = result.update({module: {'size': size, 'used_by': used_by}}) %}
+{% endif %}
+{% endfor %}
+{{ result }}

@@ -1,0 +1,9 @@
+- name: Run lsmod command
+  command:
+    cmd: lsmod
+  register: lsmod_output
+  changed_when: false
+
+- name: Parse lsmod output into a dictionary
+  set_fact:
+    lsmod_dict: "{{ lookup('template', 'lsmod.j2') | from_yaml  }}"
