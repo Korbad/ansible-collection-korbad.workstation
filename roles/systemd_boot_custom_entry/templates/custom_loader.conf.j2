@@ -1,0 +1,10 @@
+title {{ boot_menu_entry_title }}
+{% if version is defined %}version {{ version }}{% endif %}
+{% if machine_id is defined %}machine-id {{ machine_id }}{% endif %}
+linux {{ linux_kernel_path }}
+{% for microcode_path in microcode_paths %}
+initrd {{ microcode_path }}
+{% endfor %}
+initrd {{ initramfs_image_path }}
+options root=PARTUUID={{ root_partition_uuid }} rw
+architecture x64

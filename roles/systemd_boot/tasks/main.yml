@@ -1,0 +1,11 @@
+---
+- name: Ensure systemd-boot config file is managed
+  template:
+    src: loader.conf.j2
+    dest: "{{ esp_mount_path }}/loader/loader.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+
+- include_tasks: ensure_microcode_files_exist.yml

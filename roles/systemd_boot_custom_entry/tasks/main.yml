@@ -1,0 +1,19 @@
+---
+- name: Fetch UUID of partition
+  command: blkid --match-tag PARTUUID --output value {{ disk_root_partition_path }}
+  register: root_partition_blkid_cmd
+  become: true
+  vars:
+    disk_root_partition_path: "/dev/disk/by-id/{{ disk_by_id }}-part{{ root_partition_number }}"
+
+# https://uapi-group.org/specifications/specs/boot_loader_specification/
+- name: Ensure custom boot menu entry exists for chroot ESP at {{ esp_mount_path }}
+  template:
+    src: custom_loader.conf.j2
+    dest: "{{ esp_mount_path }}/loader/entries/{{ boot_menu_config_filename }}"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  vars:
+    root_partition_uuid: "{{ root_partition_blkid_cmd.stdout }}"

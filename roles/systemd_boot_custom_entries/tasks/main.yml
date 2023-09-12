@@ -1,0 +1,15 @@
+
+- include_role:
+    name: systemd_boot_custom_entry
+  vars:
+    boot_title_base: arch
+    boot_menu_entry_title: "{{ boot_title_base }}-{{ boot_title_kernel }}-{{ boot_title_hostname }}"
+    boot_menu_config_filename: "{{ boot_menu_entry_title }}.conf"
+    linux_kernel_path: /vmlinuz-linux
+    initramfs_image_path: /initramfs-linux.img
+  loop:
+    - default
+    - lts
+    - zen
+  loop_control:
+    loop_var: boot_title_kernel
