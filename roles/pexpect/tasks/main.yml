@@ -1,0 +1,5 @@
+---
+- name: Ensure python-pexpect is installed via pacman
+  pacman:
+    name: python-pexpect
+  become: true
