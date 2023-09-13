@@ -10,4 +10,9 @@
   kewlfft.aur.aur:
     name: 1password
     use: yay
+
+- name: Install 1Password CLI
+  kewlfft.aur.aur:
+    name: 1password-cli
+    use: yay
 ...
