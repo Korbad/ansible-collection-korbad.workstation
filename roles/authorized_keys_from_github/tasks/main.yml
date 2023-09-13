@@ -1,5 +1,4 @@
----
-- name: Authorize public key pulled from github
+- name: Authorize public key pulled from github for user {{ github_username }}
   ansible.posix.authorized_key:
     user: "{{ github_username }}"
     state: present
