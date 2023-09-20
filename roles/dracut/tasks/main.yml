@@ -1,0 +1,5 @@
+---
+- name: Ensure that dracut is installed
+  pacman:
+    name: dracut
+  become: true
