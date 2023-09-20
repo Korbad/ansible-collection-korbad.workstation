@@ -1,0 +1,5 @@
+---
+- name: Ensure that libva-vdpau-driver is installed
+  pacman:
+    name: libva-vdpau-driver
+  become: true
