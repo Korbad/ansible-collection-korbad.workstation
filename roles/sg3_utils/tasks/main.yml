@@ -1,0 +1,5 @@
+---
+- name: Install sg3_utils
+  pacman:
+    name: sg3_utils
+  become: true
