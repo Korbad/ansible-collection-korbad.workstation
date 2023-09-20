@@ -1,0 +1,4 @@
+- name: Install testdisk package
+  pacman:
+    name: testdisk
+  become: true
