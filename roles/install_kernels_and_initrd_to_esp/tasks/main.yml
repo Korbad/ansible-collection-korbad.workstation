@@ -1,0 +1,17 @@
+---
+- name: "Find all vmlinuz files in /usr/lib/modules"
+  find:
+    paths: "/usr/lib/modules"
+    patterns: "vmlinuz"
+    recurse: yes
+    depth: 2
+  register: found_kernels
+
+- name: Run kernel-install for each kernel
+  include_tasks: process_kernel.yml
+  vars:
+    kernel_version_path_list: "{{ item.path | split('/') }}"
+    kernel_version: "{{ kernel_version_path_list[-2]}}"
+  loop: "{{ found_kernels.files }}"
+  loop_control:
+    label: "{{ kernel_version }}"

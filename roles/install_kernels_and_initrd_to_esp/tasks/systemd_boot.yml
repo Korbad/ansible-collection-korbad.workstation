@@ -1,0 +1,9 @@
+- name: "Ensure that systemd-boot entry exists for {{ kernel_version }}"
+  include_role:
+    name: systemd_boot_custom_entry
+  vars:
+    machine_id: "{{ ansible_machine_id }}"
+
+- name: "Ensure that a default entry exists for systemd-boot"
+  include_role:
+    name: systemd_boot_default_entry

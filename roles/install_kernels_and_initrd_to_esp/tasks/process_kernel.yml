@@ -1,0 +1,11 @@
+- name: "Run kernel-install for {{ kernel_version }}"
+  command:
+    cmd: "kernel-install add {{ kernel_version }} /usr/lib/modules/{{ kernel_version }}/vmlinuz"
+  become: true
+
+- name: "Ensure that systemd-boot entry exists for {{ kernel_version }}"
+  include_tasks: systemd_boot.yml
+  vars:
+    boot_title_base: arch
+    boot_menu_entry_title: "{{ boot_title_base }}-{{ kernel_version }}-{{ inventory_hostname }}-{{ root_partition_number }}"
+    boot_menu_config_filename: "{{ boot_menu_entry_title }}.conf"
