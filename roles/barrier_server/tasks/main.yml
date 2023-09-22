@@ -6,8 +6,8 @@
     state: directory
 
 - name: Create Barrier configuration file
-  copy:
-    src: barrier_server_config
+  template:
+    src: barrier_server_config_template.j2
     dest: "{{ ansible_env.HOME }}/.local/share/barrier/.barrier.conf"
   notify: reload systemd daemon
 
