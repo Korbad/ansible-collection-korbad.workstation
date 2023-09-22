@@ -1,0 +1,20 @@
+- name: Uncomment en_US.UTF-8 locale
+  ansible.builtin.lineinfile:
+    path: "/etc/locale.gen"
+    regexp: '^#en_US.UTF-8 UTF-8'
+    line: 'en_US.UTF-8 UTF-8'
+  become: true
+
+- name: Generate locales
+  command:
+    cmd: locale-gen
+  become: true
+
+- name: Set system locale
+  ansible.builtin.copy:
+    dest: "/etc/locale.conf"
+    content: "LANG=en_US.UTF-8"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
