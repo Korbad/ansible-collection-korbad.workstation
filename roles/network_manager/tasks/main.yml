@@ -1,0 +1,11 @@
+- name: Ensure that network manager is installed
+  pacman:
+    name: networkmanager
+  become: true
+
+- name: Ensure NetworkManager is running
+  systemd:
+    name: NetworkManager
+    state: started
+    enabled: true
+  become: true
