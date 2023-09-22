@@ -1,7 +1,9 @@
 ---
-- name: Archlinux
-  include_role:
-    name: citrix/arch
+# https://wiki.archlinux.org/title/citrix
+- name: Ensure citrix is installed if distro is an Arch variants
+  kewlfft.aur.aur:
+    name: icaclient
+    state: present
   when: ansible_distribution == 'Archlinux'
 
 - name: AlmaLinux
