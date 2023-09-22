@@ -1,0 +1,12 @@
+---
+dependencies:
+  # install systemd-boot before dracut so dracut sees systemd-boot and makes appropriate configs
+  - role: systemd_boot
+#  # install dracut before kernel since kernel depends on an initramfs/initrd generator and will use mkinitcpio by default, but dracut fills this dependency
+  - role: dracut
+  - role: kernel
+    kernel_name: linux
+#  # install microcode updates before generating initrd (during esp kernel installs)
+  - role: microcode
+#  # after kernels have been installed, install the kernel images into the esp using kernel-install
+  - role: install_kernels_and_initrd_to_esp
