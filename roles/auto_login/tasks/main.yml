@@ -1,0 +1,18 @@
+---
+- name: Create directory for getty@tty1 service drop-in files
+  file:
+    path: "/etc/systemd/system/getty@tty1.service.d/"
+    state: directory
+  become: true
+
+- name: Create override.conf with autologin configuration using a template
+  template:
+    src: override.conf.j2
+    dest: "/etc/systemd/system/getty@tty1.service.d/override.conf"
+  become: true
+
+- name: Create noclear.conf to keep boot messages on tty1 using a template
+  template:
+    src: noclear.conf.j2
+    dest: "/etc/systemd/system/getty@tty1.service.d/noclear.conf"
+  become: true
