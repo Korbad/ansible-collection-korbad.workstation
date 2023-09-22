@@ -1,7 +1,10 @@
 ---
-- name: Install intel microcode
+- name: Ensure that the intel microcode is installed
   pacman:
     name: intel-ucode
-    state: present
-  notify:
-    - rebuild grub
+  become: true
+
+- name: Ensure that the amd microcode is installed
+  pacman:
+    name: amd-ucode
+  become: true
