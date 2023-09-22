@@ -1,0 +1,5 @@
+---
+- name: "Ensure {{ kernel_name }} kernel is installed"
+  pacman:
+    name: "{{ kernel_name }}"
+  become: true
