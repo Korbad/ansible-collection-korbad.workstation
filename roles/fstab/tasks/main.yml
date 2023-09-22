@@ -1,0 +1,28 @@
+---
+- name: Ensure /etc directory exists
+  file:
+    path: "/etc"
+    state: directory
+    mode: '0755'
+  become: true
+
+- name: Template filesystem table (fstab)
+  template:
+    src: fstab.j2
+    dest: "/etc/fstab"
+    mode: '0644'
+  become: true
+  vars:
+    fstab_entries:
+      - device: /dev/disk/by-id/{{ disk_by_id }}-part{{ boot_partition_number }}
+        mount_point: "{{ esp_mount_path }}"
+        type: vfat
+        options: defaults
+        dump: 0
+        pass: 2
+      - device: /dev/disk/by-id/{{ disk_by_id }}-part{{ root_partition_number }}
+        mount_point: /
+        type: ext4
+        options: defaults
+        dump: 0
+        pass: 1
