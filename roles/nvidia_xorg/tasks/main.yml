@@ -1,3 +1,4 @@
 - name: generate nvidia xorg config
   command: nvidia-xconfig
   become: true
+  when: is_nvidia_gpu|bool
