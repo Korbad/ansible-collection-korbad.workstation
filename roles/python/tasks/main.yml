@@ -1,15 +1,6 @@
 ---
-- name: Archlinux
-  include_role:
-    name: python/arch
+- name: Ensure that python is installed
+  pacman:
+    name: python
+  become: true
   when: ansible_distribution == 'Archlinux'
-
-- name: AlmaLinux
-  include_role:
-    name: python/alma
-  when: ansible_distribution == 'AlmaLinux'
-
-- name: Ubuntu
-  include_role:
-    name: python/ubuntu
-  when: ansible_distribution == 'Ubuntu'
