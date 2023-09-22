@@ -1,0 +1,5 @@
+---
+- name: Ensure base is installed
+  community.general.pacman:
+    name: base
+  become: true
