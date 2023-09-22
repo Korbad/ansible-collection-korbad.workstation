@@ -1,0 +1,4 @@
+---
+- name: Install Python 3.9
+  kewlfft.aur.aur:
+    name: python39
