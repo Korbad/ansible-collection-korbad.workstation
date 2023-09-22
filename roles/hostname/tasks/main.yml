@@ -1,5 +1,5 @@
 ---
-- name: Ensure hostname is set to inventory hostname
+- name: "Ensure hostname is set to inventory hostname ({{ inventory_hostname }})"
   ansible.builtin.hostname:
-    name: "{{ hostname }}"
+    name: "{{ inventory_hostname }}"
   become: true
