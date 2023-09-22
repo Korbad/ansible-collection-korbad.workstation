@@ -1,0 +1,13 @@
+---
+- name: Ensure that dhcpcd (DHCP Client Daemon) is installed (this is not dhcpd)
+  ansible.builtin.pacman:
+    name: dhcpcd
+    state: present
+  become: true
+
+- name: Ensure that the dhcpcd service is started and enabled
+  service:
+    name: dhcpcd
+    state: started
+    enabled: true
+  become: true
