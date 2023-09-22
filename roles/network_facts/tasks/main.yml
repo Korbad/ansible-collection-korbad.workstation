@@ -1,0 +1,11 @@
+- name: Gather network facts
+  setup:
+    gather_subset:
+      - network
+
+- name: Set main_interface and related variables from gathered facts
+  set_fact:
+    main_interface: "{{ ansible_default_ipv4.interface }}"
+    bridge_ip: "{{ ansible_default_ipv4.address }}"
+    bridge_gateway: "{{ ansible_default_ipv4.gateway }}"
+  when: ansible_default_ipv4.interface is defined and ansible_default_ipv4.address is defined and ansible_default_ipv4.gateway is defined
