@@ -1,2 +1,0 @@
-barrier_client_user: "{{ ansible_env.USER }}"
-barrier_client_group: "{{ ansible_env.USER }}"
