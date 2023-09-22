@@ -1,10 +1,12 @@
+# Boot Loader Specification type#1 entry
+# File created by Ansible
 title {{ boot_menu_entry_title }}
-{% if version is defined %}version {{ version }}{% endif %}
-{% if machine_id is defined %}machine-id {{ machine_id }}{% endif %}
-linux {{ linux_kernel_path }}
-{% for microcode_path in microcode_paths %}
-initrd {{ microcode_path }}
-{% endfor %}
-initrd {{ initramfs_image_path }}
-options root=PARTUUID={{ root_partition_uuid }} rw
+{% if kernel_version is defined %}version {{ kernel_version }}
+{% endif %}
+{% if machine_id is defined %}machine-id {{ machine_id }}
+{% endif %}
+options root=PARTUUID={{ root_partition_uuid }} rw {% if machine_id is defined %}systemd.machine_id={{ machine_id }}
+{% endif %}
+linux /{{ machine_id }}/{{ kernel_version }}/linux
+initrd /{{ machine_id }}/{{ kernel_version }}/initrd
 architecture x64

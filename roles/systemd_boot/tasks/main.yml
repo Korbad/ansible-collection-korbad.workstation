@@ -1,11 +1,15 @@
 ---
-- name: Ensure systemd-boot config file is managed
-  template:
-    src: loader.conf.j2
-    dest: "{{ esp_mount_path }}/loader/loader.conf"
+# https://wiki.archlinux.org/title/systemd-boot
+- name: Install systemd-boot to ESP
+  command:
+    cmd: "bootctl install"
+  become: true
+
+- name: Ensure that systemd-boot entries directory exists
+  file:
+    state: directory
+    path: "{{ esp_mount_path }}/loader/entries"
     owner: root
     group: root
     mode: '0644'
   become: true
-
-- include_tasks: ensure_microcode_files_exist.yml

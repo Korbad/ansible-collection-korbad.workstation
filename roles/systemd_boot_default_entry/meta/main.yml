@@ -1,0 +1,4 @@
+---
+dependencies:
+  - korbad.tools.esp_mount
+  - systemd_boot

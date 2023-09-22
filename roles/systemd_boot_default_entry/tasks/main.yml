@@ -1,0 +1,18 @@
+---
+- name: If a default boot menu entry doesn't exist, form a sensible default from existing vars
+  set_fact:
+    default_boot_menu_entry_filename: "{{ boot_menu_config_filename }}"
+  vars:
+    boot_title_base: arch
+    boot_menu_entry_title: "{{ boot_title_base }}-{{ kernel_name }}-{{ inventory_hostname }}-{{ root_partition_number }}"
+    boot_menu_config_filename: "{{ boot_menu_entry_title }}.conf"
+  when: default_boot_menu_entry_filename is undefined
+
+- name: Ensure systemd-boot config file is managed
+  template:
+    src: loader.conf.j2
+    dest: "{{ esp_mount_path }}/loader/loader.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true

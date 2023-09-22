@@ -7,7 +7,7 @@
     disk_root_partition_path: "/dev/disk/by-id/{{ disk_by_id }}-part{{ root_partition_number }}"
 
 # https://uapi-group.org/specifications/specs/boot_loader_specification/
-- name: Ensure custom boot menu entry exists for chroot ESP at {{ esp_mount_path }}
+- name: Ensure custom boot menu entry exists in ESP at {{ esp_mount_path }}
   template:
     src: custom_loader.conf.j2
     dest: "{{ esp_mount_path }}/loader/entries/{{ boot_menu_config_filename }}"
