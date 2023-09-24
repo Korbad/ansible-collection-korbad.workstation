@@ -1,0 +1,5 @@
+---
+- name: Ensure bind-tools package is installed
+  pacman:
+    name: bind-tools
+  become: true
