@@ -1,0 +1,36 @@
+- name: Ensure /etc/pulse/default.pa.d directory exists
+  file:
+    path: /etc/pulse/default.pa.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+
+- name: Enable tcp Module on Server
+  template:
+    src: esound-protocol-tcp.pa.j2
+    dest: /etc/pulse/default.pa.d/esound-protocol-tcp.pa
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  notify: restart pulseaudio
+
+- name: Enable Zeroconf Publish Module on Server
+  template:
+    src: zeroconf-publish.pa.j2
+    dest: /etc/pulse/default.pa.d/zeroconf-publish.pa
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  notify: restart pulseaudio
+
+- name: Fetch PulseAudio auth cookie from pulse server
+  fetch:
+    src: "{{ ansible_env.HOME }}/.config/pulse/cookie"
+    dest: "/{{ managed_remote_host_files_path }}/{{ inventory_hostname }}/pulseaudio_network_server/"
+    flat: yes
+  vars:
+    managed_remote_host_files_path: "{{ ansible_env.HOME }}/managed_remote_host_files"

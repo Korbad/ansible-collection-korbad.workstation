@@ -1,0 +1,28 @@
+---
+# https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Network/#networksetup
+- name: Ensure the pulse-audio is installed
+  community.general.pacman:
+    name: pulseaudio
+    state: present
+  become: true
+
+- name: Ensure PulseAudio is running as user service
+  systemd:
+    name: pulseaudio
+    state: started
+    enabled: yes
+    scope: user
+
+- name: Ensure pulseaudio config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/pulse"
+    state: directory
+
+- name: Change default sample rate in PulseAudio user configuration
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/pulse/daemon.conf"
+    regexp: '^;? default-sample-rate ='
+    line: 'default-sample-rate = 48000'
+    create: yes
+  notify: restart pulseaudio
+...

@@ -1,0 +1,6 @@
+---
+- name: Ensure the pulse-audio zero conf package
+  community.general.pacman:
+    name: pulseaudio-zeroconf
+  become: true
+  notify: restart pulseaudio

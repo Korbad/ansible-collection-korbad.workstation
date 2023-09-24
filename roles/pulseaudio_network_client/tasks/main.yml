@@ -1,0 +1,33 @@
+- name: Ensure /etc/pulse/default.pa.d directory exists
+  file:
+    path: /etc/pulse/default.pa.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  become: true
+
+- name: Enable Zeroconf Discover Module on Client
+  template:
+    src: zeroconf-discover.pa.j2
+    dest: /etc/pulse/default.pa.d/zeroconf-discover.pa
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  notify: restart pulseaudio
+
+- name: Set Default Server in client.conf
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.pulse/client.conf"
+    line: 'default-server = {{ pulseaudio_network_server_hostname }}'
+    regexp: '^default-server[ ]?='
+    create: yes
+  notify: restart pulseaudio
+
+- name: Copy pulseaudio server cookie to client
+  copy:
+    src: "/{{ managed_remote_host_files_path }}/{{ pulseaudio_network_server_host }}/pulseaudio_network_server/cookie"
+    dest: "{{ ansible_env.HOME }}/.config/pulse/cookie"
+  vars:
+    managed_remote_host_files_path: "{{ ansible_env.HOME }}/managed_remote_host_files"

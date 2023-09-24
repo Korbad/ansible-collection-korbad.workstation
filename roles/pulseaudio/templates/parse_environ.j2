@@ -1,0 +1,8 @@
+{% set ns = namespace(environ_dict={}) %}
+{% for item in environ_string.split('\0') if item %}
+  {% set key_value = item.split('=') %}
+  {% if key_value[0] and key_value[1] %}
+    {% set _ = ns.environ_dict.update({key_value[0]: key_value[1]}) %}
+  {% endif %}
+{% endfor %}
+{{ ns.environ_dict | to_json }}
