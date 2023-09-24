@@ -1,0 +1,4 @@
+---
+- command:
+    cmd: journalctl -u pacoloco.service -f #this never returns, should instead launch in current user session
+  become: true
