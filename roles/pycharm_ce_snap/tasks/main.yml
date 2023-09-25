@@ -1,0 +1,5 @@
+---
+- name: Ensure pycharm community edition is installed
+  community.general.snap:
+    name: pycharm-community
+    classic: true
