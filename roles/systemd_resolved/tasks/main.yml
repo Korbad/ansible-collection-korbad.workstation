@@ -1,0 +1,21 @@
+---
+- name: Enable systemd-resolved
+  systemd:
+    name: systemd-resolved
+    enabled: yes
+    state: started
+  become: true
+
+- name: Create symlink for resolv.conf
+  file:
+    state: link
+    path: /etc/resolv.conf
+    src: /run/systemd/resolve/resolv.conf
+    force: true
+  become: true
+
+- name: Ensure that the systemd network dir exists
+  file:
+    state: directory
+    path: /etc/systemd/network
+  become: true

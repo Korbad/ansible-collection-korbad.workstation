@@ -1,0 +1,16 @@
+# roles/systemd_network_bridge/tasks/main.yml
+---
+- name: Ensure /etc/systemd/network directory exists
+  file:
+    path: /etc/systemd/network
+    state: directory
+  become: true
+
+- name: Ensure uplink.network file exists
+  template:
+    src: main_interface.network.j2
+    dest: "/etc/systemd/network/{{ main_interface }}.network"
+  become: true
+  notify:
+    - restart systemd-networkd
+    - networkctl reload

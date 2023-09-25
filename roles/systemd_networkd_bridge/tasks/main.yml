@@ -1,0 +1,20 @@
+- name: Ensure {{ bridge_name }}.netdev file exists
+  template:
+    src: bridge_name.netdev.j2
+    dest: "/etc/systemd/network/{{ bridge_name }}.netdev"
+  become: true
+  notify: restart systemd-networkd
+
+- name: Ensure {{ bridge_name }}.network file exists
+  template:
+    src: bridge_name.network.j2
+    dest: "/etc/systemd/network/{{ bridge_name }}.network"
+  become: true
+  notify: restart systemd-networkd
+
+- name: Ensure {{ main_interface }}.network file exists with bridge definition
+  template:
+    src: main_interface.network.j2
+    dest: "/etc/systemd/network/{{ main_interface }}.network"
+  become: true
+  notify: restart systemd-networkd

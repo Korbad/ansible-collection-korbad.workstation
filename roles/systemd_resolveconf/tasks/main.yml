@@ -1,0 +1,4 @@
+- name: Ensure systemd-resolvconf is installed
+  package:
+    name: systemd-resolvconf
+  become: true
