@@ -1,0 +1,7 @@
+---
+- name: Ensure that a symlink exists to enable snap classic
+  file:
+    state: link
+    src: /var/lib/snapd/snap
+    path: /snap
+  become: true
