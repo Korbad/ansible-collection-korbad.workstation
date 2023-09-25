@@ -1,0 +1,5 @@
+- name: Disable NetworkManager (will stop on next reboot)
+  systemd:
+    name: NetworkManager
+    enabled: no
+  become: true
