@@ -1,4 +1,4 @@
 ---
 dependencies:
   - snapd
-  - snap_classic
+#  - snap_classic
