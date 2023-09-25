@@ -1,0 +1,21 @@
+---
+- name: Ensure pycharm community edition is installed
+  community.general.pacman:
+    name: pycharm-community-edition
+  become: true
+
+- name: Find PyCharm configuration directory
+  find:
+    paths: "{{ ansible_env.HOME }}/.config/JetBrains/"
+    patterns: "PyCharm*"
+    depth: 1
+    file_type: directory
+  register: pycharm_dirs
+
+- name: Process each version found
+  include_tasks: process_config_by_version.yml
+  loop: "{{ pycharm_dirs.files }}"
+  loop_control:
+    loop_var: pycharm_config_version
+  vars:
+    pycharm_config_version_path: "{{ pycharm_config_version.path }}"
