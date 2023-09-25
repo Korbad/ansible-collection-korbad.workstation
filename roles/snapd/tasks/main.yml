@@ -10,6 +10,12 @@
   become: true
   when: ansible_distribution == 'AlmaLinux'
 
+- name: Install snapd via apt
+  ansible.builtin.dnf:
+    name: snapd
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
 - name: Enable and start snapd service
   service:
     name: snapd

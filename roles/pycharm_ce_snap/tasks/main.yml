@@ -3,3 +3,4 @@
   community.general.snap:
     name: pycharm-community
     classic: true
+  become: true

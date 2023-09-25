@@ -9,3 +9,8 @@
   include_role:
     name: pycharm_ce_snap
   when: ansible_distribution == 'AlmaLinux'
+
+- name: Ensure pycharm community edition is installed
+  include_role:
+    name: pycharm_ce_snap
+  when: ansible_distribution == 'Ubuntu'
