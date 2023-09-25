@@ -3,6 +3,9 @@
   kewlfft.aur.aur:
     name: snapd
   when: ansible_distribution == 'Archlinux'
+  notify:
+  - start-snapd-socket
+  - start-snapd-apparmor
 
 - name: Install snapd via dnf
   ansible.builtin.dnf:
