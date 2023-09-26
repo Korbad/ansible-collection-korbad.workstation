@@ -1,15 +1,10 @@
 ---
-# - name: webex for Archlinux
-#   include_role:
-#     name: webex/arch
-#   when: ansible_distribution == 'Archlinux'
-
 - name: webex for AlmaLinux
   include_role:
     name: webex/alma
   when: ansible_distribution == 'AlmaLinux'
 
-# - name: webex for Ubuntu
-#   include_role:
-#     name: webex/ubuntu
-#   when: ansible_distribution == 'Ubuntu'
+- name: webex for Ubuntu
+  include_role:
+    name: webex/ubuntu
+  when: ansible_distribution == 'Ubuntu'
