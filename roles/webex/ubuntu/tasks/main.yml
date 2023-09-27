@@ -6,7 +6,6 @@
 
 - name: Install Webex from DEB
   apt:
-    name: "{{ (managed_binaries_path, 'Webex.deb') | path_join }}"
-    disable_gpg_check: true
+    deb: "{{ (managed_binaries_path, 'Webex.deb') | path_join }}"
   become: true
 
