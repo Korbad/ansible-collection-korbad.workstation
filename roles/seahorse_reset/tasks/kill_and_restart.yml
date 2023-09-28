@@ -1,0 +1,24 @@
+
+- name: Kill existing seahorse-daemon
+  command: pkill -f seahorse-daemon
+  when: seahorse_running
+
+- name: Start new seahorse-daemon instance
+  command: seahorse-daemon &
+
+- name: Reset GNOME Keyring password using old password
+  expect:
+    command: /usr/bin/seahorse-tool --keyring=default --change-password
+    responses:
+      "Old password:" : "{{ old_keyring_password }}"
+      "New password:" : "{{ new_keyring_password }}"
+      "Verify new password:" : "{{ new_keyring_password }}"
+  when: old_keyring_password is defined
+
+- name: Initialize new GNOME Keyring
+  expect:
+    command: /usr/bin/seahorse-tool --keyring=default --create-keyring
+    responses:
+      "Password:" : "{{ new_keyring_password }}"
+      "Verify password:" : "{{ new_keyring_password }}"
+  when: old_keyring_password is not defined

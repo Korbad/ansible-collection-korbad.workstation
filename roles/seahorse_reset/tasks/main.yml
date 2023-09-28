@@ -1,0 +1,12 @@
+---
+- name: Check if seahorse-daemon is running
+  shell: pgrep -af "seahorse-daemon"
+  register: seahorse_status
+  ignore_errors: yes
+
+- name: Set seahorse_running variable based on detection
+  set_fact:
+    seahorse_running: "{{ seahorse_status.rc == 0 }}"
+    seahorse_keyring_directory: "{{ ansible_env.HOME }}/.local/share/keyrings"
+
+- include_tasks: get_secrets.yml
