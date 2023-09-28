@@ -1,3 +1,5 @@
 ---
 dependencies:
   - gcc
+  - role: build_essential
+    when: ansible_distribution == 'Ubuntu'
