@@ -1,0 +1,8 @@
+---
+- name: Ensure managed user script exists
+  template:
+    src: fetch_and_type_secret.j2
+    dest: "{{ managed_user_script_path }}"
+
+- set_fact:
+    managed_user_script_fetch_and_type_secret_path: "{{ managed_user_script_path }}"

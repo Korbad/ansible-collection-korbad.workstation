@@ -1,0 +1,3 @@
+dependencies:
+  - role: managed_user_directory
+    managed_user_content_directory_name: managed_user_scripts

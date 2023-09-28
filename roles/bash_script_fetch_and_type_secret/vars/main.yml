@@ -1,0 +1,3 @@
+managed_user_scripts_path: "{{ (managed_user_content_path, 'managed_user_scripts') | path_join }}"
+managed_user_script_filename: fetch_and_type_secret.sh
+managed_user_script_path: "{{ (managed_user_scripts_path, managed_user_script_filename) | path_join }}"
