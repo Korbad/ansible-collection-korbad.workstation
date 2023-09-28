@@ -1,0 +1,5 @@
+---
+- name: Install expect package
+  apt:
+    name: expect
+    state: present
