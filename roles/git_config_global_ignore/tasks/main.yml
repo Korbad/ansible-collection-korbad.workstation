@@ -1,0 +1,10 @@
+- name: Ensure ~/.config/git directory exists
+  file:
+    path: "{{ ansible_env.HOME }}/.config/git"
+    state: directory
+
+- name: Add .idea to global git ignore
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.config/git/ignore"
+    line: ".idea/"
+    create: yes
