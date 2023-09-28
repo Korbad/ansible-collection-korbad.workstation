@@ -1,0 +1,1 @@
+managed_user_content_path: "{{ ansible_env.HOME }}"

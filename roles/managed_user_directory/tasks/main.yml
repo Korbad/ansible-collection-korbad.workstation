@@ -1,0 +1,7 @@
+---
+- name: "Ensure user content directory exists at {{ managed_user_content_directory_path }}"
+  ansible.builtin.file:
+    state: directory
+    path: "{{ managed_user_content_directory_path }}"
+  vars:
+    managed_user_content_directory_path: "{{ (managed_user_content_path, managed_user_content_directory_name) | path_join }}"
