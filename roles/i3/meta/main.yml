@@ -1,3 +1,4 @@
 ---
 dependencies:
+  - korbad.tools.get_active_user_environ
   - xinitrc
