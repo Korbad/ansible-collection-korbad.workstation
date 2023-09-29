@@ -4,3 +4,15 @@
     name: git-global
   environment:
     PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+
+- name: Set git config so that git-global doesn't follow symlinks
+  community.general.git_config:
+    scope: global
+    name: global.follow-symlinks
+    value: false
+
+- name: Set git config so that git-global doesn't cross filesystem boundaries
+  community.general.git_config:
+    scope: global
+    name: global.same-filesystem
+    value: false
