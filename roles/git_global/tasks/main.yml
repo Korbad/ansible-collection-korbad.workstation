@@ -15,4 +15,10 @@
   community.general.git_config:
     scope: global
     name: global.same-filesystem
-    value: false
+    value: true
+
+- name: Set git config so that git-global doesn't traverse some directories
+  community.general.git_config:
+    scope: global
+    name: global.ignore
+    value: .local,.cache,.config
