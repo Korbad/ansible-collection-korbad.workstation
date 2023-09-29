@@ -21,4 +21,4 @@
   community.general.git_config:
     scope: global
     name: global.ignore
-    value: .local,.cache,.config
+    value: .local,.cache,.config,.cargo
