@@ -10,6 +10,7 @@
 
 - name: Ensure setuptools is installed
   shell: pip list | grep setuptools
+  changed_when: false
   register: check_setuptools
   failed_when: "'command not found' in check_setuptools.stderr"
 
