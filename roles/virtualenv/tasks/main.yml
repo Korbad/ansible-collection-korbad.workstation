@@ -3,3 +3,15 @@
     name: python-virtualenv
   become: true
   when: ansible_distribution == 'Archlinux'
+
+- name: Ensure setuptools is installed (required for virtualenv for ubuntu)
+  apt:
+    name: python3-setuptools
+  become: true
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Ensure virtualenv is installed
+  apt:
+    name: python3-virtualenv
+  become: true
+  when: ansible_distribution == 'Ubuntu'
