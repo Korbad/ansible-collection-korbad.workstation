@@ -1,0 +1,6 @@
+- name: Install Python3.8 venv
+  apt:
+    name: python3-venv
+    state: present
+  become: yes
+  when: ansible_distribution == 'Ubuntu'
