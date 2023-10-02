@@ -4,3 +4,11 @@
     name: python
   become: true
   when: ansible_distribution == 'Archlinux'
+
+- name: Install Python Development Libraries
+  apt:
+    name: python3-dev
+    state: present
+  become: yes
+  when: ansible_distribution == 'Ubuntu'
+

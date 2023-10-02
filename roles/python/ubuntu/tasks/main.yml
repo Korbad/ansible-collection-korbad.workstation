@@ -1,5 +1,0 @@
----
-- name: Install Python 3.8
-  package:
-    name: python38
-  become: true
