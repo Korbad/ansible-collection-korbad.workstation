@@ -1,12 +1,4 @@
 ---
-- name: Ensure QEMU-base is not installed
-  community.general.pacman:
-    name: qemu-base
-    state: absent
-    force: true
-  become: true
-  when: ansible_distribution == 'Archlinux'
-
 - name: Ensure QEMU-full is installed
   community.general.pacman:
     name: qemu-full
