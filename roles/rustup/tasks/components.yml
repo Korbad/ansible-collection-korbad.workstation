@@ -1,7 +1,9 @@
+---
 - name: Install rust component {{ rust_component }}
   ansible.builtin.command:
     cmd: "{{ ansible_env.HOME }}/bin/rustup component add {{ rust_component }}"
   register: rustup_components
+  changed_when: "'is up to date' not in rustup_components.stderr"
   loop_control:
     loop_var: rust_component
   loop:

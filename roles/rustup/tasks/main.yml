@@ -18,15 +18,23 @@
     - rustc
     - cargo
 
+- name: Check if Rust stable toolchain is default
+  command:
+    cmd: "{{ ansible_env.HOME }}/bin/rustup show"
+  register: rustup_show_output
+  changed_when: false
+
 - name: Ensure toolchain is installed
   command:
     cmd: "{{ ansible_env.HOME }}/bin/rustup default stable"
   register: rustup_default_stable
+  when: "'stable' not in rustup_show_output.stdout"
 
 - name: Ensure rustup is updated
   command:
     cmd: "{{ ansible_env.HOME }}/bin/rustup self update"
   register: rustup_self_update
+  changed_when: "'rustup unchanged' not in rustup_self_update.stdout"
 
 - name: Ensure rust is updated
   command:
