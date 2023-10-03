@@ -1,0 +1,2 @@
+- name: run xrandr screen layout script
+  include_tasks: run_xrandr_screen_layout_script.yml

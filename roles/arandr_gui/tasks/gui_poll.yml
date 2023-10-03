@@ -1,0 +1,17 @@
+- name: Run arandr if no layout files are found
+  shell: nohup arandr > /dev/null 2>&1 & disown
+  environment:
+    DISPLAY: "{{ active_user_environ_dict.DISPLAY }}"
+  notify: run xrandr screen layout script
+
+- name: Keep checking for existing layout files in ~/.screenlayout/
+  find:
+    paths: "{{ ansible_env.HOME }}/.screenlayout/"
+    patterns: "*.sh"
+  register: layout_files_generated
+  until: layout_files_generated.files | length == 1
+  retries: 20
+  delay: 10
+
+- name: Check for screen layout xrandr script
+  include_tasks: check_for_xrandr_screen_layout_script.yml

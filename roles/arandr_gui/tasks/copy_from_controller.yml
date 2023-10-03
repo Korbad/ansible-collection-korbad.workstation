@@ -1,0 +1,23 @@
+- name: Check if previously fetched layout files exist on Ansible controller
+  local_action:
+    module: find
+    paths: "/{{ managed_remote_host_files_path }}/{{ inventory_hostname }}/arandr_gui/"
+    patterns: "*.sh"
+  register: local_layout_files
+  vars:
+    managed_remote_host_files_path: "{{ ansible_env.HOME }}/managed_remote_host_files"
+
+- name: Copy layout files to remote host if none are found there but exist on controller
+  copy:
+    src: "/{{ managed_remote_host_files_path }}/{{ inventory_hostname }}/arandr_gui/{{ item.path | basename }}"
+    dest: "{{ ansible_env.HOME }}/.screenlayout/{{ item.path | basename }}"
+  loop: "{{ local_layout_files.files }}"
+  when: local_layout_files.files | length > 0
+  register: copied_layout_files_from_local
+  vars:
+    managed_remote_host_files_path: "{{ ansible_env.HOME }}/managed_remote_host_files"
+  notify: run xrandr screen layout script
+
+- name: Check for screen layout xrandr script
+  include_tasks: check_for_xrandr_screen_layout_script.yml
+  when: copied_layout_files_from_local is changed

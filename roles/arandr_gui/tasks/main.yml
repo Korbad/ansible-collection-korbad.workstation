@@ -1,62 +1,25 @@
 ---
+- name: Fetch stats for the active user env
+  include_role:
+    name: korbad.tools.get_active_user_environ
+
 - name: Ensure that user home .screenlayout config dir exists
   file:
     path: "{{ ansible_env.HOME }}/.screenlayout"
     state: directory
 
-- name: Find existing layout files in ~/.screenlayout/
-  find:
-    paths: "{{ ansible_env.HOME }}/.screenlayout/"
-    patterns: "*.sh"
-  register: layout_files
+- name: Check for screen layout xrandr script
+  include_tasks: check_for_xrandr_screen_layout_script.yml
 
-- name: Check if previously fetched layout files exist on Ansible controller
-  local_action:
-    module: find
-    paths: "/{{ managed_remote_host_files_path }}/{{ inventory_hostname }}/arandr_gui/"
-    patterns: "*.sh"
-  register: local_layout_files
-  when: layout_files.files | length == 0
-  vars:
-    managed_remote_host_files_path: "{{ ansible_env.HOME }}/managed_remote_host_files"
+- name: Copy layout from controller if it exists
+  include_tasks: copy_from_controller.yml
+  when: xrandr_screen_layout_script_path is undefined
 
-- name: Copy layout files to remote host if none are found there but exist on controller
-  copy:
-    src: "/{{ managed_remote_host_files_path }}/{{ inventory_hostname }}/arandr_gui/{{ item.path | basename }}"
-    dest: "{{ ansible_env.HOME }}/.screenlayout/{{ item.path | basename }}"
-  loop: "{{ local_layout_files.files }}"
-  when:
-  - local_layout_files is not skipped
-  - local_layout_files.files | length > 0
-  register: copied_layout_files_from_local
-  vars:
-    managed_remote_host_files_path: "{{ ansible_env.HOME }}/managed_remote_host_files"
+- name: Show GUI to user and have them configure and save the layout
+  include_tasks: gui_poll.yml
+  when: xrandr_screen_layout_script_path is undefined
 
-- name: Find existing layout files in ~/.screenlayout/
-  find:
-    paths: "{{ ansible_env.HOME }}/.screenlayout/"
-    patterns: "*.sh"
-  register: layout_files_again
-  when: copied_layout_files_from_local is changed
-
-- name: Run arandr if no layout files are found
-  shell: nohup arandr > /dev/null 2>&1 & disown
-  environment:
-    DISPLAY: "{{ ansible_env.DISPLAY | default(':0', true) }}"
-  when:
-  - layout_files_again is not skipped
-  - layout_files_again.files | length == 0
-
-- name: Keep checking for existing layout files in ~/.screenlayout/
-  find:
-    paths: "{{ ansible_env.HOME }}/.screenlayout/"
-    patterns: "*.sh"
-  register: layout_files
-  until: layout_files.files | length == 1
-  retries: 20 # Number of retries before giving up; adjust as needed
-  delay: 10  # Delay in seconds between retries
-
-- name: Fetch layout files to Ansible controller
+- name: Ensure that ansible controller has copies of layout files
   fetch:
     src: "{{ item.path }}"
     dest: "/{{ managed_remote_host_files_path }}/{{ inventory_hostname }}/arandr_gui/"
@@ -68,6 +31,8 @@
 - name: Ensure xinitrc includes xrandr settings
   ansible.builtin.blockinfile:
     path: "{{ ansible_env.HOME }}/.xinitrc"
-    block: sh {{ layout_files.files[0].path }} &
+    block: sh {{ xrandr_screen_layout_script_path }} &
     marker: "# {mark} ANSIBLE MANAGED BLOCK FOR xrandr"
     insertbefore: "^# BEGIN ANSIBLE MANAGED BLOCK FOR exec"
+  register: xinitrc_xrandr_settings_register
+  notify: run xrandr screen layout script

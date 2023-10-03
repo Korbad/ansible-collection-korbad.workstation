@@ -1,0 +1,9 @@
+- name: find the layout file to run
+  include_tasks: check_for_xrandr_screen_layout_script.yml
+  when: xrandr_screen_layout_script_path is undefined
+
+- name: Execute xrandr script to refresh current session
+  command:
+    cmd: sh {{ xrandr_screen_layout_script_path }} &
+  environment:
+    DISPLAY: "{{ active_user_environ_dict.DISPLAY }}"
