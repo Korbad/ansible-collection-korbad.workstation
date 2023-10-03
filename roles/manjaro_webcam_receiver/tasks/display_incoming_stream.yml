@@ -25,8 +25,12 @@
     src: webcam_stream.j2
     dest: "{{ lookup('env', 'HOME') }}/webcam_stream.html"
 
+- name: Fetch active user environ before reloading i3
+  include_role:
+    name: korbad.tools.get_active_user_environ
+
 - name: Open webcam stream HTML file in the default web browser
   ansible.builtin.command:
     cmd: xdg-open "{{ lookup('env', 'HOME') }}/webcam_stream.html"
   environment:
-    DISPLAY: "{{ ansible_env.DISPLAY | default(':0', true) }}"
+    DISPLAY: "{{ active_user_environ_dict.DISPLAY | default(':0', true) }}"
