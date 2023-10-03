@@ -8,3 +8,8 @@
   include_role:
     name: webex/ubuntu
   when: ansible_distribution == 'Ubuntu'
+
+- name: Webex for Arch
+  kewlfft.aur.aur:
+    name: webex-bin
+  when: ansible_distribution == 'Archlinux'
