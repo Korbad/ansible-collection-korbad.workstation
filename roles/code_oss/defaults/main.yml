@@ -1,3 +1,16 @@
 user_home_dir: "{{ ansible_env.HOME }}"
 code_oss_config_path: "{{ (user_home_dir, '.config','Code - OSS','User','settings.json') | path_join }}"
 code_oss_extensions_path: "{{ (user_home_dir, '.vscode','extensions') | path_join }}" # shares extensions path with vscode
+managed_code_oss_extensions:
+- ms-python.python
+- redhat.ansible
+- redhat.vscode-yaml
+
+managed_code_oss_settings_dict:
+  editor.tabSize: 2
+  yaml.validate: true
+  yaml.format.enable: true
+  explorer.confirmDelete: false
+  files.autoSave: "afterDelay"
+  git.autofetch: true
+  git.confirmSync: false
