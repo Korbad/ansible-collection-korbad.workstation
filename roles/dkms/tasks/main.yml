@@ -6,4 +6,4 @@
     state: latest
   become: true
   when: ansible_distribution == 'Archlinux'
-
+  notify: dkms autoinstall

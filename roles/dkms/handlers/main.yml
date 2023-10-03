@@ -1,0 +1,4 @@
+- name: dkms autoinstall
+  command:
+    cmd: dkms autoinstall
+  become: true
