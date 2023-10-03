@@ -1,0 +1,4 @@
+dependencies:
+  - name: korbad.workstation.audio_codecs
+  - name: korbad.workstation.pamixer
+  - name: korbad.workstation.pulsemixer
