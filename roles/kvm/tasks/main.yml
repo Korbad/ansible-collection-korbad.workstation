@@ -8,19 +8,4 @@
 - assert:
     that:
       - is_kvm_kernel_module_loaded
-
-
-#- name: kvm for Archlinux
-#  include_role:
-#    name: kvm/arch
-#  when: ansible_distribution == 'Archlinux'
-
-# - name: kvm for AlmaLinux
-#   include_role:
-#     name: kvm/alma
-#   when: ansible_distribution == 'AlmaLinux'
-
-# - name: kvm for Ubuntu
-#   include_role:
-#     name: kvm/ubuntu
-#   when: ansible_distribution == 'Ubuntu'
+      - config_kvm_enabled
