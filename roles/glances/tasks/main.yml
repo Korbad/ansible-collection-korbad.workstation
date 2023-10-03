@@ -1,0 +1,6 @@
+---
+- name: Ensure Glances is installed
+  package:
+    name: glances
+    state: present
+  become: true
