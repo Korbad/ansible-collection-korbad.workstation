@@ -1,7 +1,0 @@
----
-- name: Process each organization
-  include_tasks: organization.yml
-  loop: "{{ awx_configuration.organizations | dict2items }}"
-  loop_control:
-    loop_var: awx_organization
-    label: "{{ awx_organization.key }}"
