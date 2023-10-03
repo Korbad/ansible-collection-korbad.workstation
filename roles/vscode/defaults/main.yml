@@ -1,1 +1,16 @@
 vscode_config_path: "{{ (ansible_env.HOME, '.config','Code','User','settings.json') | path_join }}"
+managed_vscode_settings_dict:
+  editor.tabSize: 2
+  yaml.validate: true
+  yaml.format.enable: true
+  explorer.confirmDelete: false
+  files.autoSave: "afterDelay"
+  git.autofetch: true
+  git.confirmSync: false
+managed_vscode_extensions:
+- ms-python.python
+- redhat.ansible
+- vscoss.vscode-ansible
+- ansible.language-server
+- redhat.vscode-yaml
+- timonwong.ansible-lint
