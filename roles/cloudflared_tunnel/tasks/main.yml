@@ -5,12 +5,16 @@
     state: directory
     mode: '0755'
 
+- name: Fetch active user environ before reloading i3
+  include_role:
+    name: korbad.tools.get_active_user_environ
+
 - name: Run cloudflared tunnel login
   command: cloudflared tunnel login
   args:
     creates: "{{ cloudflared_config_directory }}/cert.pem"
   environment:
-    DISPLAY: "{{ ansible_env.DISPLAY | default(':0', true) }}"
+    DISPLAY: "{{ active_user_environ_dict.DISPLAY }}"
 
 - name: Check for existing tunnel
   include_tasks: check_for_existing_tunnel.yml

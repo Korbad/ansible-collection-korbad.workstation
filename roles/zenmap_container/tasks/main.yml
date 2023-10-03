@@ -3,13 +3,17 @@
   containers.podman.podman_image:
     name: alexandreoda/zenmap
 
+- name: Fetch active user environ before reloading i3
+  include_role:
+    name: korbad.tools.get_active_user_environ
+
 - name: Create Zenmap container
   containers.podman.podman_container:
     name: zenmap
     image: alexandreoda/zenmap
     state: started
     env:
-      DISPLAY: "{{ ansible_env.DISPLAY | default(':0', true) }}"
+      DISPLAY: "{{ active_user_environ_dict.DISPLAY }}"
       XAUTHORITY: '/xauthority'
     volumes:
       - "{{ ansible_env.HOME }}:/home/zenmap"
