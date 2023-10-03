@@ -1,0 +1,4 @@
+- name: Install the obsidian flatpak
+  community.general.flatpak:
+    name:  md.obsidian.Obsidian
+    state: present
