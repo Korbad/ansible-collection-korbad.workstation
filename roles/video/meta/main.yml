@@ -1,0 +1,3 @@
+dependencies:
+    - name: korbad.workstation.video_codecs
+    - name: korbad.workstation.optimize_gpu_performance
