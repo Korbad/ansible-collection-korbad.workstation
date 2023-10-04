@@ -1,0 +1,8 @@
+- include_role:
+    name: korbad.tools.get_active_user_environ
+
+- name: Launch Firefox with specific profile
+  command:
+    cmd: "firefox -P {{ profile_name }} --no-remote"
+  environment:
+    DISPLAY: "{{ active_user_environ_dict.DISPLAY }}"

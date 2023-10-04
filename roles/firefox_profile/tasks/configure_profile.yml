@@ -1,0 +1,5 @@
+- name: Configure Firefox to automatically open .ica files
+  ansible.builtin.lineinfile:
+    path: "{{ firefox_profile_path }}/user.js"
+    line: 'user_pref("browser.helperApps.neverAsk.saveToDisk", "application/x-ica");'
+    create: yes

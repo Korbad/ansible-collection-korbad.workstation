@@ -1,3 +1,0 @@
-firefox_profile_path: "{{ ansible_env.HOME }}/.mozilla/firefox"
-firefox_profile_name: "korbad"
-x11_active_user_display: ":0"

@@ -1,0 +1,15 @@
+- name: Create Temp Directory
+  tempfile:
+    state: directory
+  register: temp_dir
+
+- name: Download Add-on
+  get_url:
+    url: "{{ addon_url }}"
+    dest: "{{ temp_dir.path }}/{{ addon_filename }}"
+
+- name: Install Extension
+  copy:
+    src: "{{ temp_dir.path }}/{{ addon_filename }}"
+    dest: "{{ firefox_profile_path }}/extensions/{{ addon_guid }}.xpi"
+    remote_src: true

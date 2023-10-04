@@ -1,0 +1,4 @@
+- name: Remove Add-on
+  file:
+    path: "{{ profile_path }}/extensions/{{ addon_guid }}.xpi"
+    state: absent

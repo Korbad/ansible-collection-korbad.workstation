@@ -1,0 +1,19 @@
+---
+- name: Ensure Extensions Directory Exists
+  file:
+    path: "{{ firefox_profile_path }}/extensions"
+    state: directory
+
+- name: Get Add-on Info
+  uri:
+    url: "https://services.addons.mozilla.org/api/v4/addons/addon/{{ firefox_extension_name }}"
+    return_content: yes
+  register: addon_info
+
+- name: Process extension
+  include_tasks: process_extension.yml
+  vars:
+    addon_id: "{{ addon_info.json.id }}"
+    addon_guid: "{{ addon_info.json.guid }}"
+    addon_url: "{{ addon_info.json.current_version.files[0].url }}"
+    addon_filename: "{{ addon_url.split('/')[-1] }}"

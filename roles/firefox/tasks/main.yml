@@ -3,26 +3,3 @@
   community.general.pacman:
     name: firefox
   become: true
-
-- name: Check if Firefox profile exists
-  ansible.builtin.stat:
-    path: "{{ firefox_profile_path }}/{{ firefox_profile_name }}"
-  register: profile_status
-
-- name: Create Firefox profile if not exists
-  command: "firefox -CreateProfile {{ firefox_profile_name }} --display={{ x11_active_user_display }}"
-  args:
-    creates: "{{ firefox_profile_path }}/{{ firefox_profile_name }}"
-  when: not profile_status.stat.exists
-
-- name: Ensure Firefox profile directory exists
-  ansible.builtin.file:
-    path: "{{ firefox_profile_path }}/{{ firefox_profile_name }}"
-    state: directory
-    mode: '0755'
-
-- name: Configure Firefox to automatically open .ica files
-  ansible.builtin.lineinfile:
-    path: "{{ firefox_profile_path }}/{{ firefox_profile_name }}/user.js"
-    line: 'user_pref("browser.helperApps.neverAsk.saveToDisk", "application/x-ica");'
-    create: yes

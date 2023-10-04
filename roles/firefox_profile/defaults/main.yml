@@ -1,0 +1,6 @@
+#firefox_profile_path: "{{ firefox_user_config_path }}/{{ firefox_profile_name }}"
+#firefox_user_config_path: "{{ ansible_env.HOME }}/.mozilla/firefox"
+#firefox_profile_name: "{{ ansible_env.USER }}"
+#profiles_ini_path: "{{ firefox_user_config_path }}/profiles.ini"
+#firefox_profile_directory_name: "3ptc0h1g.korbad"
+managed_firefox_profile_path: "{{ (ansible_env.USER, 'managed_firefox_profile') | path_join }}"

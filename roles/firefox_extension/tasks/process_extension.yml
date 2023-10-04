@@ -1,0 +1,9 @@
+---
+- name: Check if Extension Already Exists
+  stat:
+    path: "{{ firefox_profile_path }}/extensions/{{ addon_guid }}.xpi"
+  register: xpi_file
+
+- name: Install extension
+  include_tasks: install_extension.yml
+  when: not xpi_file.stat.exists

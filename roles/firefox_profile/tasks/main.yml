@@ -1,0 +1,46 @@
+---
+- name: Ensure that the managed_firefox_profile directory exists
+  file:
+    state: directory
+    path: "{{ managed_firefox_profile_path }}"
+
+#- name: Create Firefox profile
+#  command: firefox --createprofile {{ managed_firefox_profile_path }}
+#  environment:
+#    DISPLAY: "{{ active_user_environ_dict.DISPLAY }}"
+#
+#- name: Create Firefox profile
+#  command: timeout 3s firefox --profile {{ managed_firefox_profile_path }}
+#  environment:
+#    DISPLAY: "{{ active_user_environ_dict.DISPLAY }}"
+#
+
+#- name: Check if Firefox profile exists
+#  ansible.builtin.stat:
+#    path: "{{ firefox_profile_path }}"
+#  register: profile_status
+#
+#- name: Create Firefox profile if not exists
+#  command: "firefox -CreateProfile {{ firefox_profile_name }} --display={{ active_user_display }}"
+#  args:
+#    creates: "{{ firefox_profile_path }}"
+#  when: not profile_status.stat.exists
+#  vars:
+#    active_user_display: "{{ active_user_environ_dict.DISPLAY }}"
+#
+#
+#
+#- name: Configure profile
+#  include_tasks: configure_profile.yml
+#
+#- name: Generate profiles.ini
+#  template:
+#    src: "templates/profiles_ini.j2"
+#    dest: "{{ profiles_ini_path }}"
+#
+#
+#
+#- name: Create Firefox profile if not exists
+#  command: "firefox -CreateProfile {{ firefox_profile_name }} --display={{ active_user_display }}"
+#  vars:
+#    active_user_display: "{{ active_user_environ_dict.DISPLAY }}"
