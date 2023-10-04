@@ -1,0 +1,25 @@
+---
+- name: Get SSH connection info
+  setup:
+    gather_subset:
+      - network
+  register: network_info
+
+- name: Check if SSH interface is being bridged
+  assert:
+    that: network_info['ansible_interfaces'] | difference(excluded_interfaces) | length > 0
+    fail_msg: "SSH interface is being bridged, cannot proceed."
+
+- meta: end_play
+
+# we need to do some stuff here, the task below as-is kills the internet connection for the remote host entirely
+
+- name: Create Bridge using nmcli
+  community.general.nmcli:
+    conn_name: "{{ bridge_conn_name }}"
+    ifname: "{{ bridge_ifname }}"
+    type: bridge
+    state: present
+    ip4: "{{ bridge_ip }}"
+    gw4: "{{ bridge_gateway }}"
+  become: true

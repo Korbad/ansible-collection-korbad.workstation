@@ -1,0 +1,4 @@
+---
+dependencies:
+  - bridge_utils
+#  - nmcli
