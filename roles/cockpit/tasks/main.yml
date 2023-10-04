@@ -5,13 +5,45 @@
     state: present
   become: true
 
-- name: Start and enable cockpit.socket
+- name: enable cockpit.socket
   systemd:
     name: cockpit.socket
-    state: started
     enabled: yes
-    masked: no
   become: true
+
+- name: Query cockpit.socket status
+  ansible.builtin.command: systemctl show -p ActiveState cockpit.socket
+  register: cockpit_status
+  ignore_errors: true
+  changed_when: false
+
+- name: Parse ActiveState from systemctl output
+  set_fact:
+    cockpit_active_state: "{{ cockpit_status.stdout.split('=')[1] }}"
+
+- name: Check if cockpit.socket is in use
+  ansible.builtin.command: ss -xl | grep 'cockpit'
+  register: socket_in_use
+  ignore_errors: true
+  changed_when: false
+
+- name: Start cockpit.socket if not active
+  ansible.builtin.systemd:
+    name: cockpit.socket
+    state: started
+  become: true
+  when:
+  - cockpit_active_state != 'active'
+  - socket_in_use.stdout == ""
+
+#- name: start cockpit.socket
+#  systemd:
+#    name: cockpit.socket
+#    state: started
+#  become: true
+
+
+- meta: end_play
 
 - name: Ensure cockpit plugins are installed
   community.general.pacman:
