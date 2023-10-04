@@ -1,0 +1,7 @@
+---
+- name: start and enable libvirtd socket
+  systemd:
+    name: libvirtd.socket
+    state: started
+    enabled: true
+  become: true
