@@ -1,28 +1,6 @@
-# roles/nvidia_gpu/tasks/main.yml
-- name: Install common packages for NVIDIA gpu
-  pacman:
-    name:
-      - nvidia
-      - nvidia-settings
-      - nvidia-utils
-    state: latest
-  become: true
-  notify:
-    - rebuild nvidia kernel module
-
-- name: Fetch installed nvidia driver versions
-  include_tasks: driver_version.yml
-
-- name: Create blacklist file in /etc/modprobe.d/
-  copy:
-    dest: /etc/modprobe.d/nouveau_blacklist.conf
-    content: blacklist nouveau
-    owner: root
-    group: root
-    mode: 0644
-  become: true
-  notify:
-    - rebuild initramfs
+---
+#- name: Fetch installed nvidia driver versions
+#  include_tasks: driver_version.yml
 
 - name: Ensure that vulkan drivers are installed
   include_role:

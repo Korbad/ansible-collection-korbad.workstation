@@ -1,0 +1,12 @@
+---
+- name: Install common packages for NVIDIA gpu
+  pacman:
+    name:
+      - nvidia
+      - nvidia-settings
+      - nvidia-utils
+    state: present
+  become: true
+#  notify:
+#    - regenerate initramfs image
+#    - modprobe nvidia

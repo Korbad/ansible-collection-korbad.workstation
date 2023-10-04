@@ -1,0 +1,9 @@
+- name: reload kernel modules
+  command: depmod
+  become: true
+#  notify:
+#    - modprobe nvidia
+#
+#- name: modprobe nvidia
+#  command: modprobe nvidia
+#  become: true
