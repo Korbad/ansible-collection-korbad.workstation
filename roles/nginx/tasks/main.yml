@@ -1,0 +1,6 @@
+---
+- name: Ensure Nginx is installed
+  pacman:
+    name: nginx
+    state: present
+  become: true
