@@ -9,7 +9,7 @@ cloudflared_service_config_file: "{{ cloudflared_config_directory }}/config.yml"
 
 cloudflared_poll_retries: 50
 cloudflared_poll_delay: 3
-cloudflare_email: 
+cloudflare_email: "{{ undef(hint='Provide a cloudflare account email') }}"
 cloudflare_api_key:
-cloudflare_account_identifier: a46d205651ef638d27958d0c194c4275
-cloudflare_application_id: fbdb9f48-e22a-4ceb-80ac-8dc3d95d9a40
+cloudflare_account_identifier: "{{ undef(hint='Provide a cloudflare account identifier') }}"
+cloudflare_application_id: "{{ undef(hint='Provide a cloudflare application id') }}"

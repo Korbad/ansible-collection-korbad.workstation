@@ -1,6 +1,6 @@
 - name: Install cloudflared as a service
   command:
-    cmd: sudo cloudflared --config {{ cloudflared_service_config_file }} service install
+    cmd: cloudflared --config {{ cloudflared_service_config_file }} service install
     creates: /etc/systemd/system/cloudflared.service
   become: true
   notify:

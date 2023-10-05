@@ -5,7 +5,7 @@
     state: directory
     mode: '0755'
 
-- name: Fetch active user environ before reloading i3
+- name: Fetch active user environ
   include_role:
     name: korbad.tools.get_active_user_environ
 
@@ -40,5 +40,5 @@
 - name: Ensure cloudflared service exists
   include_tasks: service.yml
 
-- name: Get AUD TAG
-  include_tasks: get_aud.yml
+#- name: Get AUD TAG
+#  include_tasks: get_aud.yml
