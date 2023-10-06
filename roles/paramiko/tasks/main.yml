@@ -1,0 +1,5 @@
+- name: Install python-paramiko
+  pacman:
+    name: python-paramiko
+    state: present
+  become: true
