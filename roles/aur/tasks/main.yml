@@ -5,6 +5,6 @@
     update_cache: true
   become: true
 
-- name: Ensure aur is upgraded
-  kewlfft.aur.aur:
-    upgrade: true
+#- name: Ensure aur is upgraded
+#  kewlfft.aur.aur:
+#    upgrade: true
