@@ -1,12 +1,11 @@
-cloudflared_tunnel_name: "{{ ansible_hostname }}"
+cloudflared_tunnel_name: "{{ inventory_hostname }}"
 cloudflared_config_directory: "{{ ansible_env.HOME }}/.cloudflared"
 cloudflared_warp_routing_enabled: False
-cloudflared_hostname: "{{ cloudflared_tunnel_name }}.{{ cloudflared_tunnel_public_domain }}"
+cloudflared_tunnel_hostname: "{{ cloudflared_tunnel_name }}.{{ cloudflared_tunnel_public_domain }}"
 cloudflared_ingress_rules:
-- hostname: "{{ cloudflared_hostname }}"
+- hostname: "{{ cloudflared_tunnel_hostname }}"
   service: ssh://localhost:22
 cloudflared_service_config_file: "{{ cloudflared_config_directory }}/config.yml"
-
 cloudflared_poll_retries: 50
 cloudflared_poll_delay: 3
 cloudflare_email: "{{ undef(hint='Provide a cloudflare account email') }}"

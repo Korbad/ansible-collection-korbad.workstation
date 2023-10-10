@@ -5,5 +5,5 @@
 
 - name: Check if tunnel is running
   command:
-    cmd: cloudflared tunnel info {{ cloudflare_tunnel_uuid }}
+    cmd: cloudflared tunnel info {{ cloudflared_tunnel_name }}
   register: tunnel_info
