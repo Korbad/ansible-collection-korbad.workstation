@@ -3,9 +3,12 @@
 - name: Configure SSH to use cloudflared
   community.general.ssh_config:
     user: "{{ ansible_env.USER }}"
-    host: "{{ cloudflared_hostname }}"
+    host: "{{ other_cloudflare_tunnel_hostname }}"
     proxycommand: /usr/bin/cloudflared access ssh --hostname %h
     state: present
-  loop: "{{ cloudflared_hostnames }}"
+  loop: "{{ groups['cloudflared_tunnel_endpoints'] }}"
   loop_control:
-    loop_var: cloudflared_hostname
+    loop_var: cloudflared_tunnel_endpoint
+  vars:
+    other_cloudflare_tunnel_hostname: "{{ hostvars[cloudflared_tunnel_endpoint].cloudflared_tunnel_hostname }}"
+  when: "inventory_hostname != cloudflared_tunnel_endpoint"

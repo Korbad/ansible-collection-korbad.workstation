@@ -1,0 +1,4 @@
+---
+dependencies:
+  - role: cloudflared
+  - role: paramiko
