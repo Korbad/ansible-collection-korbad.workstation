@@ -1,0 +1,4 @@
+- name: Ensure that ffmpeg is installed
+  pacman:
+    name: ffmpeg
+  become: true
