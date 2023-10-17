@@ -1,0 +1,9 @@
+[Unit]
+Description=Citrix clipboard user-service
+After=network.target
+
+[Service]
+User={{ ansible_env.USER }}
+ExecStart=/opt/Citrix/VDA/bin/ctxclipboard
+Restart=always
+

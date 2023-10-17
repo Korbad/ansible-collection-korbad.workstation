@@ -1,0 +1,15 @@
+---
+- name: Deploy barrier server systemd service file
+  template:
+    src: ctxclipboard.service.j2
+    dest: /etc/systemd/system/ctxclipboard.service
+  notify: reload systemd daemon
+  become: true
+
+- name: Enable and start barrier server service
+  systemd:
+    name: ctxclipboard
+    enabled: yes
+    state: started
+    scope: user
+  become: true
