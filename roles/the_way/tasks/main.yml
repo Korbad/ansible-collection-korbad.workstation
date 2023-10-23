@@ -1,0 +1,6 @@
+---
+- name: Ensure that 'the-way' is installed
+  community.general.cargo:
+    name: the-way
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
