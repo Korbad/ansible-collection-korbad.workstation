@@ -1,0 +1,6 @@
+---
+- name: Ensure that 'mcfly' is installed
+  community.general.cargo:
+    name: mcfly
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
