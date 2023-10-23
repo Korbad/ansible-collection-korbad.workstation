@@ -1,0 +1,6 @@
+---
+- name: Ensure that 'git-state' is installed
+  community.general.cargo:
+    name: git-state
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
