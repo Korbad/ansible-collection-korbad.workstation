@@ -1,0 +1,6 @@
+---
+- name: Ensure that 'gitall' is installed
+  community.general.cargo:
+    name: gitall
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
