@@ -1,0 +1,6 @@
+---
+- name: Ensure that 'krapslog' is installed
+  community.general.cargo:
+    name: krapslog
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
