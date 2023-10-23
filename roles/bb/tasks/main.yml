@@ -1,0 +1,6 @@
+---
+- name: Ensure that 'bb' is installed
+  community.general.cargo:
+    name: bb
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
