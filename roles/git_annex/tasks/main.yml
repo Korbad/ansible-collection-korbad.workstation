@@ -1,0 +1,6 @@
+---
+- name: Ensure that git-annex is installed
+  pacman:
+    name: git-annex
+  become: true
+  when: ansible_distribution == 'Archlinux'
