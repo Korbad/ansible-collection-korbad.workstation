@@ -1,0 +1,4 @@
+- name: Ensure lshw is installed
+  community.general.pacman:
+    name: lshw
+  become: true
