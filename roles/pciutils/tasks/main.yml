@@ -1,0 +1,6 @@
+---
+- name: Ensure that pciutils is installed
+  community.general.pacman:
+    name: pciutils
+    state: present
+  become: true
