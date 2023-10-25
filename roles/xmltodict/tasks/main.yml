@@ -1,0 +1,5 @@
+- name: Ensure that python-xmltodict is installed
+  pacman:
+    name: python-xmltodict
+    state: present
+  become: true
