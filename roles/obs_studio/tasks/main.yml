@@ -1,6 +1,6 @@
 ---
 - name: Ensure obs-studio is installed
-  package:
+  pacman:
     name: obs-studio
   become: true
   when: ansible_distribution == 'Archlinux'
