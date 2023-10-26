@@ -1,0 +1,6 @@
+---
+- name: Ensure that 'repgrep' is installed
+  community.general.cargo:
+    name: repgrep
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
