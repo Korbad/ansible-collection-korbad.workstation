@@ -1,0 +1,5 @@
+---
+dependencies:
+  - obs_studio
+  - v4l2loopback
+  - ffmpeg
