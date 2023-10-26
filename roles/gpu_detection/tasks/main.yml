@@ -1,13 +1,5 @@
-- name: Ensure pciutils is installed for lspci
-  pacman:
-    name: pciutils
-    state: present
-  become: true
-
-- name: Get PCI devices
-  command: lspci
-  changed_when: false
-  register: pci_devices
+- include_role:
+    name: korbad.facts.lspci
 
 - name: Determine GPU vendor
   set_fact:
