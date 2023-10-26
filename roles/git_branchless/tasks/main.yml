@@ -1,0 +1,6 @@
+---
+- name: Ensure that 'git-branchless' is installed
+  community.general.cargo:
+    name: git-branchless
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
