@@ -1,7 +1,3 @@
-- name: Fetch active user environ before reloading i3
-  include_role:
-    name: korbad.tools.get_active_user_environ
-
 - name: Get i3 socket path
   shell: i3 --get-socketpath
   register: i3_socket_path
