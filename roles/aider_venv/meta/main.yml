@@ -1,0 +1,4 @@
+dependencies:
+  - virtualenv
+  - python39
+  - korbad.tools.bash

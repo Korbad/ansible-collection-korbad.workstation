@@ -1,0 +1,5 @@
+#!/bin/bash
+# Wrapper script for activating virtualenv and running aider
+
+source "{{ aider_virtualenv_path }}/bin/activate"
+aider "$@"

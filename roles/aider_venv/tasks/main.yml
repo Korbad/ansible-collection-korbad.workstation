@@ -1,0 +1,33 @@
+---
+- name: Create structure for virtual environment
+  file:
+    state: directory
+    path: "{{ aider_virtualenv_path }}"
+
+- name: Create venv
+  pip:
+    name: git+https://github.com/paul-gauthier/aider.git
+    state: present
+    virtualenv: "{{ aider_virtualenv_path }}"
+    virtualenv_site_packages: no
+    virtualenv_python: python3.9
+
+- name: Deploy wrapper script for aider
+  template:
+    src: wrapper_script.j2
+    dest: "{{ airder_wrapper_script_path }}"
+    mode: '0755'
+
+- name: Add ~/bin to PATH in profile file
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    block: |
+      export PATH="$HOME/bin:$PATH"
+    marker: "# {mark} user bin dir - Ansible managed"
+  notify: refresh user bash sessions using SIGHUP
+
+- name: Ensure .aider.conf.yml is created with API key
+  template:
+    src: aider_conf.yml.j2
+    dest: "{{ ansible_env.HOME }}/.aider.conf.yml"
+    mode: '0600'

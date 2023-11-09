@@ -1,0 +1,2 @@
+airder_wrapper_script_path: "{{ ansible_env.HOME }}/bin/aider"
+aider_virtualenv_path: "{{ ansible_env.HOME }}/aider_venv"
