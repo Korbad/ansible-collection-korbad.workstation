@@ -1,3 +1,7 @@
 ---
 dependencies:
-  - pip
+- name: pip
+- name: korbad.arch.virtualenv
+  when: ansible_distribution == 'Archlinux'
+- name: korbad.ubuntu.virtualenv
+  when: ansible_distribution == 'Ubuntu'
