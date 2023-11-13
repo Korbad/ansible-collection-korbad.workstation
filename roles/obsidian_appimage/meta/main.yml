@@ -1,4 +1,5 @@
 ---
 dependencies:
-  - aur
-  - fuse
+- role: korbad.arch.aur
+  when: ansible_distribution == 'Archlinux'
+- fuse

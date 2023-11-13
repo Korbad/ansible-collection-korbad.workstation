@@ -1,2 +1,3 @@
 dependencies:
-- aur
+- role: korbad.arch.aur
+  when: ansible_distribution == 'Archlinux'

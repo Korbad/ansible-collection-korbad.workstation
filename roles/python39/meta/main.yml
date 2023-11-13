@@ -1,6 +1,7 @@
 ---
 dependencies:
-- name: aur
+- role: korbad.arch.aur
+  when: ansible_distribution == 'Archlinux'
 - name: korbad.arch.yay
 - name: pkg_config
 - name: make

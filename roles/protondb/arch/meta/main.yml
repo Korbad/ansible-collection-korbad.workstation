@@ -1,4 +1,5 @@
 ---
 dependencies:
-  - aur
-  - cargo_git_cli
+- role: korbad.arch.aur
+  when: ansible_distribution == 'Archlinux'
+- cargo_git_cli
