@@ -4,7 +4,8 @@ dependencies:
   when: ansible_distribution == 'Archlinux'
 - name: korbad.arch.yay
   when: ansible_distribution == 'Archlinux'
-- name: pkg_config
+- name: korbad.arch.pkg_config
+  when: ansible_distribution == 'Archlinux'
 - name: make
 - name: korbad.arch.base_devel
   when: ansible_distribution == 'Archlinux'

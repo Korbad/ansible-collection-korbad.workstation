@@ -5,7 +5,8 @@
 
 - name: Ensure pkgconfig is installed
   include_role:
-    name: pkg_config
+    name: korbad.arch.pkg_config
+  when: ansible_distribution == 'Archlinux'
 
 - name: Install Bevy dependencies for Arch variants
   community.general.pacman:

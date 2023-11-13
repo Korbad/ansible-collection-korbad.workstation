@@ -1,4 +1,0 @@
-- name: Install PKGCONFIG
-  community.general.pacman:
-    name: pkgconfig
-  become: true
