@@ -3,29 +3,6 @@
   when: ansible_distribution == 'Archlinux'
 
 - name: Install pip for Ubuntu
-  apt:
-    name: python3-pip
-  become: true
+  include_role:
+    name: korbad.ubuntu.pip
   when: ansible_distribution == 'Ubuntu'
-
-- name: Ensure setuptools is installed
-  shell: pip list | grep setuptools
-  changed_when: false
-  register: check_setuptools
-  failed_when: "'command not found' in check_setuptools.stderr"
-
-- name: Install setuptools
-  shell: pip install setuptools
-  when: check_setuptools.rc != 0
-
-#- name: Upgrade pip for current interpreter
-#  pip:
-#    name: pip
-#    state: latest
-#
-#- name: Upgrade setuptools and wheel
-#  pip:
-#    name:
-#    - setuptools
-#    - wheel
-#    state: latest
