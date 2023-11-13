@@ -4,14 +4,7 @@
   become: true
   when: ansible_distribution == 'Archlinux'
 
-- name: Ensure setuptools is installed (required for virtualenv for ubuntu)
-  apt:
-    name: python3-setuptools
-  become: true
-  when: ansible_distribution == 'Ubuntu'
-
-- name: Ensure virtualenv is installed
-  apt:
-    name: python3-virtualenv
-  become: true
+- name: Ensure virtualenv is installed (Ubuntu)
+  include_role:
+    name: korbad.ubuntu.virtualenv
   when: ansible_distribution == 'Ubuntu'
