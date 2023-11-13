@@ -4,4 +4,4 @@ dependencies:
 - name: yay
 - name: pkg_config
 - name: make
-- name: base_devel
+- name: korbad.arch.base_devel

@@ -1,6 +1,6 @@
 ---
 dependencies:
-  - name: base_devel
+  - name: korbad.arch.base_devel
   - name: libvirt
   - name: libvirt_group
   - name: vagrant

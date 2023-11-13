@@ -1,7 +1,7 @@
 ---
 dependencies:
   - name: korbad.workstation.base
-  - name: korbad.workstation.base_devel
+  - name: korbad.arch.base_devel
   - name: korbad.workstation.linux_firmware
   - name: korbad.workstation.hostname
   - name: korbad.workstation.reflector
