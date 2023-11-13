@@ -2,3 +2,8 @@
 - name: Ensure openshift-client-bin is installed
   kewlfft.aur.aur:
     name: openshift-client-bin
+  when: ansible_distribution == 'Archlinux'
+
+- name: Ensure Openshift (OC) client is installed (Ubuntu)
+  include_tasks: ubuntu.yml
+  when: ansible_distribution == "Ubuntu"

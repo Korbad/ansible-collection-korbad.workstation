@@ -1,0 +1,13 @@
+#- name: Download OKD installation and client binaries
+#  get_url:
+#    url: https://github.com/okd-project/okd/releases/download/4.14.0-0.okd-2023-10-28-073550/openshift-client-linux-4.14.0-0.okd-2023-10-28-073550.tar.gz
+#    dest: "{{ lookup('env', 'HOME') }}/{{ openshift_client_archive_filename }}"
+#    mode: '0755'
+#  register: downloaded_binaries
+
+- name: Extract OKD installation and client binaries
+  unarchive:
+    src: "{{ lookup('env', 'HOME') }}/{{ openshift_client_archive_filename }}"
+    dest: "{{ okd_binary_dest }}"
+  become: true
+
