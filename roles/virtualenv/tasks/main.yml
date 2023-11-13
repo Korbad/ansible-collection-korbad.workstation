@@ -1,7 +1,6 @@
-- name: Ensure virtualenv is installed
-  community.general.pacman:
-    name: python-virtualenv
-  become: true
+- name: Ensure virtualenv is installed (Arch)
+  include_role:
+    name: korbad.arch.virtualenv
   when: ansible_distribution == 'Archlinux'
 
 - name: Ensure virtualenv is installed (Ubuntu)
