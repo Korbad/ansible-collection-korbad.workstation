@@ -1,8 +1,0 @@
-- name: Install pip requirements for Arch
-  include_tasks: arch.yml
-  when: ansible_distribution == 'Archlinux'
-
-- name: Install pip for Ubuntu
-  include_role:
-    name: korbad.ubuntu.pip
-  when: ansible_distribution == 'Ubuntu'

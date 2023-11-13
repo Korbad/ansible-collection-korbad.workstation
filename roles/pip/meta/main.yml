@@ -1,0 +1,5 @@
+dependencies:
+- name: korbad.arch.pip
+  when: ansible_distribution == 'Archlinux'
+- name: korbad.ubuntu.pip
+  when: ansible_distribution == 'Ubuntu'
