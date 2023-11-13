@@ -1,0 +1,3 @@
+dependencies:
+  - role: korbad.ubuntu.openssl
+    when: ansible_distribution == 'Ubuntu'
