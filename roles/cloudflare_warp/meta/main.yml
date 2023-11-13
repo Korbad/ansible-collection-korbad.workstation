@@ -1,4 +1,4 @@
 ---
 dependencies:
   - role: pacman
-  - role: yay
+  - role: korbad.arch.yay

@@ -1,7 +1,7 @@
 ---
 - name: Ensure yay is installed
   include_role:
-    name: yay
+    name: korbad.arch.yay
 
 - name: Import 1Password signing key
   shell: curl -sS https://downloads.1password.com/linux/keys/1password.asc | gpg --import
