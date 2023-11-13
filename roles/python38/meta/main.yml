@@ -3,6 +3,7 @@ dependencies:
 - role: korbad.arch.aur
   when: ansible_distribution == 'Archlinux'
 - name: korbad.arch.yay
+  when: ansible_distribution == 'Archlinux'
 - name: pkg_config
 - name: make
 - name: korbad.arch.base_devel

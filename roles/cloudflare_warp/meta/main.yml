@@ -2,3 +2,4 @@
 dependencies:
   - role: pacman
   - role: korbad.arch.yay
+    when: ansible_distribution == 'Archlinux'
