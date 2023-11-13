@@ -4,5 +4,5 @@ dependencies:
 - optimize_gpu_performance
 # - protondb
 - steam
-- VKD3D
+- korbad.arch.VKD3D
 - wine

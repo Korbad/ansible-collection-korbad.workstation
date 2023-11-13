@@ -1,4 +1,0 @@
----
-dependencies:
-- role: korbad.arch.aur
-  when: ansible_distribution == 'Archlinux'
