@@ -7,3 +7,4 @@ dependencies:
 - name: pkg_config
 - name: make
 - name: korbad.arch.base_devel
+  when: ansible_distribution == 'Archlinux'
