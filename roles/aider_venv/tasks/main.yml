@@ -31,3 +31,4 @@
     src: aider_conf.yml.j2
     dest: "{{ ansible_env.HOME }}/.aider.conf.yml"
     mode: '0600'
+  when: aider_openai_api_key is defined
