@@ -1,4 +1,3 @@
 ---
 dependencies:
-  - i3
-  - korbad.tools.get_active_user_environ
+  - i3_configuration
