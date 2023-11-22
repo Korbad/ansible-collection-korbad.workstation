@@ -27,7 +27,7 @@
 
 - name: Fetch active user environ before reloading i3
   include_role:
-    name: korbad.tools.get_active_user_environ
+    name: korbad.facts.active_user_environment_dict
 
 - name: Open webcam stream HTML file in the default web browser
   ansible.builtin.command:

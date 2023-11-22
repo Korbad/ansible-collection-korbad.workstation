@@ -1,7 +1,7 @@
 ---
 - name: Fetch stats for the active user env
   include_role:
-    name: korbad.tools.get_active_user_environ
+    name: korbad.facts.active_user_environment_dict
 
 - name: Ensure that user home .screenlayout config dir exists
   file:

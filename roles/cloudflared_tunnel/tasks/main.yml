@@ -7,7 +7,7 @@
 
 - name: Fetch active user environ
   include_role:
-    name: korbad.tools.get_active_user_environ
+    name: korbad.facts.active_user_environment_dict
 
 - name: Run cloudflared tunnel login
   command: cloudflared tunnel login
