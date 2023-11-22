@@ -1,0 +1,6 @@
+
+- name: Reload i3
+  command: i3-msg reload
+  environment:
+    DISPLAY: "{{ active_user_environ_dict.DISPLAY }}"
+    I3SOCK: "{{ i3_socket_path }}"

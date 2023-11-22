@@ -1,0 +1,5 @@
+---
+dependencies:
+  - i3
+  - korbad.facts.active_user_environment_dict
+  - korbad.facts.i3_socket_path
