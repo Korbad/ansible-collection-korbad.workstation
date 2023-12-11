@@ -1,10 +1,10 @@
 ---
 - name: Steam for Archlinux
   include_role:
-    name: steam/arch
+    name: korbad.arch.steam
   when: ansible_distribution == 'Archlinux'
 
 - name: Steam for AlmaLinux
   include_role:
-    name: steam/alma
+    name: korbad.alma.steam
   when: ansible_distribution == 'AlmaLinux'
