@@ -1,0 +1,19 @@
+- name: Ensure that the keymaps directory exists
+  file:
+    path: "{{ pycharm_config_version_path }}/keymaps"
+    state: directory
+
+- name: Find keymap directories within each PyCharm configuration directory
+  find:
+    paths: "{{ pycharm_config_version_path }}/keymaps/"
+    depth: 1
+    file_type: file
+  register: keymap_files
+
+- name: Process each found keymap file
+  include_tasks: process_keymap_file.yml
+  loop: "{{ keymap_files.files }}"
+  loop_control:
+    loop_var: keymap_file
+  vars:
+    keymap_file_path: "{{ keymap_file.path }}"

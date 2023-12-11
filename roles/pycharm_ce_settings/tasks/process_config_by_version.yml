@@ -1,4 +1,0 @@
-- name: Copy archived configuration from ansible controller to remote host
-  copy:
-    src: "{{ pycharm_config_version_path }}/settings.zip"
-    dest: "{{ pycharm_config_version_path }}/settings.zip"

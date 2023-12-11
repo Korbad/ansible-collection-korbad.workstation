@@ -1,0 +1,28 @@
+- name: Check if 'CloseContent' action exists
+  community.general.xml:
+    path: "{{ keymap_file_path }}"
+    xpath: "/keymap/action[@id='CloseContent']"
+    state: "present"
+    pretty_print: true
+
+- name: Check if 'ctrl w' keyboard shortcut exists under 'CloseContent'
+  community.general.xml:
+    path: "{{ keymap_file_path }}"
+    xpath: "/keymap/action[@id='CloseContent']/keyboard-shortcut[@first-keystroke='ctrl w']"
+    state: "present"
+    pretty_print: true
+
+- name: Check if '$Redo' action exists
+  community.general.xml:
+    path: "{{ keymap_file_path }}"
+    xpath: "/keymap/action[@id='$Redo']"
+    state: "present"
+    pretty_print: true
+
+- name: Check if 'ctrl y' keyboard shortcut exists for 'Redo'
+  community.general.xml:
+    path: "{{ keymap_file_path }}"
+    xpath: "/keymap/action[@id='$Redo']/keyboard-shortcut[@first-keystroke='ctrl y']"
+    state: "present"
+    pretty_print: true
+

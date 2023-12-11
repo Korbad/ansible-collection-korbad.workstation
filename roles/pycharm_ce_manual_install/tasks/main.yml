@@ -1,0 +1,38 @@
+---
+- assert:
+    that:
+      - false
+    fail_msg: "role is WIP"
+
+# https://www.jetbrains.com/help/pycharm/installation-guide.html#standalone
+- name: Ensure pycharm ce tarball artifact exists
+  include_role:
+    name: korbad.artifacts.pycharm_ce_tarball
+
+- name: Verify integrity of the downloaded archive
+  ansible.builtin.stat:
+    path: "{{ pycharm_ce_tarball_path }}"
+    checksum_algorithm: sha256
+  register: tarball_stat
+  #failed_when: "tarball_stat.stat.checksum != pycharm_checksum"
+  vars:
+    pycharm_checksum: 2bb4f73d041b818a7b631feb3fee77036de764543c669efe9cf6766510a68e3f *pycharm-community-2023.2.2.tar.gz
+
+- debug:
+    var: tarball_stat
+
+- meta: end_play
+
+- name: Extract tarball
+  ansible.builtin.unarchive:
+    src: "{{ pycharm_ce_tarball_path }}"
+    dest: "{{ pycharm_install_dir }}"
+    remote_src: yes
+
+- name: Create pycharm_ce.sh and put it in path
+  ansible.builtin.copy:
+    content: |
+      #!/bin/bash
+      {{ pycharm_install_dir }}/pycharm-*/{{ pycharm_bin_subdir }}/{{ pycharm_executable }}
+    dest: /usr/local/bin/pycharm_ce.sh
+    mode: '0755'

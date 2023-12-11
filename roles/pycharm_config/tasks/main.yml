@@ -1,9 +1,4 @@
 ---
-- name: Ensure pycharm community edition is installed
-  community.general.pacman:
-    name: pycharm-community-edition
-  become: true
-
 - name: Find PyCharm configuration directory
   find:
     paths: "{{ ansible_env.HOME }}/.config/JetBrains/"
