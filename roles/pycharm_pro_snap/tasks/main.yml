@@ -1,0 +1,6 @@
+---
+- name: Ensure pycharm professional edition is installed
+  community.general.snap:
+    name: pycharm-professional
+    classic: true
+  become: true

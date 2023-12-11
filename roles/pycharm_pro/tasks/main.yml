@@ -3,3 +3,8 @@
   include_role:
     name: korbad.arch.pycharm_pro
   when: ansible_distribution == 'Archlinux'
+
+- name: Ensure pycharm pro edition is installed (Alma or Ubuntu)
+  include_role:
+    name: pycharm_pro_snap
+  when: ansible_distribution in ['AlmaLinux', 'Ubuntu']
