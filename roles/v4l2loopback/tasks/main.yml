@@ -4,9 +4,20 @@
   community.general.pacman:
     name: v4l2loopback-dkms
   become: true
+  notify: dkms autoinstall
 
-- name: Load v4l2loopback kernel module via DKMS #, create /dev/video9 as a loopback device. exclusive_caps=1 is neccessary for some Chromium/WebRTC based application like zoom
-  community.general.modprobe:
-    state: present
-    name: v4l2loopback
+#- name: Load v4l2loopback kernel module via DKMS #, create /dev/video9 as a loopback device. exclusive_caps=1 is neccessary for some Chromium/WebRTC based application like zoom
+#  community.general.modprobe:
+#    state: present
+#    name: v4l2loopback
     # params: 'video_nr=9 card_label=Video-Loopback exclusive_caps=1'
+
+- name: Ensure cli utils are installed
+  community.general.pacman:
+    name: v4l2loopback-utils
+  become: true
+
+- name: Userspace tools and conversion library for Video 4 Linux
+  pacman:
+    name: v4l-utils
+  become: true
