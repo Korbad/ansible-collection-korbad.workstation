@@ -1,7 +1,7 @@
 ---
-- name: Ensure snapd package exists (AUR)
-  kewlfft.aur.aur:
-    name: snapd
+- name: Ensure snapd package exists (Arch)
+  include_role:
+    name: korbad.arch.snapd
   when: ansible_distribution == 'Archlinux'
 
 - name: Install snapd via dnf
