@@ -1,5 +1,5 @@
 ---
-- name: Ensure the Arch install scripts are installed
+- name: Ensure the Arch install scripts are installed (enabling arch-chroot cli)
   community.general.pacman:
     name: arch-install-scripts
   become : true
