@@ -1,0 +1,5 @@
+---
+- name: Ensure pycharm pro is installed (ArchLinux)
+  include_role:
+    name: korbad.arch.pycharm_pro
+  when: ansible_distribution == 'Archlinux'
