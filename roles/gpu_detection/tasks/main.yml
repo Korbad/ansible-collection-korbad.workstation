@@ -1,6 +1,3 @@
-- include_role:
-    name: korbad.facts.lspci
-
 - name: Determine GPU vendor
   set_fact:
     is_amd_gpu: "{{ 'VGA compatible controller: AMD' in pci_devices.stdout }}"
