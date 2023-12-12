@@ -1,4 +1,10 @@
 ---
+- name: Ensure that pycharm community edition is uninstalled
+  community.general.snap:
+    name: pycharm-community
+    state: absent
+  become: true
+
 - name: Ensure pycharm professional edition is installed
   community.general.snap:
     name: pycharm-professional
