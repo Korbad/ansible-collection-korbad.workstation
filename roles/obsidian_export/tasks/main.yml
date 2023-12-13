@@ -1,0 +1,17 @@
+- name: Ensure that obsidian-export is installed
+  community.general.cargo:
+    name: obsidian-export
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+
+- name: Ensure that the obsidian-export target destination exists
+  file:
+    path: "{{ obsidian_export_dest }}"
+    state: directory
+
+- name: Execute obsidian-export if vault path is defined
+  command:
+    cmd: obsidian-export --frontmatter=always --no-recursive-embeds {{ obsidian_vault_path }} {{ obsidian_export_dest }}
+  when:
+    - obsidian_vault_path is defined
+    - obsidian_export_dest is defined
