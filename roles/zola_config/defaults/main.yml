@@ -1,0 +1,1 @@
+zola_directory_path: "{{ ansible_env.HOME }}/zola"

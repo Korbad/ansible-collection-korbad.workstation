@@ -1,0 +1,56 @@
+---
+- name: Initialize zola site
+  file:
+    path: "{{ zola_directory_path }}"
+    state: directory
+
+- name: Ensure that the zola directory structure exists
+  file:
+    path: "{{ zola_directory_path }}/{{ item }}"
+    state: directory
+  loop:
+    - content
+    - sass
+    - static
+    - templates
+    - themes
+
+- name: Configure zola config.toml
+  template:
+    src: config.toml.j2
+    dest: "{{ zola_directory_path }}/config.toml"
+
+- name: Configure zola site base.html
+  copy:
+    src: base.html
+    dest: "{{ zola_directory_path }}/templates/base.html"
+
+- name: Configure zola site index.html
+  copy:
+    src: index.html
+    dest: "{{ zola_directory_path }}/templates/index.html"
+
+- name: Configure zola template for blog
+  copy:
+    src: blog.html
+    dest: "{{ zola_directory_path }}/templates/blog.html"
+
+- name: Configure zola content directory
+  file:
+    path: "{{ zola_directory_path }}/content/blog"
+    state: directory
+
+- name: Configure zola content _index.md
+  template:
+    src: _index.md.j2
+    dest: "{{ zola_directory_path }}/content/blog/_index.md"
+
+- name: first
+  copy:
+    src: first.md
+    dest: "{{ zola_directory_path }}/content/blog/first.md"
+
+- name: blog-page template
+  copy:
+    src: blog-page.html
+    dest: "{{ zola_directory_path }}/templates/blog-page.html"
