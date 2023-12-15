@@ -1,0 +1,5 @@
+---
+- name: Ensure that gitea is installed
+  pacman:
+    name: gitea
+  become: true
