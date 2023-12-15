@@ -1,0 +1,11 @@
+---
+- name: Ensure that the conty directory exists
+  file:
+    path: "{{ conty_directory_path }}"
+    state: directory
+
+- name: Ensure conty is downloaded
+  ansible.builtin.get_url:
+    url: "{{ conty_url }}"
+    dest: "{{ conty_directory_path }}/conty.sh"
+#    checksum: "{{ checksum }}"

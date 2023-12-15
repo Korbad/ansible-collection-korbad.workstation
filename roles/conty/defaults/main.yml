@@ -1,0 +1,2 @@
+conty_url: https://github.com/Kron4ek/Conty/releases/download/1.24.7/conty.sh
+conty_directory_path: "{{ ansible_env.HOME }}/conty"
